@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   IonButtons,
   IonButton,
@@ -9,29 +9,16 @@ import {
   IonTitle,
   IonPage,
   IonItem,
+  IonList,
   IonLabel,
   IonInput,
+  IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent
 } from '@ionic/react';
-import { OverlayEventDetail } from '@ionic/core/components';
 import './TabNotes.css';
 
+
 function TabNotes() {
-  const modal = useRef<HTMLIonModalElement>(null);
-  const input = useRef<HTMLIonInputElement>(null);
-
-  const [message, setMessage] = useState(
-    'Adding'
-  );
-
-  function confirm() {
-    modal.current?.dismiss(input.current?.value, 'confirm');
-  }
-
-  function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
-    if (ev.detail.role === 'confirm') {
-      setMessage(`Note added!`);
-    }
-  }
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <IonPage>
@@ -42,33 +29,51 @@ function TabNotes() {
       </IonHeader>
       <IonContent fullscreen>
 
-        <IonButton id="open-modal" expand="block">
+        <IonButton expand="block" onClick={() => setIsOpen(true)}>
           Add
         </IonButton>
-        <p>{message}</p>
-        <IonModal ref={modal} trigger="open-modal" onWillDismiss={(ev) => onWillDismiss(ev)}>
+        <IonModal isOpen={isOpen}>
           <IonHeader>
             <IonToolbar>
-              <IonButtons slot="start">
-                <IonButton onClick={() => modal.current?.dismiss()}>Cancel</IonButton>
-              </IonButtons>
-              <IonTitle>New Notes</IonTitle>
+
               <IonButtons slot="end">
-                <IonButton strong={true} onClick={() => confirm()}>
-                  Confirm
-                </IonButton>
+                <IonButton onClick={() => setIsOpen(false)}>Confirm</IonButton>
               </IonButtons>
+
+              <IonTitle>Adding</IonTitle>
+
+              <IonButtons slot="start">
+                <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
+              </IonButtons>
+
             </IonToolbar>
           </IonHeader>
-          <IonContent className="fullscreen">
+          <IonContent className="ion-padding">
+            <IonList>
 
-            <IonItem>
-              <IonLabel position="floating">Purchases</IonLabel>
-              <IonInput /* value={text} onIonChange={e => setText(e.detail.value!)} */></IonInput>
-            </IonItem>
+              <IonItem>
+                <IonLabel position="floating">Note</IonLabel>
+                <IonInput></IonInput>
+              </IonItem>
+
+            </IonList>
 
           </IonContent>
         </IonModal>
+
+        <IonCard>
+          <IonCardHeader>
+            <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+            <IonCardTitle>Card Title</IonCardTitle>
+          </IonCardHeader>
+
+          <IonCardContent>
+            Keep close to Nature's heart... and break clear away, once in awhile,
+            and climb a mountain or spend a week in the woods. Wash your spirit clean.
+          </IonCardContent>
+        </IonCard>
+
+
 
       </IonContent>
     </IonPage>

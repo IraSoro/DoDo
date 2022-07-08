@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState} from 'react';
 import {
   IonButtons,
   IonButton,
@@ -14,26 +14,10 @@ import {
   IonInput,
   IonDatetime,
 } from '@ionic/react';
-import { OverlayEventDetail } from '@ionic/core/components';
 import './TabToDo.css';
 
 function TabToDo() {
-  const modal = useRef<HTMLIonModalElement>(null);
-  const input = useRef<HTMLIonInputElement>(null);
-
-  const [message, setMessage] = useState(
-    'Adding'
-  );
-
-  function confirm() {
-    modal.current?.dismiss(input.current?.value, 'confirm');
-  }
-
-  function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
-    if (ev.detail.role === 'confirm') {
-      setMessage(`Todo added!`);
-    }
-  }
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <IonPage>
@@ -44,39 +28,43 @@ function TabToDo() {
       </IonHeader>
       <IonContent fullscreen>
 
-        <IonButton id="open-modal" expand="block">
+        <IonButton expand="block" onClick={() => setIsOpen(true)}>
           Add
         </IonButton>
-        <p>{message}</p>
-        <IonModal ref={modal} trigger="open-modal" onWillDismiss={(ev) => onWillDismiss(ev)}>
-          <IonHeader>
+        <IonModal isOpen={isOpen}>
+        <IonHeader>
             <IonToolbar>
-              <IonButtons slot="start">
-                <IonButton onClick={() => modal.current?.dismiss()}>Cancel</IonButton>
-              </IonButtons>
-              <IonTitle>New ToDo</IonTitle>
+
               <IonButtons slot="end">
-                <IonButton strong={true} onClick={() => confirm()}>
-                  Confirm
-                </IonButton>
+                <IonButton onClick={() => setIsOpen(false)}>Confirm</IonButton>
               </IonButtons>
+
+              <IonTitle>Adding</IonTitle>
+
+              <IonButtons slot="start">
+                <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
+              </IonButtons>
+
             </IonToolbar>
           </IonHeader>
-          <IonContent className="fullscreen">
+          <IonContent className="ion-padding">
+
             <IonList>
 
               <IonItem>
                 <IonLabel position="floating">ToDo</IonLabel>
-                <IonInput /* value={text} onIonChange={e => setText(e.detail.value!)} */></IonInput>
+                <IonInput></IonInput>
               </IonItem>
 
               <IonItem>
-                <IonDatetime color="blue" /*value={date} onIonChange={e => setDate(e.detail.value!)}*/></IonDatetime>
+                <IonDatetime color="blue" ></IonDatetime>
               </IonItem>
 
             </IonList>
-          </IonContent>
+
+            </IonContent>
         </IonModal>
+
 
       </IonContent>
     </IonPage>
