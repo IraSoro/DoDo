@@ -12,9 +12,42 @@ import {
   IonList,
   IonLabel,
   IonInput,
-  IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent
+  IonCard, IonCardContent
 } from '@ionic/react';
 import './TabNotes.css';
+
+interface Props {
+  text: string;
+}
+
+function Card({text}: Props) {
+  return (
+    <IonCard>
+      <IonCardContent>
+        Keep close to Nature's heart... and break clear away, once in awhile,
+        and climb a mountain or spend a week in the woods. Wash your spirit clean.
+        {text}
+      </IonCardContent>
+    </IonCard>
+  );
+}
+
+function Cards() {
+  const textValues = ["Hello", "Ira", "World"];
+  const components = textValues.map((value) => {
+    return (
+      <IonItem key={value}>
+        <Card text={value} />
+      </IonItem>
+    );
+  })
+  return (
+    <IonList>
+      {components}
+    </IonList>
+  );
+
+}
 
 
 function TabNotes() {
@@ -61,19 +94,7 @@ function TabNotes() {
           </IonContent>
         </IonModal>
 
-        <IonCard>
-          <IonCardHeader>
-            <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
-            <IonCardTitle>Card Title</IonCardTitle>
-          </IonCardHeader>
-
-          <IonCardContent>
-            Keep close to Nature's heart... and break clear away, once in awhile,
-            and climb a mountain or spend a week in the woods. Wash your spirit clean.
-          </IonCardContent>
-        </IonCard>
-
-
+        <Cards />
 
       </IonContent>
     </IonPage>
