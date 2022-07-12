@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@capacitor/android": "3.6.0",
     "@capacitor/app": "1.1.1",
     "@capacitor/core": "3.6.0",
     "@capacitor/haptics": "1.1.4",
@@ -10,6 +11,7 @@
     "@capacitor/status-bar": "1.0.8",
     "@ionic/react": "^6.0.0",
     "@ionic/react-router": "^6.0.0",
+    "@ionic/storage": "^3.0.6",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.3",
@@ -65,7 +67,8 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "3.6.0"
+    "@capacitor/cli": "3.6.0",
+    "@ionic/lab": "3.2.13"
   },
   "description": "An Ionic project"
 }
