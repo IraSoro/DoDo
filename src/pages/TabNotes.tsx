@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   IonButtons,
   IonButton,
-  IonModal,
   IonHeader,
   IonContent,
   IonToolbar,
@@ -12,46 +11,99 @@ import {
   IonList,
   IonLabel,
   IonInput,
-  IonCard, IonCardContent
+  IonCard,
+  IonCardContent,
+  useIonModal,
 } from '@ionic/react';
 import './TabNotes.css';
 
-interface Props {
-  text: string;
-}
+import { OverlayEventDetail } from '@ionic/core/components';
 
-function Card({text}: Props) {
+const InputModal = ({
+  onDismiss,
+}: {
+  onDismiss: (data?: string | null | undefined | number, role?: string) => void;
+}) => {
+  const inputRef = useRef<HTMLIonInputElement>(null);
+
   return (
-    <IonCard>
-      <IonCardContent>
-        Keep close to Nature's heart... and break clear away, once in awhile,
-        and climb a mountain or spend a week in the woods. Wash your spirit clean.
-        {text}
-      </IonCardContent>
-    </IonCard>
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonButton color="medium" onClick={() => onDismiss(null, 'cancel')}>
+              Cancel
+            </IonButton>
+          </IonButtons>
+          <IonTitle>Adding</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        <IonItem>
+          <IonLabel position="stacked">Enter note</IonLabel>
+          <IonInput ref={inputRef} placeholder="Your note" />
+        </IonItem>
+      </IonContent>
+    </IonPage>
   );
-}
+};
 
-function Cards() {
-  const textValues = ["Hello", "Ira", "World"];
-  const components = textValues.map((value) => {
+
+function TabNodes() {
+  const [present, dismiss] = useIonModal(InputModal, {
+    onDismiss: (data: string, role: string) => dismiss(data, role),
+  });
+  const [textValues, setTextValues] = useState(["Hello1", "Ira1", "World1"]);
+
+  interface Props {
+    text: string;
+  }
+
+  function addNote(text: string) {
+    let temp: string[] = textValues;
+    temp.push(text);
+    setTextValues(temp);
+  }
+
+  function openModal() {
+    present({
+      onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
+        if (ev.detail.role === 'confirm') {
+          addNote(ev.detail.data);
+        }
+      },
+    });
+  }
+
+  function Card({ text }: Props) {
     return (
-      <IonItem key={value}>
-        <Card text={value} />
-      </IonItem>
+      <IonCard>
+        <IonCardContent>
+          Keep close to Nature's heart... and break clear away, once in awhile,
+          and climb a mountain or spend a week in the woods. Wash your spirit clean.
+          {text}
+        </IonCardContent>
+      </IonCard>
     );
-  })
-  return (
-    <IonList>
-      {components}
-    </IonList>
-  );
+  }
 
-}
-
-
-function TabNotes() {
-  const [isOpen, setIsOpen] = useState(false);
+  function Cards() {
+    const components = textValues.map((value, index) => {
+      return (
+        <IonItem key={index}>
+          <Card text={value + " " + index} />
+        </IonItem>
+      );
+    })
+    return (
+      <IonList>
+        {components}
+      </IonList>
+    );
+  }
 
   return (
     <IonPage>
@@ -60,45 +112,14 @@ function TabNotes() {
           <IonTitle>Notes</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-
-        <IonButton expand="block" onClick={() => setIsOpen(true)}>
+      <IonContent className="fullscreen">
+        <IonButton expand="block" onClick={() => openModal()}>
           Add
         </IonButton>
-        <IonModal isOpen={isOpen}>
-          <IonHeader>
-            <IonToolbar>
-
-              <IonButtons slot="end">
-                <IonButton onClick={() => setIsOpen(false)}>Confirm</IonButton>
-              </IonButtons>
-
-              <IonTitle>Adding</IonTitle>
-
-              <IonButtons slot="start">
-                <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
-              </IonButtons>
-
-            </IonToolbar>
-          </IonHeader>
-          <IonContent className="ion-padding">
-            <IonList>
-
-              <IonItem>
-                <IonLabel position="floating">Note</IonLabel>
-                <IonInput></IonInput>
-              </IonItem>
-
-            </IonList>
-
-          </IonContent>
-        </IonModal>
-
         <Cards />
-
       </IonContent>
     </IonPage>
   );
 }
 
-export default TabNotes;
+export default TabNodes;
