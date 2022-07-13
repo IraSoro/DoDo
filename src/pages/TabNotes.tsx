@@ -14,7 +14,10 @@ import {
   IonCard,
   IonCardContent,
   useIonModal,
+  IonIcon,
 } from '@ionic/react';
+
+import { create, close, add } from 'ionicons/icons';
 import './TabNotes.css';
 
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -81,6 +84,18 @@ function TabNodes() {
   function Card({ text }: Props) {
     return (
       <IonCard>
+        <IonToolbar color="tertiary">
+          <IonButtons slot="secondary">
+            <IonButton>
+              <IonIcon slot="icon-only" icon={create} />
+            </IonButton>
+            <IonButton>
+              <IonIcon slot="icon-only" icon={close} />
+            </IonButton>
+          </IonButtons>
+          <IonTitle>Note {text}</IonTitle>
+        </IonToolbar>
+
         <IonCardContent>
           Keep close to Nature's heart... and break clear away, once in awhile,
           and climb a mountain or spend a week in the woods. Wash your spirit clean.
@@ -109,13 +124,14 @@ function TabNodes() {
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButton slot="end" onClick={() => openModal()}>
+            <IonIcon slot="icon-only" icon={add} />
+          </IonButton>
           <IonTitle>Notes</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="fullscreen">
-        <IonButton expand="block" onClick={() => openModal()}>
-          Add
-        </IonButton>
+
         <Cards />
       </IonContent>
     </IonPage>
