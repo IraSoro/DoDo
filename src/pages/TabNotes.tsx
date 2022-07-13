@@ -158,7 +158,7 @@ function TabNodes() {
     const components = textValues.map((value, index) => {
       return (
         <IonItem key={index}>
-          <Card text={value + " " + index} idx={index} />
+          <Card text={value} idx={index} />
         </IonItem>
       );
     })
