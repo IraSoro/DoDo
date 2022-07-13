@@ -15,6 +15,7 @@ import {
   IonCardContent,
   useIonModal,
   IonIcon,
+  useIonAlert,
 } from '@ionic/react';
 
 import { create, close, add } from 'ionicons/icons';
@@ -59,10 +60,13 @@ function TabNodes() {
   const [present, dismiss] = useIonModal(InputModal, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
   });
+  const [presentAlert] = useIonAlert();
+  const [remoteCard, setRemoteCard] = useState(-1);
   const [textValues, setTextValues] = useState(["Hello1", "Ira1", "World1"]);
 
   interface Props {
     text: string;
+    idx: number;
   }
 
   function addNote(text: string) {
@@ -81,7 +85,14 @@ function TabNodes() {
     });
   }
 
-  function Card({ text }: Props) {
+  function deleteCard(idx: number) {
+    console.log("idx = ", idx);
+    let temp: string[] = textValues;
+    delete temp[idx];
+    setTextValues(temp);
+  }
+
+  function Card(props: Props) {
     return (
       <IonCard>
         <IonToolbar color="tertiary">
@@ -89,17 +100,34 @@ function TabNodes() {
             <IonButton>
               <IonIcon slot="icon-only" icon={create} />
             </IonButton>
-            <IonButton>
+            <IonButton onClick={() => presentAlert({
+              header: "Delete note " + (props.idx + 1) + "?",
+              buttons: [
+                {
+                  text: 'Cancel',
+                  role: 'cancel'
+                },
+                {
+                  text: 'OK',
+                  role: 'confirm',
+                }
+              ],
+              onDidDismiss: (e: CustomEvent) => {
+                if (e.detail.role === 'confirm') {
+                  deleteCard(props.idx);
+                  setRemoteCard(props.idx);
+                }
+              }
+            })}>
               <IonIcon slot="icon-only" icon={close} />
             </IonButton>
           </IonButtons>
-          <IonTitle>Note {text}</IonTitle>
+          <IonTitle>Note {props.idx + 1}</IonTitle>
         </IonToolbar>
-
         <IonCardContent>
           Keep close to Nature's heart... and break clear away, once in awhile,
           and climb a mountain or spend a week in the woods. Wash your spirit clean.
-          {text}
+          {props.text}
         </IonCardContent>
       </IonCard>
     );
@@ -109,7 +137,7 @@ function TabNodes() {
     const components = textValues.map((value, index) => {
       return (
         <IonItem key={index}>
-          <Card text={value + " " + index} />
+          <Card text={value + " " + index} idx={index} />
         </IonItem>
       );
     })
