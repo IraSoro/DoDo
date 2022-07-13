@@ -60,8 +60,10 @@ function TabNodes() {
   const [present, dismiss] = useIonModal(InputModal, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
   });
-  const [presentAlert] = useIonAlert();
+  const [presentAlertDelete] = useIonAlert();
+  const [presentAlertEdit] = useIonAlert();
   const [remoteCard, setRemoteCard] = useState(-1);
+  const [editedCard, setEditedCard] = useState(-1);
   const [textValues, setTextValues] = useState(["Hello1", "Ira1", "World1"]);
 
   interface Props {
@@ -86,9 +88,14 @@ function TabNodes() {
   }
 
   function deleteCard(idx: number) {
-    console.log("idx = ", idx);
     let temp: string[] = textValues;
     delete temp[idx];
+    setTextValues(temp);
+  }
+
+  function editCard(text: string, idx: number) {
+    let temp: string[] = textValues;
+    temp[idx] = text;
     setTextValues(temp);
   }
 
@@ -97,10 +104,24 @@ function TabNodes() {
       <IonCard>
         <IonToolbar color="tertiary">
           <IonButtons slot="secondary">
-            <IonButton>
+            <IonButton onClick={() => presentAlertEdit({
+              header: 'Note editing',
+              buttons: ['OK'],
+              inputs: [
+                {
+                  type: 'textarea',
+                  value: props.text,
+                }
+              ],
+              onDidDismiss: (e: CustomEvent) => {
+                var newText: string = e.detail.data.values[0];
+                editCard(newText, props.idx);
+                setEditedCard(props.idx);
+              }
+            })}>
               <IonIcon slot="icon-only" icon={create} />
             </IonButton>
-            <IonButton onClick={() => presentAlert({
+            <IonButton onClick={() => presentAlertDelete({
               header: "Delete note " + (props.idx + 1) + "?",
               buttons: [
                 {
