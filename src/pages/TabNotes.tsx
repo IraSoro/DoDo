@@ -55,118 +55,117 @@ const InputModal = ({
   );
 };
 
+interface Props {
+  text: string;
+  idx: number;
+  onEdit: (newText: string) => void;
+  onDelete: () => void;
+}
+
+interface PropsListCards {
+  listCards: string[];
+  setListCards: (newListCards: string[]) => void;
+}
+
+const Card = (props: Props) => {
+  const [presentAlertDelete] = useIonAlert();
+  const [presentAlertEdit] = useIonAlert();
+
+  return (
+    <IonCard>
+      <IonToolbar color="tertiary">
+        <IonButtons slot="secondary">
+          <IonButton onClick={() => presentAlertEdit({
+            header: 'Note editing',
+            buttons: ['OK'],
+            inputs: [
+              {
+                type: 'textarea',
+                value: props.text,
+              }
+            ],
+            onDidDismiss: (e: CustomEvent) => {
+              props.onEdit(e.detail.data.values[0]);
+            }
+          })}>
+            <IonIcon slot="icon-only" icon={create} />
+          </IonButton>
+          <IonButton onClick={() => presentAlertDelete({
+            header: "Delete note " + (props.idx + 1) + "?",
+            buttons: [
+              {
+                text: 'Cancel',
+                role: 'cancel'
+              },
+              {
+                text: 'OK',
+                role: 'confirm',
+              }
+            ],
+            onDidDismiss: (e: CustomEvent) => {
+              if (e.detail.role === 'confirm') {
+                props.onDelete();
+              }
+            }
+          })}>
+            <IonIcon slot="icon-only" icon={close} />
+          </IonButton>
+        </IonButtons>
+        <IonTitle>Note {props.idx + 1}</IonTitle>
+      </IonToolbar>
+      <IonCardContent>
+        Keep close to Nature's heart... and break clear away, once in awhile,
+        and climb a mountain or spend a week in the woods. Wash your spirit clean.
+        {props.text}
+      </IonCardContent>
+    </IonCard>
+  );
+}
+
+const ListCards = (props: PropsListCards) => {
+  const components = props.listCards.map((value, index) => {
+    return (
+      <IonItem key={index}>
+        <Card
+          text={value}
+          idx={index}
+          onEdit={(newText) => {
+            props.listCards[index] = newText;
+            props.setListCards([...props.listCards]);
+          }}
+          onDelete={() => {
+            props.listCards.splice(index, 1);
+            props.setListCards([...props.listCards])
+          }}
+        />
+      </IonItem>
+    );
+  })
+  return (
+    <IonList>
+      {components}
+    </IonList>
+  );
+}
+
 
 function TabNodes() {
+  const [textValues, setTextValues] = useState(["Hello1", "Ira1", "World1"]);
+
   const [present, dismiss] = useIonModal(InputModal, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
   });
-  const [presentAlertDelete] = useIonAlert();
-  const [presentAlertEdit] = useIonAlert();
-  const [remoteCard, setRemoteCard] = useState(-1);
-  const [editedCard, setEditedCard] = useState(-1);
-  const [textValues, setTextValues] = useState(["Hello1", "Ira1", "World1"]);
 
-  interface Props {
-    text: string;
-    idx: number;
-  }
-
-  function addNote(text: string) {
-    let temp: string[] = textValues;
-    temp.push(text);
-    setTextValues(temp);
-  }
 
   function openModal() {
     present({
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === 'confirm') {
-          addNote(ev.detail.data);
+          textValues.push(ev.detail.data);
+          setTextValues([...textValues]);
         }
       },
     });
-  }
-
-  function deleteCard(idx: number) {
-    let temp: string[] = textValues;
-    delete temp[idx];
-    setTextValues(temp);
-  }
-
-  function editCard(text: string, idx: number) {
-    let temp: string[] = textValues;
-    temp[idx] = text;
-    setTextValues(temp);
-  }
-
-  function Card(props: Props) {
-    return (
-      <IonCard>
-        <IonToolbar color="tertiary">
-          <IonButtons slot="secondary">
-            <IonButton onClick={() => presentAlertEdit({
-              header: 'Note editing',
-              buttons: ['OK'],
-              inputs: [
-                {
-                  type: 'textarea',
-                  value: props.text,
-                }
-              ],
-              onDidDismiss: (e: CustomEvent) => {
-                var newText: string = e.detail.data.values[0];
-                editCard(newText, props.idx);
-                setEditedCard(props.idx);
-              }
-            })}>
-              <IonIcon slot="icon-only" icon={create} />
-            </IonButton>
-            <IonButton onClick={() => presentAlertDelete({
-              header: "Delete note " + (props.idx + 1) + "?",
-              buttons: [
-                {
-                  text: 'Cancel',
-                  role: 'cancel'
-                },
-                {
-                  text: 'OK',
-                  role: 'confirm',
-                }
-              ],
-              onDidDismiss: (e: CustomEvent) => {
-                if (e.detail.role === 'confirm') {
-                  deleteCard(props.idx);
-                  setRemoteCard(props.idx);
-                }
-              }
-            })}>
-              <IonIcon slot="icon-only" icon={close} />
-            </IonButton>
-          </IonButtons>
-          <IonTitle>Note {props.idx + 1}</IonTitle>
-        </IonToolbar>
-        <IonCardContent>
-          Keep close to Nature's heart... and break clear away, once in awhile,
-          and climb a mountain or spend a week in the woods. Wash your spirit clean.
-          {props.text}
-        </IonCardContent>
-      </IonCard>
-    );
-  }
-
-  function Cards() {
-    const components = textValues.map((value, index) => {
-      return (
-        <IonItem key={index}>
-          <Card text={value} idx={index} />
-        </IonItem>
-      );
-    })
-    return (
-      <IonList>
-        {components}
-      </IonList>
-    );
   }
 
   return (
@@ -180,8 +179,7 @@ function TabNodes() {
         </IonToolbar>
       </IonHeader>
       <IonContent className="fullscreen">
-
-        <Cards />
+        <ListCards listCards={textValues} setListCards={setTextValues} />
       </IonContent>
     </IonPage>
   );
