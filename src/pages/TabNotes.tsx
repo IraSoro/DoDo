@@ -34,15 +34,11 @@ const InputModal = ({
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton color="medium" onClick={() => onDismiss(null, 'cancel')}>
-              Cancel
-            </IonButton>
-          </IonButtons>
+          <IonButton slot="start" fill="clear" onClick={() => onDismiss(null, 'cancel')}>
+            Cancel
+          </IonButton>
           <IonTitle>Adding</IonTitle>
-          <IonButtons slot="end">
-            <IonButton onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
-          </IonButtons>
+          <IonButton slot="end" fill="clear" onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
@@ -172,7 +168,7 @@ function TabNodes() {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButton slot="end" onClick={() => openModal()}>
+          <IonButton slot="end" fill="clear" color="dark" onClick={() => openModal()}>
             <IonIcon slot="icon-only" icon={add} />
           </IonButton>
           <IonTitle>Notes</IonTitle>
