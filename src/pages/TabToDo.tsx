@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import {
-  IonButtons,
   IonButton,
-  IonModal,
   IonHeader,
   IonContent,
   IonToolbar,
@@ -11,14 +9,12 @@ import {
   IonItem,
   IonList,
   IonLabel,
-  IonInput,
-  IonDatetime,
   IonIcon,
   useIonAlert,
   IonReorder,
-  IonSelect, IonSelectOption,
+  useIonActionSheet,
 } from '@ionic/react';
-import { create, close, add, trash } from 'ionicons/icons';
+import { create, close, add, trash, ellipsisHorizontal } from 'ionicons/icons';
 
 import './TabToDo.css';
 
@@ -67,8 +63,10 @@ const AddButton = (props: PropsListToDo) => {
 }
 
 const ToDoList = (props: PropsListToDo) => {
-  const [presentAlertEdit] = useIonAlert();
+  const [present] = useIonActionSheet();
+
   const [presentAlertDelete] = useIonAlert();
+  const [presentAlertEdit] = useIonAlert();
 
   const toDoList = props.listToDo.map((value, index) => {
     return (
@@ -77,94 +75,63 @@ const ToDoList = (props: PropsListToDo) => {
         <IonLabel>
           {value}
         </IonLabel>
-        <IonSelect
-          interface="popover"
-          value=" "
-          onIonChange={(e) => {
-            if (e.detail.value === "edit") {
-              presentAlertEdit({
-                header: 'Task editing',
-                buttons: ['OK'],
-                inputs: [
-                  {
-                    type: 'textarea',
-                    value: value,
-                  }
-                ],
-                onDidDismiss: (e: CustomEvent) => {
-                  props.listToDo[index] = e.detail.data.values[0];
-                  props.setListToDo([...props.listToDo]);
-                }
-              })
-            }
-            if (e.detail.value === "delete") {
-              presentAlertDelete({
-                header: "Delete task?",
-                buttons: [
-                  {
-                    text: 'Cancel',
-                    role: 'cancel'
-                  },
-                  {
-                    text: 'OK',
-                    role: 'confirm',
-                  }
-                ],
-                onDidDismiss: (e: CustomEvent) => {
-                  if (e.detail.role === 'confirm') {
-                    props.listToDo.splice(index, 1);
-                    props.setListToDo([...props.listToDo]);
-                  }
-                }
-              })
-            }
-          }}>
-          <IonSelectOption value="edit">Edit</IonSelectOption>
-          <IonSelectOption value="delete">Delete</IonSelectOption>
-        </IonSelect>
-        {/* <IonButton
-          color="light"
-          size="small"          
-          onClick={() => presentAlertEdit({
-            header: 'Task editing',
-            buttons: ['OK'],
-            inputs: [
-              {
-                type: 'textarea',
-                value: value,
-              }
-            ],
-            onDidDismiss: (e: CustomEvent) => {
-              props.listToDo[index] = e.detail.data.values[0];
-              props.setListToDo([...props.listToDo]);
-            }
-          })}>
-          <IonIcon slot="icon-only" icon={create} />
-        </IonButton>
         <IonButton
+          expand="block"
+          onClick={() =>
+            present({
+              buttons: [
+                {
+                  text: 'Delete',
+                  icon: trash,
+                  handler: () => presentAlertDelete({
+                    header: "Delete task?",
+                    buttons: [
+                      {
+                        text: 'Cancel',
+                      },
+                      {
+                        text: 'OK',
+                        handler: () => {
+                          props.listToDo.splice(index, 1);
+                          props.setListToDo([...props.listToDo]);
+                        }
+                      }
+                    ],
+                  })
+                },
+                {
+                  text: 'Edit',
+                  icon: create,
+                  handler: () => presentAlertEdit({
+                    header: 'Task editing',
+                    buttons: ['OK'],
+                    inputs: [
+                      {
+                        type: 'textarea',
+                        value: value,
+                      }
+                    ],
+                    onDidDismiss: (e: CustomEvent) => {
+                      props.listToDo[index] = e.detail.data.values[0];
+                      props.setListToDo([...props.listToDo]);
+                    }
+                  })
+                },
+                {
+                  text: 'Cancel',
+                  icon: close,
+                }
+              ],
+            })
+          }
+          
           color="light"
-          size="small"
-          onClick={() => presentAlertDelete({
-            header: "Delete task?",
-            buttons: [
-              {
-                text: 'Cancel',
-                role: 'cancel'
-              },
-              {
-                text: 'OK',
-                role: 'confirm',
-              }
-            ],
-            onDidDismiss: (e: CustomEvent) => {
-              if (e.detail.role === 'confirm') {
-                props.listToDo.splice(index, 1);
-                props.setListToDo([...props.listToDo]);
-              }
-            }
-          })}>
-          <IonIcon slot="icon-only" icon={trash} />
-        </IonButton> */}
+        >
+          <IonIcon 
+          slot="icon-only" 
+          icon={ellipsisHorizontal}
+          />
+        </IonButton>
       </IonItem>
     );
   })
