@@ -19,11 +19,14 @@ import { create, close, add, trash, ellipsisHorizontalSharp } from 'ionicons/ico
 
 import './TabToDo.css';
 
+interface ToDoObject {
+  name: string,
+  isDone: boolean
+};
+
 interface PropsListToDo {
-  listToDo: string[];
-  setListToDo: (newListCards: string[]) => void;
-  listOnChange: boolean[];
-  setOnChange: (newOnChange: boolean[]) => void;
+  listToDo: ToDoObject[];
+  setListToDo: (newListToDo: ToDoObject[]) => void;
 }
 
 const AddButton = (props: PropsListToDo) => {
@@ -54,10 +57,11 @@ const AddButton = (props: PropsListToDo) => {
         ],
         onDidDismiss: (e: CustomEvent) => {
           if (e.detail.role === 'confirm') {
-            props.listToDo.push(e.detail.data.values[0]);
+            props.listToDo.push({
+              name: e.detail.data.values[0],
+              isDone: false
+            });
             props.setListToDo([...props.listToDo]);
-            props.listOnChange.push(false);
-            props.setOnChange([...props.listOnChange]);
           }
         }
       })}>
@@ -77,18 +81,20 @@ const ToDoList = (props: PropsListToDo) => {
   ]);
 
   const toDoList = props.listToDo.map((value, index) => {
+    const lineTrough = textDecorationLines.get(value.isDone);
+
     return (
       <IonItem key={index} >
         <IonReorder slot="start" />
-        <IonLabel style={{ textDecorationLine: textDecorationLines.get(props.listOnChange[index]) }} >
-          {value}
+        <IonLabel style={{ textDecorationLine: lineTrough }} >
+          {value.name}
         </IonLabel>
         <IonCheckbox
           slot="start"
-          checked={props.listOnChange[index]}
+          checked={value.isDone}
           onIonChange={(e: CustomEvent) => {
-            props.listOnChange[index] = e.detail.checked;
-            props.setOnChange([...props.listOnChange]);
+            props.listToDo[index].isDone = e.detail.checked;
+            props.setListToDo([...props.listToDo]);
           }} />
         <IonButton
           fill="clear"
@@ -112,8 +118,6 @@ const ToDoList = (props: PropsListToDo) => {
                         handler: () => {
                           props.listToDo.splice(index, 1);
                           props.setListToDo([...props.listToDo]);
-                          props.listOnChange.splice(index, 1);
-                          props.setOnChange([...props.listOnChange]);
                         }
                       }
                     ],
@@ -128,11 +132,11 @@ const ToDoList = (props: PropsListToDo) => {
                     inputs: [
                       {
                         type: 'textarea',
-                        value: value,
+                        value: value.name,
                       }
                     ],
                     onDidDismiss: (e: CustomEvent) => {
-                      props.listToDo[index] = e.detail.data.values[0];
+                      props.listToDo[index].name = e.detail.data.values[0];
                       props.setListToDo([...props.listToDo]);
                     }
                   })
@@ -163,16 +167,19 @@ const ToDoList = (props: PropsListToDo) => {
 
 function TabToDo() {
   const [listToDo, setListToDo] = useState([
-    "Task1",
-    "Task2",
-    "Task3",
+    {
+      name: "Task1",
+      isDone: false
+    },
+    {
+      name: "Task2",
+      isDone: true
+    },
+    {
+      name: "Task3",
+      isDone: true
+    }
   ]);
-  const [onChange, setOnChange] = useState([
-    false,
-    true,
-    true,
-  ]);
-  // console.log("listToDo = ", listToDo);
 
   return (
     <IonPage>
@@ -181,8 +188,6 @@ function TabToDo() {
           <AddButton
             listToDo={listToDo}
             setListToDo={setListToDo}
-            listOnChange={onChange}
-            setOnChange={setOnChange}
           />
           <IonTitle>ToDo</IonTitle>
         </IonToolbar>
@@ -191,8 +196,6 @@ function TabToDo() {
         <ToDoList
           listToDo={listToDo}
           setListToDo={setListToDo}
-          listOnChange={onChange}
-          setOnChange={setOnChange}
         />
       </IonContent>
     </IonPage>
