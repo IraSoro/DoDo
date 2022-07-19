@@ -21,7 +21,9 @@ import './TabToDo.css';
 
 interface ToDoObject {
   name: string,
-  isDone: boolean
+  isDone: boolean,
+  date: string,
+  time: string
 };
 
 interface PropsListToDo {
@@ -53,18 +55,27 @@ const AddButton = (props: PropsListToDo) => {
           {
             type: 'textarea',
             placeholder: 'Task'
+          },
+          {
+            type: 'date',
+          },
+          {
+            type: 'time',
           }
         ],
         onDidDismiss: (e: CustomEvent) => {
-          if (e.detail.role === 'confirm') {
+          if (e.detail.role === 'confirm' && e.detail.data.values[0]) {
             props.listToDo.push({
               name: e.detail.data.values[0],
-              isDone: false
+              isDone: false,
+              date: e.detail.data.values[1],
+              time: e.detail.data.values[2]
             });
             props.setListToDo([...props.listToDo]);
           }
         }
       })}>
+      
       <IonIcon slot="icon-only" icon={add} />
     </IonButton>
   )
@@ -169,15 +180,21 @@ function TabToDo() {
   const [listToDo, setListToDo] = useState([
     {
       name: "Task1",
-      isDone: false
+      isDone: false,
+      date: "2022-12-12",
+      time: "20:22"
     },
     {
       name: "Task2",
-      isDone: true
+      isDone: true,
+      date: "",
+      time: ""
     },
     {
       name: "Task3",
-      isDone: true
+      isDone: true,      
+      date: "2022-12-12",
+      time: "20:22"
     }
   ]);
 
