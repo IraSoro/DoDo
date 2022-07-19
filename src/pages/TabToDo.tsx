@@ -13,7 +13,7 @@ import {
   useIonAlert,
   IonReorder,
   useIonActionSheet,
-  IonCheckbox,
+  IonCheckbox
 } from '@ionic/react';
 import { create, close, add, trash, ellipsisHorizontalSharp } from 'ionicons/icons';
 
@@ -75,7 +75,6 @@ const AddButton = (props: PropsListToDo) => {
           }
         }
       })}>
-      
       <IonIcon slot="icon-only" icon={add} />
     </IonButton>
   )
@@ -93,12 +92,18 @@ const ToDoList = (props: PropsListToDo) => {
 
   const toDoList = props.listToDo.map((value, index) => {
     const lineTrough = textDecorationLines.get(value.isDone);
+    const dateTime = () => {
+      if (!value.date || !value.time)
+        return value.date+value.time;
+      return value.time + ", " + value.date;
+    }
 
     return (
       <IonItem key={index} >
         <IonReorder slot="start" />
-        <IonLabel style={{ textDecorationLine: lineTrough }} >
-          {value.name}
+        <IonLabel>
+          <h2 style={{ textDecorationLine: lineTrough }}>{value.name}</h2>
+          <p>{dateTime()}</p>
         </IonLabel>
         <IonCheckbox
           slot="start"
@@ -192,7 +197,7 @@ function TabToDo() {
     },
     {
       name: "Task3",
-      isDone: true,      
+      isDone: true,
       date: "2022-12-12",
       time: "20:22"
     }
