@@ -18,7 +18,7 @@ import {
   useIonAlert,
   IonModal,
   IonCheckbox,
-  IonReorder,
+  IonReorder, IonAvatar, IonImg, useIonActionSheet
 } from '@ionic/react';
 
 import { create, close, add } from 'ionicons/icons';
@@ -50,7 +50,7 @@ const ListElements = (props: PropsList) => {
 
       return (
         <IonItem key={j} >
-          <IonLabel>{valueEl.name}</IonLabel>          
+          <IonLabel>{valueEl.name}</IonLabel>
           <IonCheckbox
             slot="start"
             checked={valueEl.isDone}
@@ -67,43 +67,43 @@ const ListElements = (props: PropsList) => {
         <IonToolbar color="tertiary">
           <IonTitle>{value.title}</IonTitle>
           <IonButtons slot="secondary">
-          <IonButton onClick={() => presentAlertEdit({
-            header: 'Editing',
-            buttons: ['OK'],
-            inputs: [
-              {
-                type: 'textarea',
-                // value: props.text,
+            <IonButton onClick={() => presentAlertEdit({
+              header: 'Editing',
+              buttons: ['OK'],
+              inputs: [
+                {
+                  type: 'textarea',
+                  // value: props.text,
+                }
+              ],
+              onDidDismiss: (e: CustomEvent) => {
+                // props.onEdit(e.detail.data.values[0]);
               }
-            ],
-            onDidDismiss: (e: CustomEvent) => {
-              // props.onEdit(e.detail.data.values[0]);
-            }
-          })}>
-            <IonIcon slot="icon-only" icon={create} />
-          </IonButton>
-          <IonButton onClick={() => presentAlertDelete({
-            header: "Delete " + value.title + " ?",
-            buttons: [
-              {
-                text: 'Cancel',
-                role: 'cancel'
-              },
-              {
-                text: 'OK',
-                role: 'confirm',
+            })}>
+              <IonIcon slot="icon-only" icon={create} />
+            </IonButton>
+            <IonButton onClick={() => presentAlertDelete({
+              header: "Delete " + value.title + " ?",
+              buttons: [
+                {
+                  text: 'Cancel',
+                  role: 'cancel'
+                },
+                {
+                  text: 'OK',
+                  role: 'confirm',
+                }
+              ],
+              onDidDismiss: (e: CustomEvent) => {
+                if (e.detail.role === 'confirm') {
+                  props.listElem.splice(i, 1);
+                  props.setList([...props.listElem])
+                }
               }
-            ],
-            onDidDismiss: (e: CustomEvent) => {
-              if (e.detail.role === 'confirm') {
-                props.listElem.splice(i, 1);
-                props.setList([...props.listElem])
-              }
-            }
-          })}>
-            <IonIcon slot="icon-only" icon={close} />
-          </IonButton>
-        </IonButtons>
+            })}>
+              <IonIcon slot="icon-only" icon={close} />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
         {Elem}
       </IonCard>
@@ -114,6 +114,91 @@ const ListElements = (props: PropsList) => {
     <>{listElem}</>
   )
 }
+
+
+
+
+const AddingModal = (props: PropsList) => {
+  const modal = useRef<HTMLIonModalElement>(null);
+  const page = useRef(null);
+
+  const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
+  const inputRef = useRef<HTMLIonInputElement>(null);
+
+  useEffect(() => {
+    setPresentingElement(page.current);
+  }, []);
+
+  function dismiss() {
+    modal.current?.dismiss();
+  }
+
+  const [presentAlert] = useIonAlert();
+
+  const [newList, setNewList] = useState<ListObject>(
+    {
+      title: "",
+      elements: []
+    }
+  );
+
+  return (
+    <IonModal ref={modal} trigger="add-modal" presentingElement={presentingElement!}>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonButton onClick={() => dismiss()}>Close</IonButton>
+          </IonButtons>
+          <IonButtons slot="end">
+            <IonButton>Config</IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+
+        <IonLabel position="stacked"></IonLabel>
+        <IonInput ref={inputRef} placeholder="Title list" />
+
+        <IonButton onClick={() => presentAlert({
+          header: 'Adding element',
+          inputs: [
+            {
+              placeholder: 'Name'
+            },
+            {
+              type: 'number',
+              placeholder: 'Count',
+              min: 1,
+              max: 10000
+            },
+          ],
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel'
+            },
+            {
+              text: 'OK',
+              role: 'confirm',
+            },
+          ],
+          onDidDismiss: (e: CustomEvent) => {
+            if (e.detail.role === 'confirm') {
+              newList.elements.push({name: e.detail.data.values[0], isDone: false});
+              setNewList(newList);
+              console.log("list = ", newList);
+              // console.log("1 = ", e.detail.data.values[0]);
+              // console.log("2 = ", e.detail.data.values[1]);
+            }
+          }
+          
+        })}>Add element</IonButton>
+
+      </IonContent>
+    </IonModal>
+  );
+}
+
 
 function TabPurchases() {
   const [lists, setList] = useState([
@@ -154,64 +239,34 @@ function TabPurchases() {
 
   ]);
 
-  // const modal = useRef<HTMLIonModalElement>(null);
-  // const inputRef = useRef<HTMLIonInputElement>(null);
-  // const page = useRef(undefined);
 
-  // const [canDismiss, setCanDismiss] = useState(false);
-  // const [presentingElement, setPresentingElement] = useState<HTMLElement | undefined>(undefined);
 
-  // useEffect(() => {
-  //   setPresentingElement(page.current);
-  // }, []);
-
-  // function dismiss() {
-  //   modal.current?.dismiss();
-  // }
 
   return (
-    <IonPage /*ref={page}*/>
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonTitle>Lists</IonTitle>
+
+          <IonButton
+            id="add-modal"
+            slot="end"
+            fill="clear"
+            color="dark">
+            <IonIcon slot="icon-only" icon={add} />
+          </IonButton>
+          <AddingModal
+            listElem={lists}
+            setList={setList}
+          />
+
         </IonToolbar>
       </IonHeader>
-      <IonContent /*className="ion-padding"*/>
-        {/* <IonButton id="open-modal" expand="block">
-          Add
-        </IonButton> */}
+      <IonContent>
         <ListElements
           listElem={lists}
           setList={setList}
         />
-        {/* <IonModal ref={modal} trigger="open-modal" canDismiss={canDismiss} presentingElement={presentingElement}>
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>New list</IonTitle>
-              <IonButtons slot="end">
-                <IonButton onClick={() => dismiss()}>Close</IonButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent>
-            /* <p className="ion-padding-horizontal"></p> */
-            /* <IonItem>
-              <IonInput ref={inputRef} placeholder="Title list" />
-            </IonItem>
-            <IonItem>
-              <IonLabel className="ion-text-wrap" {...{ for: 'terms' }}>
-                Do you accept the terms and conditions?
-              </IonLabel>
-              <IonCheckbox
-                id="terms"
-                checked={canDismiss}
-                onIonChange={(ev) => {
-                  setCanDismiss(ev.detail.checked);
-                }}
-              ></IonCheckbox>
-            </IonItem> 
-          </IonContent>
-        </IonModal> */}
       </IonContent>
     </IonPage>
   );
