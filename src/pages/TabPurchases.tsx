@@ -15,10 +15,11 @@ import {
   useIonAlert,
   IonModal,
   IonCheckbox,
-  IonReorder, 
+  IonReorder,
+  useIonActionSheet
 } from '@ionic/react';
 
-import { create, close, add } from 'ionicons/icons';
+import { create, close, add, ellipsisVerticalSharp, trash } from 'ionicons/icons';
 import './TabPurchases.css';
 
 interface ElementObject {
@@ -38,16 +39,24 @@ interface PropsList {
 }
 
 const ListElements = (props: PropsList) => {
+  const [present] = useIonActionSheet();
   const [presentAlertDelete] = useIonAlert();
   const [presentAlertEdit] = useIonAlert();
+  const [presentAlertAddItem] = useIonAlert();
+
+  const textDecorationLines = new Map<boolean, string>([
+    [false, "none"],
+    [true, "line-through"]
+  ]);
 
   const listElem = props.listElem.map((value, i) => {
     const Elem = value.elements.map((valueEl, j) => {
+      const lineTrough = textDecorationLines.get(valueEl.isDone);
 
       return (
-        <IonItem key={j} >
+        <IonItem key={j + i} >
           <IonLabel>
-            <h2>{valueEl.name}</h2>
+            <h2 style={{ textDecorationLine: lineTrough }}>{valueEl.name}</h2>
             <p>count: {valueEl.count}</p>
           </IonLabel>
           <IonCheckbox
@@ -66,41 +75,102 @@ const ListElements = (props: PropsList) => {
         <IonToolbar color="tertiary">
           <IonTitle>{value.title}</IonTitle>
           <IonButtons slot="secondary">
-            <IonButton onClick={() => presentAlertEdit({
-              header: 'Editing',
-              buttons: ['OK'],
-              inputs: [
-                {
-                  type: 'textarea',
-                  // value: props.text,
-                }
-              ],
-              onDidDismiss: (e: CustomEvent) => {
-                // props.onEdit(e.detail.data.values[0]);
+            <IonButton
+              fill="clear"
+              color="light"
+              disabled={false}
+              expand="block"
+              onClick={() =>
+                present({
+                  buttons: [
+                    {
+                      text: 'Delete',
+                      icon: trash,
+                      handler: () => presentAlertDelete({
+                        header: "Delete list?",
+                        buttons: [
+                          {
+                            text: 'Cancel',
+                          },
+                          {
+                            text: 'OK',
+                            handler: () => {
+                              props.listElem.splice(i, 1);
+                              props.setList([...props.listElem])
+                            }
+                          }
+                        ],
+                      })
+                    },
+                    {
+                      text: 'Edit title',
+                      icon: create,
+                      handler: () => presentAlertEdit({
+                        header: 'Title change',
+                        buttons: ['OK'],
+                        inputs: [
+                          {
+                            type: 'textarea',
+                            value: value.title,
+                          }
+                        ],
+                        onDidDismiss: (e: CustomEvent) => {
+                          props.listElem[i].title = e.detail.data.values[0];
+                          props.setList([...props.listElem]);
+                        }
+                      })
+                    },
+                    {
+                      text: 'Add list item',
+                      icon: add,
+                      handler: () => presentAlertAddItem({
+                        header: 'Title change',
+                        inputs: [
+                          {
+                            placeholder: 'Name'
+                          },
+                          {
+                            type: 'number',
+                            placeholder: 'Count',
+                            min: 1,
+                            max: 10000
+                          },
+                        ],
+                        buttons: [
+                          {
+                            text: 'Cancel',
+                            role: 'cancel'
+                          },
+                          {
+                            text: 'OK',
+                            role: 'confirm',
+                          },
+                        ],
+                        onDidDismiss: (e: CustomEvent) => {
+                          if (e.detail.role === 'confirm') {
+                            props.listElem[i].elements.push(
+                              {
+                                name: e.detail.data.values[0],
+                                isDone: false,
+                                count: e.detail.data.values[1]
+                              });
+                            props.setList([...props.listElem]);
+                          }
+                        }
+                      })
+                    },
+                    {
+                      text: 'Cancel',
+                      icon: close,
+                    }
+                  ],
+                })
               }
-            })}>
-              <IonIcon slot="icon-only" icon={create} />
-            </IonButton>
-            <IonButton onClick={() => presentAlertDelete({
-              header: "Delete " + value.title + " ?",
-              buttons: [
-                {
-                  text: 'Cancel',
-                  role: 'cancel'
-                },
-                {
-                  text: 'OK',
-                  role: 'confirm',
-                }
-              ],
-              onDidDismiss: (e: CustomEvent) => {
-                if (e.detail.role === 'confirm') {
-                  props.listElem.splice(i, 1);
-                  props.setList([...props.listElem])
-                }
-              }
-            })}>
-              <IonIcon slot="icon-only" icon={close} />
+            >
+              <IonIcon
+                slot="icon-only"
+                icon={ellipsisVerticalSharp}
+              />
             </IonButton>
           </IonButtons>
         </IonToolbar>
@@ -159,17 +229,17 @@ const AddingModal = (props: PropsList) => {
             <IonButton onClick={() => dismiss()}>Close</IonButton>
           </IonButtons>
           <IonButtons slot="end">
-            <IonButton onClick={ () => {
-                newList.title = String(inputRef.current?.value);
-                props.listElem.push(newList);
-                props.setList([...props.listElem]);
-                //TODO:do a normal cleanup of the object
-                setNewList({
-                  title: "",
-                  elements: []
-                });
-                dismiss();
-              }
+            <IonButton onClick={() => {
+              newList.title = String(inputRef.current?.value);
+              props.listElem.push(newList);
+              props.setList([...props.listElem]);
+              //TODO:do a normal cleanup of the object
+              setNewList({
+                title: "",
+                elements: []
+              });
+              dismiss();
+            }
             }>
               Confirm</IonButton>
           </IonButtons>
@@ -225,18 +295,18 @@ function TabPurchases() {
       title: "Shop",
       elements: [
         {
-          name: "ELEM 1",
+          name: "ITEM 1",
           isDone: true,
           count: 5,
         },
         {
-          name: "Elem 2",
+          name: "Item 2",
           isDone: false,
           count: 5678,
         },
         {
-          name: "Elem 3",
-          isDone: true,
+          name: "ITEEEM 3",
+          isDone: false,
           count: 8788,
         }
       ]
@@ -245,17 +315,17 @@ function TabPurchases() {
       title: "Shop2",
       elements: [
         {
-          name: "ELEM 1",
+          name: "ITEM 1",
           isDone: true,
           count: 234,
         },
         {
-          name: "Elem 2",
+          name: "Item 2",
           isDone: false,
           count: 34,
         },
         {
-          name: "Elem 3",
+          name: "Item 3",
           isDone: true,
           count: 345432,
         }
