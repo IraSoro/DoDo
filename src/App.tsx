@@ -10,8 +10,8 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
-import TabPurchases from './pages/TabPurchases';
+import {list, book, bagCheck } from 'ionicons/icons';
+import TabLists from './pages/TabLists';
 import TabToDo from './pages/TabToDo';
 import TabNotes from './pages/TabNotes';
 
@@ -41,8 +41,8 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route exact path="/tabPurchases">
-            <TabPurchases />
+          <Route exact path="/tabLists">
+            <TabLists />
           </Route>
 
           <Route exact path="/tabToDo">
@@ -58,16 +58,16 @@ const App: React.FC = () => (
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
-          <IonTabButton tab="tabPurchases" href="/tabPurchases">
-            <IonIcon icon={triangle} />
-            <IonLabel>Purchases</IonLabel>
+          <IonTabButton tab="tabLists" href="/tabLists">
+            <IonIcon icon={bagCheck} />
+            <IonLabel>Lists</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tabToDo" href="/tabToDo">
-            <IonIcon icon={ellipse} />
+            <IonIcon icon={list} />
             <IonLabel>ToDo</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tabNotes" href="/tabNotes">
-            <IonIcon icon={square} />
+            <IonIcon icon={book} />
             <IonLabel>Notes</IonLabel>
           </IonTabButton>
         </IonTabBar>

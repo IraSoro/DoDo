@@ -20,7 +20,7 @@ import {
 } from '@ionic/react';
 
 import { create, close, add, ellipsisVerticalSharp, trash } from 'ionicons/icons';
-import './TabPurchases.css';
+import './TabLists.css';
 
 interface ElementObject {
   name: string;
@@ -289,7 +289,7 @@ const AddingModal = (props: PropsList) => {
 }
 
 
-function TabPurchases() {
+function TabLists() {
   const [lists, setList] = useState([
     {
       title: "Shop",
@@ -367,4 +367,4 @@ function TabPurchases() {
   );
 }
 
-export default TabPurchases;
+export default TabLists;

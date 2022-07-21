@@ -19,9 +19,10 @@ import {
 } from '@ionic/react';
 
 import { create, close, add } from 'ionicons/icons';
+import { OverlayEventDetail } from '@ionic/core/components';
+
 import './TabNotes.css';
 
-import { OverlayEventDetail } from '@ionic/core/components';
 
 const InputModal = ({
   onDismiss,
@@ -37,7 +38,6 @@ const InputModal = ({
           <IonButton slot="start" fill="clear" onClick={() => onDismiss(null, 'cancel')}>
             Cancel
           </IonButton>
-          <IonTitle>Adding</IonTitle>
           <IonButton slot="end" fill="clear" onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
         </IonToolbar>
       </IonHeader>
