@@ -9,14 +9,14 @@ import {
   IonPage,
   IonItem,
   IonLabel,
-  IonInput,
   IonCard,
   IonIcon,
   useIonAlert,
   IonModal,
   IonCheckbox,
   IonReorder,
-  useIonActionSheet
+  useIonActionSheet,
+  IonTextarea
 } from '@ionic/react';
 
 import { create, close, add, ellipsisVerticalSharp, trash } from 'ionicons/icons';
@@ -190,7 +190,7 @@ const AddingModal = (props: PropsList) => {
   const page = useRef(null);
 
   const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
-  const inputRef = useRef<HTMLIonInputElement>(null);
+  const inputRef = useRef<HTMLIonTextareaElement>(null);
 
   useEffect(() => {
     setPresentingElement(page.current);
@@ -247,42 +247,49 @@ const AddingModal = (props: PropsList) => {
       </IonHeader>
       <IonContent className="ion-padding">
 
-        <IonLabel position="stacked"></IonLabel>
-        <IonInput ref={inputRef} placeholder="Title list" />
+        {/* <IonInput ref={inputRef} placeholder="Title list" /> */}
+        <IonItem color="light">
+          <IonTextarea ref={inputRef} cols={20} rows={1} placeholder="Your note" ></IonTextarea>
+        </IonItem>
 
-        <IonButton onClick={() => presentAlert({
-          header: 'Adding element',
-          inputs: [
-            {
-              placeholder: 'Name'
-            },
-            {
-              type: 'number',
-              placeholder: 'Count',
-              min: 1,
-              max: 10000
-            },
-          ],
-          buttons: [
-            {
-              text: 'Cancel',
-              role: 'cancel'
-            },
-            {
-              text: 'OK',
-              role: 'confirm',
-            },
-          ],
-          onDidDismiss: (e: CustomEvent) => {
-            if (e.detail.role === 'confirm') {
-              newList.elements.push({ name: e.detail.data.values[0], isDone: false, count: e.detail.data.values[1] });
-              //TODO:change clone object
-              setNewList(Object.assign(Object.create(newList), newList));
+        <IonCard>
+          <IonButton 
+          expand="block" 
+          fill="outline"
+          onClick={() => presentAlert({
+            header: 'Adding element',
+            inputs: [
+              {
+                placeholder: 'Name'
+              },
+              {
+                type: 'number',
+                placeholder: 'Count',
+                min: 1,
+                max: 10000
+              },
+            ],
+            buttons: [
+              {
+                text: 'Cancel',
+                role: 'cancel'
+              },
+              {
+                text: 'OK',
+                role: 'confirm',
+              },
+            ],
+            onDidDismiss: (e: CustomEvent) => {
+              if (e.detail.role === 'confirm') {
+                newList.elements.push({ name: e.detail.data.values[0], isDone: false, count: e.detail.data.values[1] });
+                //TODO:change clone object
+                setNewList(Object.assign(Object.create(newList), newList));
+              }
             }
-          }
 
-        })}>Add element</IonButton>
-        {Elements}
+          })}>Add element</IonButton>
+          {Elements}
+        </IonCard>
       </IonContent>
     </IonModal>
   );
