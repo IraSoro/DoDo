@@ -78,6 +78,7 @@ const Card = (props: Props) => {
               {
                 type: 'textarea',
                 value: props.text,
+                attributes: { "rows": 25},
                 
               }
             ],
