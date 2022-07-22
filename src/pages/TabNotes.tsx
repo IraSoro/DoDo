@@ -9,13 +9,12 @@ import {
   IonPage,
   IonItem,
   IonList,
-  IonLabel,
-  IonInput,
   IonCard,
   IonCardContent,
   useIonModal,
   IonIcon,
   useIonAlert,
+  IonTextarea
 } from '@ionic/react';
 
 import { create, close, add } from 'ionicons/icons';
@@ -29,7 +28,7 @@ const InputModal = ({
 }: {
   onDismiss: (data?: string | null | undefined | number, role?: string) => void;
 }) => {
-  const inputRef = useRef<HTMLIonInputElement>(null);
+  const inputRef = useRef<HTMLIonTextareaElement>(null);
 
   return (
     <IonPage>
@@ -42,10 +41,11 @@ const InputModal = ({
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <IonItem>
-          <IonLabel position="stacked">Enter note</IonLabel>
-          <IonInput ref={inputRef} placeholder="Your note" />
+      <IonCard>
+        <IonItem color="light">
+          <IonTextarea ref={inputRef} cols={20} rows={29} placeholder="Your note" ></IonTextarea>
         </IonItem>
+      </IonCard>
       </IonContent>
     </IonPage>
   );
@@ -78,6 +78,7 @@ const Card = (props: Props) => {
               {
                 type: 'textarea',
                 value: props.text,
+                
               }
             ],
             onDidDismiss: (e: CustomEvent) => {
@@ -109,11 +110,7 @@ const Card = (props: Props) => {
         </IonButtons>
         <IonTitle>Note {props.idx + 1}</IonTitle>
       </IonToolbar>
-      <IonCardContent>
-        Keep close to Nature's heart... and break clear away, once in awhile,
-        and climb a mountain or spend a week in the woods. Wash your spirit clean.
-        {props.text}
-      </IonCardContent>
+      <IonCardContent>{props.text}</IonCardContent>
     </IonCard>
   );
 }
@@ -146,7 +143,10 @@ const ListCards = (props: PropsListCards) => {
 
 
 function TabNodes() {
-  const [textValues, setTextValues] = useState(["Hello1", "Ira1", "World1"]);
+  const [textValues, setTextValues] = useState([
+    "Keep close to Nature's heart... and break clear away, once in awhile, and climb a mountain or spend a week in the woods. Wash your spirit clean", 
+    "Keep close to Nature's heart... and break clear away, once in awhile, and climb a mountain or spend a week in the woods. Wash your spirit clean", 
+  ]);
 
   const [present, dismiss] = useIonModal(InputModal, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
