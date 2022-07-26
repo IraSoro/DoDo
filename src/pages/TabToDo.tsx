@@ -94,7 +94,7 @@ const ToDoList = (props: PropsListToDo) => {
     const lineTrough = textDecorationLines.get(value.isDone);
     const dateTime = () => {
       if (!value.date || !value.time)
-        return value.date+value.time;
+        return value.date + value.time;
       return value.time + ", " + value.date;
     }
 

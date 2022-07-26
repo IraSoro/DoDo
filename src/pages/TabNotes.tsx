@@ -41,11 +41,11 @@ const InputModal = ({
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-      <IonCard>
-        <IonItem color="light">
-          <IonTextarea ref={inputRef} cols={20} rows={29} placeholder="Your note" ></IonTextarea>
-        </IonItem>
-      </IonCard>
+        <IonCard>
+          <IonItem color="light">
+            <IonTextarea ref={inputRef} cols={20} rows={29} placeholder="Your note" ></IonTextarea>
+          </IonItem>
+        </IonCard>
       </IonContent>
     </IonPage>
   );
@@ -70,6 +70,7 @@ const Card = (props: Props) => {
   return (
     <IonCard>
       <IonToolbar color="tertiary">
+        <IonTitle>Note {props.idx + 1}</IonTitle>
         <IonButtons slot="secondary">
           <IonButton onClick={() => presentAlertEdit({
             header: 'Note editing',
@@ -78,8 +79,8 @@ const Card = (props: Props) => {
               {
                 type: 'textarea',
                 value: props.text,
-                attributes: { "rows": 25},
-                
+                attributes: { "rows": 5 },
+
               }
             ],
             onDidDismiss: (e: CustomEvent) => {
@@ -109,7 +110,6 @@ const Card = (props: Props) => {
             <IonIcon slot="icon-only" icon={close} />
           </IonButton>
         </IonButtons>
-        <IonTitle>Note {props.idx + 1}</IonTitle>
       </IonToolbar>
       <IonCardContent>{props.text}</IonCardContent>
     </IonCard>
@@ -119,20 +119,18 @@ const Card = (props: Props) => {
 const ListCards = (props: PropsListCards) => {
   const components = props.listCards.map((value, index) => {
     return (
-      <IonItem key={index}>
-        <Card
-          text={value}
-          idx={index}
-          onEdit={(newText) => {
-            props.listCards[index] = newText;
-            props.setListCards([...props.listCards]);
-          }}
-          onDelete={() => {
-            props.listCards.splice(index, 1);
-            props.setListCards([...props.listCards])
-          }}
-        />
-      </IonItem>
+      <Card key={index}
+        text={value}
+        idx={index}
+        onEdit={(newText) => {
+          props.listCards[index] = newText;
+          props.setListCards([...props.listCards]);
+        }}
+        onDelete={() => {
+          props.listCards.splice(index, 1);
+          props.setListCards([...props.listCards])
+        }}
+      />
     );
   })
   return (
@@ -145,8 +143,8 @@ const ListCards = (props: PropsListCards) => {
 
 function TabNodes() {
   const [textValues, setTextValues] = useState([
-    "Keep close to Nature's heart... and break clear away, once in awhile, and climb a mountain or spend a week in the woods. Wash your spirit clean", 
-    "Keep close to Nature's heart... and break clear away, once in awhile, and climb a mountain or spend a week in the woods. Wash your spirit clean", 
+    "Keep close to Nature's heart... and break clear away, once in awhile, and climb a mountain or spend a week in the woods. Wash your spirit clean",
+    "Keep close to Nature's heart... and break clear away, once in awhile, and climb a mountain or spend a week in the woods. Wash your spirit clean",
   ]);
 
   const [present, dismiss] = useIonModal(InputModal, {
