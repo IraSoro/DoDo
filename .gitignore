@@ -29,3 +29,5 @@ yarn-error.log*
 
 # my
 /android
+/examples
+*.apk
