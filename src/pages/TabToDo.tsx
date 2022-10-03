@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   IonButton,
   IonHeader,
@@ -18,6 +18,8 @@ import {
 import { create, close, add, trash, ellipsisHorizontalSharp } from 'ionicons/icons';
 
 import './TabToDo.css';
+
+import { get, set } from '../data/Storage';
 
 interface ToDoObject {
   name: string,
@@ -72,6 +74,7 @@ const AddButton = (props: PropsListToDo) => {
               time: e.detail.data.values[2]
             });
             props.setListToDo([...props.listToDo]);
+            set('ToDo', props.listToDo);
           }
         }
       })}>
@@ -111,6 +114,7 @@ const ToDoList = (props: PropsListToDo) => {
           onIonChange={(e: CustomEvent) => {
             props.listToDo[index].isDone = e.detail.checked;
             props.setListToDo([...props.listToDo]);
+            set('ToDo', props.listToDo);
           }} />
         <IonButton
           fill="clear"
@@ -134,6 +138,7 @@ const ToDoList = (props: PropsListToDo) => {
                         handler: () => {
                           props.listToDo.splice(index, 1);
                           props.setListToDo([...props.listToDo]);
+                          set('ToDo', props.listToDo);
                         }
                       }
                     ],
@@ -154,6 +159,7 @@ const ToDoList = (props: PropsListToDo) => {
                     onDidDismiss: (e: CustomEvent) => {
                       props.listToDo[index].name = e.detail.data.values[0];
                       props.setListToDo([...props.listToDo]);
+                      set('ToDo', props.listToDo);
                     }
                   })
                 },
@@ -182,26 +188,15 @@ const ToDoList = (props: PropsListToDo) => {
 }
 
 function TabToDo() {
-  const [listToDo, setListToDo] = useState([
-    {
-      name: "Task1",
-      isDone: false,
-      date: "2022-12-12",
-      time: "20:22"
-    },
-    {
-      name: "Task2",
-      isDone: true,
-      date: "",
-      time: ""
-    },
-    {
-      name: "Task3",
-      isDone: true,
-      date: "2022-12-12",
-      time: "20:22"
-    }
-  ]);
+  const [listToDo, setListToDo] = useState<ToDoObject[]>([]);
+
+  useEffect(() => {
+    get("ToDo").then(result => {
+      // console.log("resStart = ", result);
+      setListToDo(result);
+      set('ToDo', result);
+    });
+  }, []);
 
   return (
     <IonPage>
