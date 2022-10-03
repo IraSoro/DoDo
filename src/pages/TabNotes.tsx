@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   IonButtons,
   IonButton,
@@ -22,6 +22,7 @@ import { OverlayEventDetail } from '@ionic/core/components';
 
 import './TabNotes.css';
 
+import { get, set } from '../data/Storage';
 
 const InputModal = ({
   onDismiss,
@@ -125,10 +126,20 @@ const ListCards = (props: PropsListCards) => {
         onEdit={(newText) => {
           props.listCards[index] = newText;
           props.setListCards([...props.listCards]);
+
+          get("notes").then(() => {
+            console.log("resED = ", props.listCards);
+            set('notes', props.listCards);
+          });
         }}
         onDelete={() => {
           props.listCards.splice(index, 1);
-          props.setListCards([...props.listCards])
+          props.setListCards([...props.listCards]);
+
+          get("notes").then(() => {
+            console.log("resDel = ", props.listCards);
+            set('notes', props.listCards);
+          });
         }}
       />
     );
@@ -140,12 +151,16 @@ const ListCards = (props: PropsListCards) => {
   );
 }
 
-
 function TabNodes() {
-  const [textValues, setTextValues] = useState([
-    "Keep close to Nature's heart... and break clear away, once in awhile, and climb a mountain or spend a week in the woods. Wash your spirit clean",
-    "Keep close to Nature's heart... and break clear away, once in awhile, and climb a mountain or spend a week in the woods. Wash your spirit clean",
-  ]);
+  const [textValues, setTextValues] = useState<string[]>([""]);
+
+  useEffect(() => {
+    get("notes").then(result => {
+      console.log("res = ", result);
+      setTextValues(result);
+      set('notes', result);
+    });
+  }, []);
 
   const [present, dismiss] = useIonModal(InputModal, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
@@ -156,8 +171,13 @@ function TabNodes() {
     present({
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === 'confirm') {
-          textValues.push(ev.detail.data);
-          setTextValues([...textValues]);
+          get('notes').then(result => {
+            console.log("res1 = ", result);
+            textValues.push(ev.detail.data);
+            setTextValues([...textValues]);
+            set('notes', textValues);
+            console.log("res2 = ", textValues);
+          });
         }
       },
     });

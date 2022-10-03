@@ -34,9 +34,21 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+import { useEffect } from 'react';
+import { createStore} from './data/Storage';
+
 setupIonicReact();
 
-const App: React.FC = () => (
+const App: React.FC = () => {
+  useEffect(() => {
+
+    const setupStore = () => {
+      createStore("MyDB");
+    }
+    setupStore();
+  }, []);
+
+  return (
   <IonApp>
     <IonReactRouter>
       <IonTabs>
@@ -54,7 +66,7 @@ const App: React.FC = () => (
           </Route>
 
           <Route exact path="/">
-            <Redirect to="/tabLists" />
+            <Redirect to="/tabNotes" />
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
@@ -74,6 +86,7 @@ const App: React.FC = () => (
       </IonTabs>
     </IonReactRouter>
   </IonApp>
-);
+  );
+}
 
 export default App;
