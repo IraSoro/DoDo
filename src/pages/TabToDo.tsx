@@ -192,7 +192,6 @@ function TabToDo() {
 
   useEffect(() => {
     get("ToDo").then(result => {
-      // console.log("resStart = ", result);
       setListToDo(result);
       set('ToDo', result);
     });

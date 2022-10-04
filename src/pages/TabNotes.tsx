@@ -128,7 +128,6 @@ const ListCards = (props: PropsListCards) => {
           props.setListCards([...props.listCards]);
 
           get("notes").then(() => {
-            console.log("resED = ", props.listCards);
             set('notes', props.listCards);
           });
         }}
@@ -137,7 +136,6 @@ const ListCards = (props: PropsListCards) => {
           props.setListCards([...props.listCards]);
 
           get("notes").then(() => {
-            console.log("resDel = ", props.listCards);
             set('notes', props.listCards);
           });
         }}
@@ -156,7 +154,6 @@ function TabNodes() {
 
   useEffect(() => {
     get("notes").then(result => {
-      console.log("res = ", result);
       setTextValues(result);
       set('notes', result);
     });
@@ -172,11 +169,9 @@ function TabNodes() {
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === 'confirm') {
           get('notes').then(result => {
-            console.log("res1 = ", result);
             textValues.push(ev.detail.data);
             setTextValues([...textValues]);
             set('notes', textValues);
-            console.log("res2 = ", textValues);
           });
         }
       },
