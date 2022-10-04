@@ -22,6 +22,8 @@ import {
 import { create, close, add, ellipsisVerticalSharp, trash } from 'ionicons/icons';
 import './TabLists.css';
 
+import { get, set } from '../data/Storage';
+
 interface ElementObject {
   name: string;
   isDone: boolean;
@@ -65,6 +67,7 @@ const ListElements = (props: PropsList) => {
             onIonChange={(e: CustomEvent) => {
               props.listElem[i].elements[j].isDone = e.detail.checked;
               props.setList([...props.listElem]);
+              set('list', props.listElem);
             }} />
         </IonItem>
       )
@@ -97,6 +100,7 @@ const ListElements = (props: PropsList) => {
                             handler: () => {
                               props.listElem.splice(i, 1);
                               props.setList([...props.listElem])
+                              set('list', props.listElem);
                             }
                           }
                         ],
@@ -117,6 +121,7 @@ const ListElements = (props: PropsList) => {
                         onDidDismiss: (e: CustomEvent) => {
                           props.listElem[i].title = e.detail.data.values[0];
                           props.setList([...props.listElem]);
+                          set('list', props.listElem);
                         }
                       })
                     },
@@ -155,6 +160,7 @@ const ListElements = (props: PropsList) => {
                                 count: e.detail.data.values[1]
                               });
                             props.setList([...props.listElem]);
+                            set('list', props.listElem);
                           }
                         }
                       })
@@ -233,6 +239,7 @@ const AddingModal = (props: PropsList) => {
               newList.title = String(inputRef.current?.value);
               props.listElem.push(newList);
               props.setList([...props.listElem]);
+              set('list', props.listElem);
               //TODO:do a normal cleanup of the object
               setNewList({
                 title: "",
@@ -296,52 +303,14 @@ const AddingModal = (props: PropsList) => {
 
 
 function TabLists() {
-  const [lists, setList] = useState([
-    {
-      title: "Shop",
-      elements: [
-        {
-          name: "ITEM 1",
-          isDone: true,
-          count: 5,
-        },
-        {
-          name: "Item 2",
-          isDone: false,
-          count: 5678,
-        },
-        {
-          name: "ITEM 3",
-          isDone: false,
-          count: 8788,
-        }
-      ]
-    },
-    {
-      title: "Shop2",
-      elements: [
-        {
-          name: "ITEM 1",
-          isDone: true,
-          count: 234,
-        },
-        {
-          name: "Item 2",
-          isDone: false,
-          count: 34,
-        },
-        {
-          name: "Item 3",
-          isDone: true,
-          count: 345432,
-        }
-      ]
-    },
+  const [lists, setList] = useState<ListObject[]>([]);
 
-  ]);
-
-
-
+  useEffect(() => {
+    get("list").then(result => {
+      setList(result);
+      set('list', result);
+    });
+  }, []);
 
   return (
     <IonPage>

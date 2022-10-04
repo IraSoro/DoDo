@@ -31,3 +31,4 @@ yarn-error.log*
 /android
 /examples
 *.apk
+package-lock.json
