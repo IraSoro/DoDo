@@ -66,7 +66,7 @@ const App: React.FC = () => {
           </Route>
 
           <Route exact path="/">
-            <Redirect to="/tabToDo" />
+            <Redirect to="/tabLists" />
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
