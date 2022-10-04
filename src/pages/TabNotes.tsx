@@ -35,15 +35,17 @@ const InputModal = ({
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButton slot="start" fill="clear" onClick={() => onDismiss(null, 'cancel')}>
+          <IonButton color="my-dark" slot="start" fill="clear" onClick={() => onDismiss(null, 'cancel')}>
             Cancel
           </IonButton>
-          <IonButton slot="end" fill="clear" onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
+          <IonButton color="my-dark" slot="end" fill="clear" onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>
+            Confirm
+          </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <IonCard>
-          <IonItem color="light">
+          <IonItem color="my-light">
             <IonTextarea ref={inputRef} cols={20} rows={29} placeholder="Your note" ></IonTextarea>
           </IonItem>
         </IonCard>
@@ -69,8 +71,8 @@ const Card = (props: Props) => {
   const [presentAlertEdit] = useIonAlert();
 
   return (
-    <IonCard>
-      <IonToolbar color="tertiary">
+    <IonCard color="my-light">
+      <IonToolbar color="my-dark">
         <IonTitle>Note {props.idx + 1}</IonTitle>
         <IonButtons slot="secondary">
           <IonButton onClick={() => presentAlertEdit({
@@ -95,11 +97,13 @@ const Card = (props: Props) => {
             buttons: [
               {
                 text: 'Cancel',
-                role: 'cancel'
+                role: 'cancel',
+                cssClass: 'alert-button',
               },
               {
                 text: 'OK',
                 role: 'confirm',
+                cssClass: 'alert-button',
               }
             ],
             onDidDismiss: (e: CustomEvent) => {
@@ -181,11 +185,11 @@ function TabNodes() {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="my-dark">
           <IonButton slot="end" fill="clear" color="dark" onClick={() => openModal()}>
             <IonIcon slot="icon-only" icon={add} />
           </IonButton>
-          <IonTitle>Notes</IonTitle>
+          <IonTitle color="dark">Notes</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="fullscreen">

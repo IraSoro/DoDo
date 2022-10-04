@@ -56,12 +56,13 @@ const ListElements = (props: PropsList) => {
       const lineTrough = textDecorationLines.get(valueEl.isDone);
 
       return (
-        <IonItem key={j + i} >
+        <IonItem color="my-light" key={j + i} >
           <IonLabel>
             <h2 style={{ textDecorationLine: lineTrough }}>{valueEl.name}</h2>
             <p>count: {valueEl.count}</p>
           </IonLabel>
           <IonCheckbox
+            color="my-dark"
             slot="start"
             checked={valueEl.isDone}
             onIonChange={(e: CustomEvent) => {
@@ -75,7 +76,7 @@ const ListElements = (props: PropsList) => {
 
     return (
       <IonCard key={i}>
-        <IonToolbar color="tertiary">
+        <IonToolbar color="my-dark">
           <IonTitle>{value.title}</IonTitle>
           <IonButtons slot="secondary">
             <IonButton
@@ -176,6 +177,7 @@ const ListElements = (props: PropsList) => {
               <IonIcon
                 slot="icon-only"
                 icon={ellipsisVerticalSharp}
+                color="dark"
               />
             </IonButton>
           </IonButtons>
@@ -217,7 +219,7 @@ const AddingModal = (props: PropsList) => {
 
   const Elements = newList.elements.map((value, index) => {
     return (
-      <IonItem key={index}>
+      <IonItem color="my-light" key={index}>
         <IonReorder slot="start" />
         <IonLabel>
           <h2>{value.name}</h2>
@@ -232,10 +234,10 @@ const AddingModal = (props: PropsList) => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton onClick={() => dismiss()}>Close</IonButton>
+            <IonButton color='my-dark' onClick={() => dismiss()}>Close</IonButton>
           </IonButtons>
           <IonButtons slot="end">
-            <IonButton onClick={() => {
+            <IonButton color='my-dark' onClick={() => {
               newList.title = String(inputRef.current?.value);
               props.listElem.push(newList);
               props.setList([...props.listElem]);
@@ -254,12 +256,13 @@ const AddingModal = (props: PropsList) => {
       </IonHeader>
       <IonContent className="ion-padding">
 
-        <IonItem color="light">
+        <IonItem>
           <IonTextarea ref={inputRef} cols={20} rows={1} placeholder="Title list" ></IonTextarea>
         </IonItem>
 
         <IonCard>
           <IonButton
+            color="my-dark"
             expand="block"
             fill="outline"
             onClick={() => presentAlert({
@@ -278,7 +281,7 @@ const AddingModal = (props: PropsList) => {
               buttons: [
                 {
                   text: 'Cancel',
-                  role: 'cancel'
+                  role: 'cancel',
                 },
                 {
                   text: 'OK',
@@ -315,7 +318,7 @@ function TabLists() {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="my-dark">
           <IonTitle>Lists</IonTitle>
 
           <IonButton

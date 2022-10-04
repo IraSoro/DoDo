@@ -102,13 +102,14 @@ const ToDoList = (props: PropsListToDo) => {
     }
 
     return (
-      <IonItem key={index} >
+      <IonItem color="my-light" key={index} >
         <IonReorder slot="start" />
         <IonLabel>
           <h2 style={{ textDecorationLine: lineTrough }}>{value.name}</h2>
           <p>{dateTime()}</p>
         </IonLabel>
         <IonCheckbox
+          color="my-dark"
           slot="start"
           checked={value.isDone}
           onIonChange={(e: CustomEvent) => {
@@ -200,7 +201,7 @@ function TabToDo() {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="my-dark">
           <AddButton
             listToDo={listToDo}
             setListToDo={setListToDo}
