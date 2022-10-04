@@ -3,13 +3,28 @@ http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
 :root {
+  /** my **/
+  --ion-color-my-dark: #F2BB8C;
+  --ion-color-my-dark-rgb: 242, 187, 140;
+  --ion-color-my-dark-contrast: #000000;
+  --ion-color-my-dark-contrast-rgb: 0, 0, 0;
+  --ion-color-my-dark-shade: #d5a57b;
+  --ion-color-my-dark-tint: #f3c298;
+
+  --ion-color-my-light: #FFF1E6;
+  --ion-color-my-light-rgb: 255, 241, 230;
+  --ion-color-my-light-contrast: #000000;
+  --ion-color-my-light-contrast-rgb: 0, 0, 0;
+  --ion-color-my-light-shade: #e0d4ca;
+  --ion-color-my-light-tint: #fff2e9;
+
   /** primary **/
-  --ion-color-primary: #5146ec;
+  --ion-color-primary: #F2BB8C;
   --ion-color-primary-rgb: 81, 70, 236;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #473ed0;
-  --ion-color-primary-tint: #6259ee;
+  --ion-color-primary-shade: #d5a57b;
+  --ion-color-primary-tint: #f3c298;
 
   /** secondary **/
   --ion-color-secondary: #3dc2ff;
@@ -74,39 +89,24 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
-
-  /** my **/
-	--ion-color-my-dark: #F2BB8C;
-	--ion-color-my-dark-rgb: 242,187,140;
-	--ion-color-my-dark-contrast: #000000;
-	--ion-color-my-dark-contrast-rgb: 0,0,0;
-	--ion-color-my-dark-shade: #d5a57b;
-	--ion-color-my-dark-tint: #f3c298;
-
-	--ion-color-my-light: #FFF1E6;
-	--ion-color-my-light-rgb: 255,241,230;
-	--ion-color-my-light-contrast: #000000;
-	--ion-color-my-light-contrast-rgb: 0,0,0;
-	--ion-color-my-light-shade: #e0d4ca;
-	--ion-color-my-light-tint: #fff2e9;
 }
 
 .ion-color-my-dark {
-	--ion-color-base: var(--ion-color-my-dark);
-	--ion-color-base-rgb: var(--ion-color-my-dark-rgb);
-	--ion-color-contrast: var(--ion-color-my-dark-contrast);
-	--ion-color-contrast-rgb: var(--ion-color-my-dark-contrast-rgb);
-	--ion-color-shade: var(--ion-color-my-dark-shade);
-	--ion-color-tint: var(--ion-color-my-dark-tint);
+  --ion-color-base: var(--ion-color-my-dark);
+  --ion-color-base-rgb: var(--ion-color-my-dark-rgb);
+  --ion-color-contrast: var(--ion-color-my-dark-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-my-dark-contrast-rgb);
+  --ion-color-shade: var(--ion-color-my-dark-shade);
+  --ion-color-tint: var(--ion-color-my-dark-tint);
 }
 
 .ion-color-my-light {
-	--ion-color-base: var(--ion-color-my-light);
-	--ion-color-base-rgb: var(--ion-color-my-light-rgb);
-	--ion-color-contrast: var(--ion-color-my-light-contrast);
-	--ion-color-contrast-rgb: var(--ion-color-my-light-contrast-rgb);
-	--ion-color-shade: var(--ion-color-my-light-shade);
-	--ion-color-tint: var(--ion-color-my-light-tint);
+  --ion-color-base: var(--ion-color-my-light);
+  --ion-color-base-rgb: var(--ion-color-my-light-rgb);
+  --ion-color-contrast: var(--ion-color-my-light-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-my-light-contrast-rgb);
+  --ion-color-shade: var(--ion-color-my-light-shade);
+  --ion-color-tint: var(--ion-color-my-light-tint);
 }
 
 @media (prefers-color-scheme: dark) {
