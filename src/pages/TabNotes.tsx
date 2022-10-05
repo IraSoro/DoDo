@@ -56,7 +56,6 @@ const InputModal = ({
 
 interface Props {
   text: string;
-  idx: number;
   onEdit: (newText: string) => void;
   onDelete: () => void;
 }
@@ -73,7 +72,6 @@ const Card = (props: Props) => {
   return (
     <IonCard color="my-light">
       <IonToolbar color="my-dark">
-        <IonTitle>Note {props.idx + 1}</IonTitle>
         <IonButtons slot="secondary">
           <IonButton onClick={() => presentAlertEdit({
             header: 'Note editing',
@@ -93,7 +91,7 @@ const Card = (props: Props) => {
             <IonIcon slot="icon-only" icon={create} />
           </IonButton>
           <IonButton onClick={() => presentAlertDelete({
-            header: "Delete note " + (props.idx + 1) + "?",
+            header: "Delete note?",
             buttons: [
               {
                 text: 'Cancel',
@@ -126,7 +124,6 @@ const ListCards = (props: PropsListCards) => {
     return (
       <Card key={index}
         text={value}
-        idx={index}
         onEdit={(newText) => {
           props.listCards[index] = newText;
           props.setListCards([...props.listCards]);
@@ -173,7 +170,7 @@ function TabNodes() {
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === 'confirm') {
           get('notes').then(result => {
-            textValues.push(ev.detail.data);
+            textValues.unshift(ev.detail.data);
             setTextValues([...textValues]);
             set('notes', textValues);
           });
