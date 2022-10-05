@@ -35,16 +35,18 @@ const InputModal = ({
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButton slot="start" fill="clear" onClick={() => onDismiss(null, 'cancel')}>
+          <IonButton color="my-dark" slot="start" fill="clear" onClick={() => onDismiss(null, 'cancel')}>
             Cancel
           </IonButton>
-          <IonButton slot="end" fill="clear" onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
+          <IonButton color="my-dark" slot="end" fill="clear" onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>
+            Confirm
+          </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <IonCard>
-          <IonItem color="light">
-            <IonTextarea ref={inputRef} cols={20} rows={29} placeholder="Your note" ></IonTextarea>
+          <IonItem color="my-light">
+            <IonTextarea ref={inputRef} cols={20} rows={23} placeholder="Your note" ></IonTextarea>
           </IonItem>
         </IonCard>
       </IonContent>
@@ -54,7 +56,6 @@ const InputModal = ({
 
 interface Props {
   text: string;
-  idx: number;
   onEdit: (newText: string) => void;
   onDelete: () => void;
 }
@@ -69,9 +70,8 @@ const Card = (props: Props) => {
   const [presentAlertEdit] = useIonAlert();
 
   return (
-    <IonCard>
-      <IonToolbar color="tertiary">
-        <IonTitle>Note {props.idx + 1}</IonTitle>
+    <IonCard color="my-light">
+      <IonToolbar color="my-dark">
         <IonButtons slot="secondary">
           <IonButton onClick={() => presentAlertEdit({
             header: 'Note editing',
@@ -91,15 +91,17 @@ const Card = (props: Props) => {
             <IonIcon slot="icon-only" icon={create} />
           </IonButton>
           <IonButton onClick={() => presentAlertDelete({
-            header: "Delete note " + (props.idx + 1) + "?",
+            header: "Delete note?",
             buttons: [
               {
                 text: 'Cancel',
-                role: 'cancel'
+                role: 'cancel',
+                cssClass: 'alert-button',
               },
               {
                 text: 'OK',
                 role: 'confirm',
+                cssClass: 'alert-button',
               }
             ],
             onDidDismiss: (e: CustomEvent) => {
@@ -122,7 +124,6 @@ const ListCards = (props: PropsListCards) => {
     return (
       <Card key={index}
         text={value}
-        idx={index}
         onEdit={(newText) => {
           props.listCards[index] = newText;
           props.setListCards([...props.listCards]);
@@ -169,7 +170,7 @@ function TabNodes() {
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === 'confirm') {
           get('notes').then(result => {
-            textValues.push(ev.detail.data);
+            textValues.unshift(ev.detail.data);
             setTextValues([...textValues]);
             set('notes', textValues);
           });
@@ -181,11 +182,11 @@ function TabNodes() {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="my-dark">
           <IonButton slot="end" fill="clear" color="dark" onClick={() => openModal()}>
             <IonIcon slot="icon-only" icon={add} />
           </IonButton>
-          <IonTitle>Notes</IonTitle>
+          <IonTitle color="dark">Notes</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="fullscreen">
