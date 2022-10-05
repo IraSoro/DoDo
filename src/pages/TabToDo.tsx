@@ -67,7 +67,7 @@ const AddButton = (props: PropsListToDo) => {
         ],
         onDidDismiss: (e: CustomEvent) => {
           if (e.detail.role === 'confirm' && e.detail.data.values[0]) {
-            props.listToDo.push({
+            props.listToDo.unshift({
               name: e.detail.data.values[0],
               isDone: false,
               date: e.detail.data.values[1],

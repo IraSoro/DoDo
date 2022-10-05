@@ -68,6 +68,7 @@ const App: React.FC = () => {
           <Route exact path="/">
             <Redirect to="/tabLists" />
           </Route>
+
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
           <IonTabButton tab="tabLists" href="/tabLists">

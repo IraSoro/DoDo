@@ -154,7 +154,7 @@ const ListElements = (props: PropsList) => {
                         ],
                         onDidDismiss: (e: CustomEvent) => {
                           if (e.detail.role === 'confirm') {
-                            props.listElem[i].elements.push(
+                            props.listElem[i].elements.unshift(
                               {
                                 name: e.detail.data.values[0],
                                 isDone: false,
@@ -239,7 +239,7 @@ const AddingModal = (props: PropsList) => {
           <IonButtons slot="end">
             <IonButton color='my-dark' onClick={() => {
               newList.title = String(inputRef.current?.value);
-              props.listElem.push(newList);
+              props.listElem.unshift(newList);
               props.setList([...props.listElem]);
               set('list', props.listElem);
               //TODO:do a normal cleanup of the object
@@ -290,7 +290,7 @@ const AddingModal = (props: PropsList) => {
               ],
               onDidDismiss: (e: CustomEvent) => {
                 if (e.detail.role === 'confirm') {
-                  newList.elements.push({ name: e.detail.data.values[0], isDone: false, count: e.detail.data.values[1] });
+                  newList.elements.unshift({ name: e.detail.data.values[0], isDone: false, count: e.detail.data.values[1] });
                   //TODO:change clone object
                   setNewList(Object.assign(Object.create(newList), newList));
                 }
