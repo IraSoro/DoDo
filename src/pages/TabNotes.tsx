@@ -46,7 +46,7 @@ const InputModal = ({
       <IonContent className="ion-padding">
         <IonCard>
           <IonItem color="my-light">
-            <IonTextarea ref={inputRef} cols={20} rows={29} placeholder="Your note" ></IonTextarea>
+            <IonTextarea ref={inputRef} cols={20} rows={23} placeholder="Your note" ></IonTextarea>
           </IonItem>
         </IonCard>
       </IonContent>

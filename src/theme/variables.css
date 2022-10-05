@@ -2,21 +2,27 @@
 http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
+
+@font-face {
+  font-family: 'OpenSans-Light';
+  src: url('../fonts/OpenSans-Light.ttf');
+}
+
 :root {
   /** my **/
-	--ion-color-my-dark: #94BFB0;
-	--ion-color-my-dark-rgb: 148,191,176;
-	--ion-color-my-dark-contrast: #000000;
-	--ion-color-my-dark-contrast-rgb: 0,0,0;
-	--ion-color-my-dark-shade: #82a89b;
-	--ion-color-my-dark-tint: #9fc5b8;
+  --ion-color-my-dark: #94BFB0;
+  --ion-color-my-dark-rgb: 148, 191, 176;
+  --ion-color-my-dark-contrast: #000000;
+  --ion-color-my-dark-contrast-rgb: 0, 0, 0;
+  --ion-color-my-dark-shade: #82a89b;
+  --ion-color-my-dark-tint: #9fc5b8;
 
-	--ion-color-my-light: #FFFFFB;
-	--ion-color-my-light-rgb: 255,255,251;
-	--ion-color-my-light-contrast: #000000;
-	--ion-color-my-light-contrast-rgb: 0,0,0;
-	--ion-color-my-light-shade: #e0e0dd;
-	--ion-color-my-light-tint: #fffffb;
+  --ion-color-my-light: #FFFFFB;
+  --ion-color-my-light-rgb: 255, 255, 251;
+  --ion-color-my-light-contrast: #000000;
+  --ion-color-my-light-contrast-rgb: 0, 0, 0;
+  --ion-color-my-light-shade: #e0e0dd;
+  --ion-color-my-light-tint: #fffffb;
 
   /** primary **/
   --ion-color-primary: #94BFB0;
@@ -89,6 +95,8 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  --ion-font-family: 'OpenSans-Light';
 }
 
 .ion-color-my-dark {
