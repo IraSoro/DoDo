@@ -77,7 +77,7 @@ const ListElements = (props: PropsList) => {
     return (
       <IonCard key={i}>
         <IonToolbar color="my-dark">
-          <IonTitle>{value.title}</IonTitle>
+          <IonTitle color="light">{value.title}</IonTitle>
           <IonButtons slot="secondary">
             <IonButton
               fill="clear"
@@ -177,7 +177,7 @@ const ListElements = (props: PropsList) => {
               <IonIcon
                 slot="icon-only"
                 icon={ellipsisVerticalSharp}
-                color="dark"
+                color="light"
               />
             </IonButton>
           </IonButtons>
@@ -310,8 +310,10 @@ function TabLists() {
 
   useEffect(() => {
     get("list").then(result => {
-      setList(result);
-      set('list', result);
+      if (result) {
+        setList(result);
+        set('list', result);
+      }
     });
   }, []);
 
@@ -319,14 +321,14 @@ function TabLists() {
     <IonPage>
       <IonHeader>
         <IonToolbar color="my-dark">
-          <IonTitle>Lists</IonTitle>
+          <IonTitle color="light">Lists</IonTitle>
 
           <IonButton
             id="add-modal"
             slot="end"
             fill="clear"
-            color="dark">
-            <IonIcon slot="icon-only" icon={add} />
+            color="light">
+            <IonIcon color="light" slot="icon-only" icon={add} />
           </IonButton>
           <AddingModal
             listElem={lists}

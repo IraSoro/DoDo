@@ -40,7 +40,7 @@ const AddButton = (props: PropsListToDo) => {
     <IonButton
       slot="end"
       fill="clear"
-      color="dark"
+      color="light"
       onClick={() => presentAlert({
         header: 'Task enter',
         buttons: [
@@ -78,7 +78,7 @@ const AddButton = (props: PropsListToDo) => {
           }
         }
       })}>
-      <IonIcon slot="icon-only" icon={add} />
+      <IonIcon color="light" slot="icon-only" icon={add} />
     </IonButton>
   )
 }
@@ -119,7 +119,6 @@ const ToDoList = (props: PropsListToDo) => {
           }} />
         <IonButton
           fill="clear"
-          color="dark"
           disabled={false}
           expand="block"
           onClick={() =>
@@ -173,6 +172,7 @@ const ToDoList = (props: PropsListToDo) => {
           }
         >
           <IonIcon
+            color="light"
             slot="icon-only"
             icon={ellipsisHorizontalSharp}
           />
@@ -193,8 +193,10 @@ function TabToDo() {
 
   useEffect(() => {
     get("ToDo").then(result => {
-      setListToDo(result);
-      set('ToDo', result);
+      if (result) {
+        setListToDo(result);
+        set('ToDo', result);
+      }
     });
   }, []);
 
@@ -206,7 +208,7 @@ function TabToDo() {
             listToDo={listToDo}
             setListToDo={setListToDo}
           />
-          <IonTitle>ToDo</IonTitle>
+          <IonTitle color="light">ToDo</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

@@ -88,7 +88,7 @@ const Card = (props: Props) => {
               props.onEdit(e.detail.data.values[0]);
             }
           })}>
-            <IonIcon slot="icon-only" icon={create} />
+            <IonIcon slot="icon-only" color="light" icon={create} />
           </IonButton>
           <IonButton onClick={() => presentAlertDelete({
             header: "Delete note?",
@@ -110,7 +110,7 @@ const Card = (props: Props) => {
               }
             }
           })}>
-            <IonIcon slot="icon-only" icon={close} />
+            <IonIcon color="light" slot="icon-only" icon={close} />
           </IonButton>
         </IonButtons>
       </IonToolbar>
@@ -151,12 +151,14 @@ const ListCards = (props: PropsListCards) => {
 }
 
 function TabNodes() {
-  const [textValues, setTextValues] = useState<string[]>([""]);
+  const [textValues, setTextValues] = useState<string[]>([]);
 
   useEffect(() => {
     get("notes").then(result => {
-      setTextValues(result);
-      set('notes', result);
+      if (result) {
+        setTextValues(result);
+        set('notes', result);
+      }
     });
   }, []);
 
@@ -183,10 +185,10 @@ function TabNodes() {
     <IonPage>
       <IonHeader>
         <IonToolbar color="my-dark">
-          <IonButton slot="end" fill="clear" color="dark" onClick={() => openModal()}>
-            <IonIcon slot="icon-only" icon={add} />
+          <IonButton slot="end" fill="clear" onClick={() => openModal()}>
+            <IonIcon slot="icon-only" color="light" icon={add} />
           </IonButton>
-          <IonTitle color="dark">Notes</IonTitle>
+          <IonTitle color="light">Notes</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="fullscreen">
