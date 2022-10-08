@@ -77,11 +77,10 @@ const ListElements = (props: PropsList) => {
     return (
       <IonCard key={i}>
         <IonToolbar color="my-dark">
-          <IonTitle color="light">{value.title}</IonTitle>
+          <IonTitle color="dark">{value.title}</IonTitle>
           <IonButtons slot="secondary">
             <IonButton
               fill="clear"
-              color="light"
               disabled={false}
               expand="block"
               onClick={() =>
@@ -177,7 +176,7 @@ const ListElements = (props: PropsList) => {
               <IonIcon
                 slot="icon-only"
                 icon={ellipsisVerticalSharp}
-                color="light"
+                color="dark"
               />
             </IonButton>
           </IonButtons>
@@ -254,7 +253,7 @@ const AddingModal = (props: PropsList) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent color="light" className="ion-padding">
 
         <IonItem>
           <IonTextarea ref={inputRef} cols={20} rows={1} placeholder="Title list" ></IonTextarea>
@@ -321,14 +320,13 @@ function TabLists() {
     <IonPage>
       <IonHeader>
         <IonToolbar color="my-dark">
-          <IonTitle color="light">Lists</IonTitle>
+          <IonTitle color="dark">Lists</IonTitle>
 
           <IonButton
             id="add-modal"
             slot="end"
-            fill="clear"
-            color="light">
-            <IonIcon color="light" slot="icon-only" icon={add} />
+            fill="clear">
+            <IonIcon color="dark" slot="icon-only" icon={add} />
           </IonButton>
           <AddingModal
             listElem={lists}
@@ -337,7 +335,7 @@ function TabLists() {
 
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent color="light">
         <ListElements
           listElem={lists}
           setList={setList}

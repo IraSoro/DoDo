@@ -43,7 +43,7 @@ const InputModal = ({
           </IonButton>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent color="light" className="ion-padding">
         <IonCard>
           <IonItem color="my-light">
             <IonTextarea ref={inputRef} cols={20} rows={23} placeholder="Your note" ></IonTextarea>
@@ -88,7 +88,7 @@ const Card = (props: Props) => {
               props.onEdit(e.detail.data.values[0]);
             }
           })}>
-            <IonIcon slot="icon-only" color="light" icon={create} />
+            <IonIcon slot="icon-only" color="dark" icon={create} />
           </IonButton>
           <IonButton onClick={() => presentAlertDelete({
             header: "Delete note?",
@@ -110,7 +110,7 @@ const Card = (props: Props) => {
               }
             }
           })}>
-            <IonIcon color="light" slot="icon-only" icon={close} />
+            <IonIcon color="dark" slot="icon-only" icon={close} />
           </IonButton>
         </IonButtons>
       </IonToolbar>
@@ -186,12 +186,12 @@ function TabNodes() {
       <IonHeader>
         <IonToolbar color="my-dark">
           <IonButton slot="end" fill="clear" onClick={() => openModal()}>
-            <IonIcon slot="icon-only" color="light" icon={add} />
+            <IonIcon slot="icon-only" color="dark" icon={add} />
           </IonButton>
-          <IonTitle color="light">Notes</IonTitle>
+          <IonTitle color="dark">Notes</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="fullscreen">
+      <IonContent color="light" className="fullscreen">
         <ListCards listCards={textValues} setListCards={setTextValues} />
       </IonContent>
     </IonPage>
