@@ -14,10 +14,12 @@ import {
   useIonModal,
   IonIcon,
   useIonAlert,
-  IonTextarea
+  IonTextarea,
+  IonLabel,
+  IonToggle,
 } from '@ionic/react';
 
-import { create, close, add } from 'ionicons/icons';
+import { create, close, add, moon } from 'ionicons/icons';
 import { OverlayEventDetail } from '@ionic/core/components';
 
 import './TabNotes.css';
@@ -181,6 +183,10 @@ function TabNodes() {
     });
   }
 
+  const toggleDarkModeHandler = () => {
+    document.body.classList.toggle("dark");
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -192,6 +198,17 @@ function TabNodes() {
         </IonToolbar>
       </IonHeader>
       <IonContent color="light" className="fullscreen">
+        <IonList className="ion-margin-top">
+          <IonItem>
+            <IonIcon slot="start" icon={moon} />
+            <IonLabel>Dark Mode</IonLabel>
+            <IonToggle
+              slot="end"
+              name="darkMode"
+              onIonChange={toggleDarkModeHandler}
+            />
+          </IonItem>
+        </IonList>
         <ListCards listCards={textValues} setListCards={setTextValues} />
       </IonContent>
     </IonPage>
