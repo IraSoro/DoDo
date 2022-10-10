@@ -6,19 +6,28 @@ import {
     IonContent,
     IonToolbar,
     IonTitle,
-    IonItem,
-    IonLabel,
-    IonToggle,
     IonPage,
 } from '@ionic/react';
 
 import { returnDownBack } from 'ionicons/icons';
 
 function SettingsPage() {
-
-    const toggleDarkModeHandler = () => {
-        document.body.classList.toggle("orange");
+    const toggleGreenMode = () => {
+        document.body.classList.toggle("orange", false);
+        document.body.classList.toggle("blue", false);
+        document.body.classList.toggle("green", true);
     };
+    const toggleBlueMode = () => {
+        document.body.classList.toggle("orange", false);
+        document.body.classList.toggle("green", false);
+        document.body.classList.toggle("blue", true);
+    };
+    const toggleOrangeMode = () => {
+        document.body.classList.toggle("green", false);
+        document.body.classList.toggle("blue", false);
+        document.body.classList.toggle("orange", true);
+    };
+
 
     return (
         <IonPage>
@@ -31,15 +40,9 @@ function SettingsPage() {
                 </IonToolbar>
             </IonHeader>
             <IonContent class="ion-padding">
-                <IonItem>
-                    <IonLabel>Orange Mode</IonLabel>
-                    <IonToggle
-                        slot="end"
-                        name="darkMode"
-                        color="my-dark"
-                        onIonChange={toggleDarkModeHandler}
-                    />
-                </IonItem>
+                <IonButton color="my-dark" onClick={toggleGreenMode}>Green mode</IonButton>
+                <IonButton color="my-dark" onClick={toggleBlueMode}>Blue mode</IonButton>
+                <IonButton color="my-dark" onClick={toggleOrangeMode}>Orange mode</IonButton>
             </IonContent>
         </IonPage>
     );
