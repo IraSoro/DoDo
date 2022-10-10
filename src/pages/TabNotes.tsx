@@ -17,9 +17,11 @@ import {
   IonTextarea,
   IonLabel,
   IonToggle,
+  IonFab,
+  IonFabButton,
 } from '@ionic/react';
 
-import { create, close, add, moon } from 'ionicons/icons';
+import { create, close, add, settings } from 'ionicons/icons';
 import { OverlayEventDetail } from '@ionic/core/components';
 
 import './TabNotes.css';
@@ -173,7 +175,7 @@ function TabNodes() {
     present({
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === 'confirm') {
-          get('notes').then(result => {
+          get('notes').then(() => {
             textValues.unshift(ev.detail.data);
             setTextValues([...textValues]);
             set('notes', textValues);
@@ -184,27 +186,32 @@ function TabNodes() {
   }
 
   const toggleDarkModeHandler = () => {
-    document.body.classList.toggle("dark");
+    document.body.classList.toggle("orange");
   };
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar color="my-dark">
-          <IonButton slot="end" fill="clear" onClick={() => openModal()}>
-            <IonIcon slot="icon-only" color="dark" icon={add} />
-          </IonButton>
+            <IonButton slot="end" fill="clear">
+              <IonIcon slot="icon-only" color="dark" icon={settings} />
+            </IonButton>
           <IonTitle color="dark">Notes</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent color="light" className="fullscreen">
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton color="my-dark" onClick={() => openModal()}>
+            <IonIcon icon={add} />
+          </IonFabButton>
+        </IonFab>
         <IonList className="ion-margin-top">
-          <IonItem>
-            <IonIcon slot="start" icon={moon} />
-            <IonLabel>Dark Mode</IonLabel>
+        <IonItem>
+            <IonLabel>Orange Mode</IonLabel>
             <IonToggle
               slot="end"
               name="darkMode"
+              color="my-dark"
               onIonChange={toggleDarkModeHandler}
             />
           </IonItem>
