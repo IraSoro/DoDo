@@ -37,6 +37,8 @@ import './theme/variables.css';
 import { useEffect } from 'react';
 import { createStore} from './data/Storage';
 
+import SettingsPage from './pages/SettingsPage';
+
 setupIonicReact();
 
 const App: React.FC = () => {
@@ -61,8 +63,12 @@ const App: React.FC = () => {
             <TabToDo />
           </Route>
 
-          <Route path="/tabNotes">
+          <Route exact path="/tabNotes">
             <TabNotes />
+          </Route>
+
+          <Route exact path="/settings">
+            <SettingsPage />
           </Route>
 
           <Route exact path="/">

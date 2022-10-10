@@ -15,8 +15,6 @@ import {
   IonIcon,
   useIonAlert,
   IonTextarea,
-  IonLabel,
-  IonToggle,
   IonFab,
   IonFabButton,
 } from '@ionic/react';
@@ -185,17 +183,13 @@ function TabNodes() {
     });
   }
 
-  const toggleDarkModeHandler = () => {
-    document.body.classList.toggle("orange");
-  };
-
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar color="my-dark">
-            <IonButton slot="end" fill="clear">
-              <IonIcon slot="icon-only" color="dark" icon={settings} />
-            </IonButton>
+          <IonButton slot="end" fill="clear" href="/settings">
+            <IonIcon slot="icon-only" color="dark" icon={settings} />
+          </IonButton>
           <IonTitle color="dark">Notes</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -205,17 +199,6 @@ function TabNodes() {
             <IonIcon icon={add} />
           </IonFabButton>
         </IonFab>
-        <IonList className="ion-margin-top">
-        <IonItem>
-            <IonLabel>Orange Mode</IonLabel>
-            <IonToggle
-              slot="end"
-              name="darkMode"
-              color="my-dark"
-              onIonChange={toggleDarkModeHandler}
-            />
-          </IonItem>
-        </IonList>
         <ListCards listCards={textValues} setListCards={setTextValues} />
       </IonContent>
     </IonPage>
