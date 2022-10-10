@@ -184,15 +184,16 @@ function TabNodes() {
   }
 
   const toggleMode = () => {
-    if (document.body.classList[0] === "green") {
-      document.body.classList.toggle("green", false);
-      document.body.classList.toggle("blue", true);
-    } else if (document.body.classList[0] === "blue") {
+    console.log("var = ", document.body.classList);
+    if (document.body.classList[0] === "blue" || document.body.classList[1] === "blue") {
       document.body.classList.toggle("blue", false);
-      document.body.classList.toggle("orange", true);
-    } else {
-      document.body.classList.toggle("orange", false);
       document.body.classList.toggle("green", true);
+    } else if (document.body.classList[0] === "green" || document.body.classList[1] === "green") {
+      document.body.classList.toggle("green", false);
+      document.body.classList.toggle("orange", true);
+    } else if (document.body.classList[0] === "orange" || document.body.classList[1] === "orange"){
+      document.body.classList.toggle("orange", false);
+      document.body.classList.toggle("blue", true);
     }
   };
 

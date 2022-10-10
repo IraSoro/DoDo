@@ -48,6 +48,8 @@ const App: React.FC = () => {
       createStore("MyDB");
     }
     setupStore();
+
+    document.body.classList.toggle("green", true);
   }, []);
 
   return (

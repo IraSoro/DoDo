@@ -13,9 +13,11 @@ import {
   useIonAlert,
   IonReorder,
   useIonActionSheet,
-  IonCheckbox
+  IonCheckbox,
+  IonFab,
+  IonFabButton,
 } from '@ionic/react';
-import { create, close, add, trash, ellipsisHorizontalSharp } from 'ionicons/icons';
+import { create, close, add, trash, ellipsisHorizontalSharp, colorFill } from 'ionicons/icons';
 
 import './TabToDo.css';
 
@@ -37,10 +39,8 @@ const AddButton = (props: PropsListToDo) => {
   const [presentAlert] = useIonAlert();
 
   return (
-    <IonButton
-      slot="end"
-      fill="clear"
-      color="dark"
+    <IonFabButton
+      color="my-dark"
       onClick={() => presentAlert({
         header: 'Task enter',
         buttons: [
@@ -78,8 +78,8 @@ const AddButton = (props: PropsListToDo) => {
           }
         }
       })}>
-      <IonIcon color="dark" slot="icon-only" icon={add} />
-    </IonButton>
+      <IonIcon icon={add} />
+    </IonFabButton>
   )
 }
 
@@ -200,18 +200,37 @@ function TabToDo() {
     });
   }, []);
 
+  const toggleMode = () => {
+    console.log("var = ", document.body.classList);
+    if (document.body.classList[0] === "blue" || document.body.classList[1] === "blue") {
+      document.body.classList.toggle("blue", false);
+      document.body.classList.toggle("green", true);
+    } else if (document.body.classList[0] === "green" || document.body.classList[1] === "green") {
+      document.body.classList.toggle("green", false);
+      document.body.classList.toggle("orange", true);
+    } else if (document.body.classList[0] === "orange" || document.body.classList[1] === "orange"){
+      document.body.classList.toggle("orange", false);
+      document.body.classList.toggle("blue", true);
+    }
+  };
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar color="my-dark">
-          <AddButton
-            listToDo={listToDo}
-            setListToDo={setListToDo}
-          />
+          <IonButton slot="end" fill="clear" onClick={toggleMode}>
+            <IonIcon slot="icon-only" color="dark" icon={colorFill} />
+          </IonButton>
           <IonTitle color="dark">ToDo</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent color="light" fullscreen>
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <AddButton
+            listToDo={listToDo}
+            setListToDo={setListToDo}
+          />
+        </IonFab>
         <ToDoList
           listToDo={listToDo}
           setListToDo={setListToDo}

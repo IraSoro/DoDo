@@ -16,10 +16,12 @@ import {
   IonCheckbox,
   IonReorder,
   useIonActionSheet,
-  IonTextarea
+  IonTextarea,
+  IonFab,
+  IonFabButton,
 } from '@ionic/react';
 
-import { create, close, add, ellipsisVerticalSharp, trash } from 'ionicons/icons';
+import { create, close, add, ellipsisVerticalSharp, trash, colorFill } from 'ionicons/icons';
 import './TabLists.css';
 
 import { get, set } from '../data/Storage';
@@ -316,17 +318,27 @@ function TabLists() {
     });
   }, []);
 
+  const toggleMode = () => {
+    console.log("var = ", document.body.classList);
+    if (document.body.classList[0] === "blue" || document.body.classList[1] === "blue") {
+      document.body.classList.toggle("blue", false);
+      document.body.classList.toggle("green", true);
+    } else if (document.body.classList[0] === "green" || document.body.classList[1] === "green") {
+      document.body.classList.toggle("green", false);
+      document.body.classList.toggle("orange", true);
+    } else if (document.body.classList[0] === "orange" || document.body.classList[1] === "orange"){
+      document.body.classList.toggle("orange", false);
+      document.body.classList.toggle("blue", true);
+    }
+  };
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar color="my-dark">
           <IonTitle color="dark">Lists</IonTitle>
-
-          <IonButton
-            id="add-modal"
-            slot="end"
-            fill="clear">
-            <IonIcon color="dark" slot="icon-only" icon={add} />
+          <IonButton slot="end" fill="clear" onClick={toggleMode}>
+            <IonIcon slot="icon-only" color="dark" icon={colorFill} />
           </IonButton>
           <AddingModal
             listElem={lists}
@@ -336,6 +348,11 @@ function TabLists() {
         </IonToolbar>
       </IonHeader>
       <IonContent color="light">
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton id="add-modal" color="my-dark">
+            <IonIcon icon={add} />
+          </IonFabButton>
+        </IonFab>
         <ListElements
           listElem={lists}
           setList={setList}
