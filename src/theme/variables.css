@@ -230,12 +230,12 @@ body.green {
     --ion-color-my-light-shade: #dadddb;
     --ion-color-my-light-tint: #f9fbfa;
 
-    --ion-color-primary: #94BFB0;
+    --ion-color-primary: #9AC3E3;
     --ion-color-primary-rgb: 81, 70, 236;
     --ion-color-primary-contrast: #ffffff;
     --ion-color-primary-contrast-rgb: 255, 255, 255;
-    --ion-color-primary-shade: #82a89b;
-    --ion-color-primary-tint: #9fc5b8;
+    --ion-color-primary-shade: #88acc8;
+    --ion-color-primary-tint: #a4c9e6;
   }
 }
 
@@ -254,12 +254,12 @@ body.blue {
   --ion-color-my-light-shade: #dadddb;
   --ion-color-my-light-tint: #f9fbfa;
 
-  --ion-color-primary: #94BFB0;
+  --ion-color-primary: #9AC3E3;
   --ion-color-primary-rgb: 81, 70, 236;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #82a89b;
-  --ion-color-primary-tint: #9fc5b8;
+  --ion-color-primary-shade: #88acc8;
+  --ion-color-primary-tint: #a4c9e6;
 }
 
 @media (prefers-color-scheme: pink) {

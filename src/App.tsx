@@ -37,8 +37,6 @@ import './theme/variables.css';
 import { useEffect } from 'react';
 import { createStore, get, set } from './data/Storage';
 
-import SettingsPage from './pages/SettingsPage';
-
 setupIonicReact();
 
 const App: React.FC = () => {
@@ -52,6 +50,7 @@ const App: React.FC = () => {
     get("theme").then(result => {
       if (result) {
         document.body.classList.toggle(result, true);
+        set("theme", result);
       } else {
         document.body.classList.toggle("green", true);
         set("theme", "green");
@@ -76,20 +75,12 @@ const App: React.FC = () => {
               <TabNotes />
             </Route>
 
-            <Route exact path="/settings">
-              <SettingsPage />
-            </Route>
-
             <Route exact path="/">
-              <Redirect to="/tabLists" />
+              <Redirect to="/tabToDo" />
             </Route>
 
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
-            <IonTabButton tab="tabLists" href="/tabLists">
-              <IonIcon color="my-dark" icon={bagCheck} />
-              <IonLabel color="my-dark">Lists</IonLabel>
-            </IonTabButton>
             <IonTabButton tab="tabToDo" href="/tabToDo">
               <IonIcon color="my-dark" icon={list} />
               <IonLabel color="my-dark">ToDo</IonLabel>
@@ -97,6 +88,10 @@ const App: React.FC = () => {
             <IonTabButton tab="tabNotes" href="/tabNotes">
               <IonIcon color="my-dark" icon={book} />
               <IonLabel color="my-dark">Notes</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="tabLists" href="/tabLists">
+              <IonIcon color="my-dark" icon={bagCheck} />
+              <IonLabel color="my-dark">Lists</IonLabel>
             </IonTabButton>
           </IonTabBar>
         </IonTabs>

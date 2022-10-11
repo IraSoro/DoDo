@@ -21,10 +21,12 @@ import {
   IonFabButton,
 } from '@ionic/react';
 
-import { create, close, add, ellipsisVerticalSharp, trash, colorFill } from 'ionicons/icons';
+import { create, close, add, ellipsisVerticalSharp, trash } from 'ionicons/icons';
 import './TabLists.css';
 
 import { get, set } from '../data/Storage';
+
+import Settings from './SettingsPage';
 
 interface ElementObject {
   name: string;
@@ -318,34 +320,12 @@ function TabLists() {
     });
   }, []);
 
-  const toggleMode = () => {
-    if (document.body.classList[0] === "blue" || document.body.classList[1] === "blue") {
-      document.body.classList.toggle("blue", false);
-      document.body.classList.toggle("green", true);
-      set("theme", "green");
-    } else if (document.body.classList[0] === "green" || document.body.classList[1] === "green") {
-      document.body.classList.toggle("green", false);
-      document.body.classList.toggle("orange", true);
-      set("theme", "orange");
-    } else if (document.body.classList[0] === "orange" || document.body.classList[1] === "orange") {
-      document.body.classList.toggle("orange", false);
-      document.body.classList.toggle("pink", true);
-      set("theme", "pink");
-    } else if (document.body.classList[0] === "pink" || document.body.classList[1] === "pink") {
-      document.body.classList.toggle("pink", false);
-      document.body.classList.toggle("blue", true);
-      set("theme", "blue");
-    }
-  };
-
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar color="my-dark">
+          <Settings />
           <IonTitle color="dark">Lists</IonTitle>
-          <IonButton slot="end" fill="clear" onClick={toggleMode}>
-            <IonIcon slot="icon-only" color="dark" icon={colorFill} />
-          </IonButton>
           <AddingModal
             listElem={lists}
             setList={setList}
