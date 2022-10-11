@@ -10,7 +10,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import {list, book, bagCheck } from 'ionicons/icons';
+import { list, book, bagCheck } from 'ionicons/icons';
 import TabLists from './pages/TabLists';
 import TabToDo from './pages/TabToDo';
 import TabNotes from './pages/TabNotes';
@@ -35,7 +35,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
 import { useEffect } from 'react';
-import { createStore} from './data/Storage';
+import { createStore, get, set } from './data/Storage';
 
 setupIonicReact();
 
@@ -46,47 +46,57 @@ const App: React.FC = () => {
       createStore("MyDB");
     }
     setupStore();
+
+    get("theme").then(result => {
+      if (result) {
+        document.body.classList.toggle(result, true);
+        set("theme", result);
+      } else {
+        document.body.classList.toggle("green", true);
+        set("theme", "green");
+      }
+    });
   }, []);
 
   return (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/tabLists">
-            <TabLists />
-          </Route>
+    <IonApp>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/tabLists">
+              <TabLists />
+            </Route>
 
-          <Route exact path="/tabToDo">
-            <TabToDo />
-          </Route>
+            <Route exact path="/tabToDo">
+              <TabToDo />
+            </Route>
 
-          <Route path="/tabNotes">
-            <TabNotes />
-          </Route>
+            <Route exact path="/tabNotes">
+              <TabNotes />
+            </Route>
 
-          <Route exact path="/">
-            <Redirect to="/tabLists" />
-          </Route>
+            <Route exact path="/">
+              <Redirect to="/tabToDo" />
+            </Route>
 
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tabLists" href="/tabLists">
-            <IonIcon color="my-dark" icon={bagCheck} />
-            <IonLabel color="my-dark">Lists</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tabToDo" href="/tabToDo">
-            <IonIcon color="my-dark" icon={list} />
-            <IonLabel color="my-dark">ToDo</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tabNotes" href="/tabNotes">
-            <IonIcon color="my-dark" icon={book} />
-            <IonLabel color="my-dark">Notes</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="tabToDo" href="/tabToDo">
+              <IonIcon color="my-dark" icon={list} />
+              <IonLabel color="my-dark">ToDo</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="tabNotes" href="/tabNotes">
+              <IonIcon color="my-dark" icon={book} />
+              <IonLabel color="my-dark">Notes</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="tabLists" href="/tabLists">
+              <IonIcon color="my-dark" icon={bagCheck} />
+              <IonLabel color="my-dark">Lists</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>
   );
 }
 

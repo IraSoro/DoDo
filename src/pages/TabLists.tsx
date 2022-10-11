@@ -16,13 +16,17 @@ import {
   IonCheckbox,
   IonReorder,
   useIonActionSheet,
-  IonTextarea
+  IonTextarea,
+  IonFab,
+  IonFabButton,
 } from '@ionic/react';
 
 import { create, close, add, ellipsisVerticalSharp, trash } from 'ionicons/icons';
 import './TabLists.css';
 
 import { get, set } from '../data/Storage';
+
+import Settings from './SettingsPage';
 
 interface ElementObject {
   name: string;
@@ -77,11 +81,10 @@ const ListElements = (props: PropsList) => {
     return (
       <IonCard key={i}>
         <IonToolbar color="my-dark">
-          <IonTitle>{value.title}</IonTitle>
+          <IonTitle color="dark">{value.title}</IonTitle>
           <IonButtons slot="secondary">
             <IonButton
               fill="clear"
-              color="light"
               disabled={false}
               expand="block"
               onClick={() =>
@@ -254,7 +257,7 @@ const AddingModal = (props: PropsList) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent color="light" className="ion-padding">
 
         <IonItem>
           <IonTextarea ref={inputRef} cols={20} rows={1} placeholder="Title list" ></IonTextarea>
@@ -310,8 +313,10 @@ function TabLists() {
 
   useEffect(() => {
     get("list").then(result => {
-      setList(result);
-      set('list', result);
+      if (result) {
+        setList(result);
+        set('list', result);
+      }
     });
   }, []);
 
@@ -319,15 +324,8 @@ function TabLists() {
     <IonPage>
       <IonHeader>
         <IonToolbar color="my-dark">
-          <IonTitle>Lists</IonTitle>
-
-          <IonButton
-            id="add-modal"
-            slot="end"
-            fill="clear"
-            color="dark">
-            <IonIcon slot="icon-only" icon={add} />
-          </IonButton>
+          <Settings />
+          <IonTitle color="dark">Lists</IonTitle>
           <AddingModal
             listElem={lists}
             setList={setList}
@@ -335,7 +333,12 @@ function TabLists() {
 
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent color="light">
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton id="add-modal" color="my-dark">
+            <IonIcon icon={add} />
+          </IonFabButton>
+        </IonFab>
         <ListElements
           listElem={lists}
           setList={setList}

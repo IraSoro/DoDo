@@ -13,13 +13,17 @@ import {
   useIonAlert,
   IonReorder,
   useIonActionSheet,
-  IonCheckbox
+  IonCheckbox,
+  IonFab,
+  IonFabButton,
 } from '@ionic/react';
 import { create, close, add, trash, ellipsisHorizontalSharp } from 'ionicons/icons';
 
 import './TabToDo.css';
 
 import { get, set } from '../data/Storage';
+
+import Settings from './SettingsPage';
 
 interface ToDoObject {
   name: string,
@@ -37,10 +41,8 @@ const AddButton = (props: PropsListToDo) => {
   const [presentAlert] = useIonAlert();
 
   return (
-    <IonButton
-      slot="end"
-      fill="clear"
-      color="dark"
+    <IonFabButton
+      color="my-dark"
       onClick={() => presentAlert({
         header: 'Task enter',
         buttons: [
@@ -78,8 +80,8 @@ const AddButton = (props: PropsListToDo) => {
           }
         }
       })}>
-      <IonIcon slot="icon-only" icon={add} />
-    </IonButton>
+      <IonIcon icon={add} />
+    </IonFabButton>
   )
 }
 
@@ -119,7 +121,6 @@ const ToDoList = (props: PropsListToDo) => {
           }} />
         <IonButton
           fill="clear"
-          color="dark"
           disabled={false}
           expand="block"
           onClick={() =>
@@ -173,6 +174,7 @@ const ToDoList = (props: PropsListToDo) => {
           }
         >
           <IonIcon
+            color="dark"
             slot="icon-only"
             icon={ellipsisHorizontalSharp}
           />
@@ -193,8 +195,10 @@ function TabToDo() {
 
   useEffect(() => {
     get("ToDo").then(result => {
-      setListToDo(result);
-      set('ToDo', result);
+      if (result) {
+        setListToDo(result);
+        set('ToDo', result);
+      }
     });
   }, []);
 
@@ -202,14 +206,17 @@ function TabToDo() {
     <IonPage>
       <IonHeader>
         <IonToolbar color="my-dark">
+          <IonTitle color="dark">ToDo</IonTitle>
+          <Settings />
+        </IonToolbar>
+      </IonHeader>
+      <IonContent color="light" fullscreen>
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <AddButton
             listToDo={listToDo}
             setListToDo={setListToDo}
           />
-          <IonTitle>ToDo</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
+        </IonFab>
         <ToDoList
           listToDo={listToDo}
           setListToDo={setListToDo}

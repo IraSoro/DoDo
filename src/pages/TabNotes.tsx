@@ -14,7 +14,9 @@ import {
   useIonModal,
   IonIcon,
   useIonAlert,
-  IonTextarea
+  IonTextarea,
+  IonFab,
+  IonFabButton,
 } from '@ionic/react';
 
 import { create, close, add } from 'ionicons/icons';
@@ -23,6 +25,8 @@ import { OverlayEventDetail } from '@ionic/core/components';
 import './TabNotes.css';
 
 import { get, set } from '../data/Storage';
+
+import Settings from './SettingsPage';
 
 const InputModal = ({
   onDismiss,
@@ -43,7 +47,7 @@ const InputModal = ({
           </IonButton>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent color="light" className="ion-padding">
         <IonCard>
           <IonItem color="my-light">
             <IonTextarea ref={inputRef} cols={20} rows={23} placeholder="Your note" ></IonTextarea>
@@ -88,7 +92,7 @@ const Card = (props: Props) => {
               props.onEdit(e.detail.data.values[0]);
             }
           })}>
-            <IonIcon slot="icon-only" icon={create} />
+            <IonIcon slot="icon-only" color="dark" icon={create} />
           </IonButton>
           <IonButton onClick={() => presentAlertDelete({
             header: "Delete note?",
@@ -110,7 +114,7 @@ const Card = (props: Props) => {
               }
             }
           })}>
-            <IonIcon slot="icon-only" icon={close} />
+            <IonIcon color="dark" slot="icon-only" icon={close} />
           </IonButton>
         </IonButtons>
       </IonToolbar>
@@ -151,12 +155,14 @@ const ListCards = (props: PropsListCards) => {
 }
 
 function TabNodes() {
-  const [textValues, setTextValues] = useState<string[]>([""]);
+  const [textValues, setTextValues] = useState<string[]>([]);
 
   useEffect(() => {
     get("notes").then(result => {
-      setTextValues(result);
-      set('notes', result);
+      if (result) {
+        setTextValues(result);
+        set('notes', result);
+      }
     });
   }, []);
 
@@ -169,7 +175,7 @@ function TabNodes() {
     present({
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === 'confirm') {
-          get('notes').then(result => {
+          get('notes').then(() => {
             textValues.unshift(ev.detail.data);
             setTextValues([...textValues]);
             set('notes', textValues);
@@ -183,13 +189,16 @@ function TabNodes() {
     <IonPage>
       <IonHeader>
         <IonToolbar color="my-dark">
-          <IonButton slot="end" fill="clear" color="dark" onClick={() => openModal()}>
-            <IonIcon slot="icon-only" icon={add} />
-          </IonButton>
           <IonTitle color="dark">Notes</IonTitle>
+          <Settings />
         </IonToolbar>
       </IonHeader>
-      <IonContent className="fullscreen">
+      <IonContent color="light" className="fullscreen">
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton color="my-dark" onClick={() => openModal()}>
+            <IonIcon icon={add} />
+          </IonFabButton>
+        </IonFab>
         <ListCards listCards={textValues} setListCards={setTextValues} />
       </IonContent>
     </IonPage>
