@@ -319,16 +319,22 @@ function TabLists() {
   }, []);
 
   const toggleMode = () => {
-    console.log("var = ", document.body.classList);
     if (document.body.classList[0] === "blue" || document.body.classList[1] === "blue") {
       document.body.classList.toggle("blue", false);
       document.body.classList.toggle("green", true);
+      set("theme", "green");
     } else if (document.body.classList[0] === "green" || document.body.classList[1] === "green") {
       document.body.classList.toggle("green", false);
       document.body.classList.toggle("orange", true);
-    } else if (document.body.classList[0] === "orange" || document.body.classList[1] === "orange"){
+      set("theme", "orange");
+    } else if (document.body.classList[0] === "orange" || document.body.classList[1] === "orange") {
       document.body.classList.toggle("orange", false);
+      document.body.classList.toggle("pink", true);
+      set("theme", "pink");
+    } else if (document.body.classList[0] === "pink" || document.body.classList[1] === "pink") {
+      document.body.classList.toggle("pink", false);
       document.body.classList.toggle("blue", true);
+      set("theme", "blue");
     }
   };
 
