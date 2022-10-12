@@ -50,7 +50,7 @@ const InputModal = ({
       <IonContent color="light" className="ion-padding">
         <IonCard>
           <IonItem color="my-light">
-            <IonTextarea ref={inputRef} cols={20} rows={23} placeholder="Your note" ></IonTextarea>
+            <IonTextarea ref={inputRef} cols={20} rows={25} placeholder="Your note" ></IonTextarea>
           </IonItem>
         </IonCard>
       </IonContent>
@@ -69,29 +69,61 @@ interface PropsListCards {
   setListCards: (newListCards: string[]) => void;
 }
 
+interface PropsEdit {
+  text: string;
+  onDismiss: (data?: string | null | undefined | number, role?: string) => void;
+}
+
+const ModalEdit = (props: PropsEdit) => {
+  const inputRef = useRef<HTMLIonTextareaElement>(null);
+
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonButton color="my-dark" onClick={() => props.onDismiss(null, 'cancel')}>
+              Cancel
+            </IonButton>
+          </IonButtons>
+          <IonButtons slot="end">
+            <IonButton color="my-dark" onClick={() => props.onDismiss(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent color="light" className="ion-padding">
+        <IonCard>
+          <IonItem color="my-light">
+            <IonTextarea ref={inputRef} cols={20} rows={25} value={props.text} ></IonTextarea>
+          </IonItem>
+        </IonCard>
+      </IonContent>
+    </IonPage>
+  );
+};
+
 const Card = (props: Props) => {
   const [presentAlertDelete] = useIonAlert();
-  const [presentAlertEdit] = useIonAlert();
+
+  const [present, dismiss] = useIonModal(ModalEdit, {
+    onDismiss: (data: string, role: string) => dismiss(data, role), text: props.text,
+  });
+
+  function editModal() {
+    present({
+      onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
+        if (ev.detail.role === 'confirm') {
+          props.onEdit(ev.detail.data);
+        }
+      },
+    });
+  }
 
   return (
     <IonCard color="my-light">
-      <IonToolbar color="my-dark">
+      <IonToolbar color="my-light">
         <IonButtons slot="secondary">
-          <IonButton onClick={() => presentAlertEdit({
-            header: 'Note editing',
-            buttons: ['OK'],
-            inputs: [
-              {
-                type: 'textarea',
-                value: props.text,
-                attributes: { "rows": 5 },
-
-              }
-            ],
-            onDidDismiss: (e: CustomEvent) => {
-              props.onEdit(e.detail.data.values[0]);
-            }
-          })}>
+          <IonButton onClick={() => editModal()}>
             <IonIcon slot="icon-only" color="dark" icon={create} />
           </IonButton>
           <IonButton onClick={() => presentAlertDelete({
