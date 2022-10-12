@@ -58,7 +58,7 @@ const AddButton = (props: PropsListToDo) => {
         inputs: [
           {
             type: 'textarea',
-            placeholder: 'Task'
+            placeholder: 'Task',
           },
           {
             type: 'date',
@@ -74,6 +74,24 @@ const AddButton = (props: PropsListToDo) => {
               isDone: false,
               date: e.detail.data.values[1],
               time: e.detail.data.values[2]
+            });
+            props.listToDo.sort(function (a, b) {
+              if (a.time > b.time) {
+                return 1;
+              }
+              if (a.time < b.time) {
+                return -1;
+              }
+              return 0;
+            });
+            props.listToDo.sort(function (a, b) {
+              if (a.date > b.date) {
+                return 1;
+              }
+              if (a.date < b.date) {
+                return -1;
+              }
+              return 0;
             });
             props.setListToDo([...props.listToDo]);
             set('ToDo', props.listToDo);
