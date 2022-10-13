@@ -66,6 +66,41 @@ interface PropItemSettings {
 
 const EditModal = (props: PropsEdit) => {
   const inputRef = useRef<HTMLIonTextareaElement>(null);
+  const [presentAlert] = useIonAlert();
+
+  const [presentAlertDelete] = useIonAlert();
+
+  const Items = props.list.elements.map((value, index) => {
+    return (
+      <IonItem color="my-light" key={index}>
+        <IonReorder slot="start" />
+        <IonLabel>
+          <h2>{value.name}</h2>
+          <p>count: {value.count}</p>
+        </IonLabel>
+        <IonButton slot="end" fill="clear" onClick={() => presentAlertDelete({
+          header: "Delete item?",
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'alert-button',
+            },
+            {
+              text: 'OK',
+              role: 'confirm',
+              cssClass: 'alert-button',
+              handler: () => {
+
+              }
+            }
+          ],
+        })}>
+          <IonIcon color="dark" slot="icon-only" icon={close} />
+        </IonButton>
+      </IonItem>
+    );
+  });
 
   return (
     <IonPage>
@@ -80,7 +115,46 @@ const EditModal = (props: PropsEdit) => {
         </IonToolbar>
       </IonHeader>
       <IonContent color="light" className="ion-padding">
-        <IonTitle>{props.list.title}</IonTitle>
+        <IonItem>
+          <IonTextarea ref={inputRef} cols={20} rows={1} value={props.list.title} ></IonTextarea>
+        </IonItem>
+        <IonCard>
+          <IonButton
+            color="my-dark"
+            expand="block"
+            fill="outline"
+            onClick={() => presentAlert({
+              header: 'Adding element',
+              inputs: [
+                {
+                  placeholder: 'Name'
+                },
+                {
+                  type: 'number',
+                  placeholder: 'Count',
+                  min: 1,
+                  max: 10000
+                },
+              ],
+              buttons: [
+                {
+                  text: 'Cancel',
+                  role: 'cancel',
+                },
+                {
+                  text: 'OK',
+                  role: 'confirm',
+                },
+              ],
+              onDidDismiss: (e: CustomEvent) => {
+                if (e.detail.role === 'confirm' && e.detail.data.values[0]) {
+
+                }
+              }
+
+            })}>Add element</IonButton>
+          {Items}
+        </IonCard>
       </IonContent>
     </IonPage>
   );
