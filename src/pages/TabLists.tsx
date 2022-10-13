@@ -22,7 +22,7 @@ import {
   useIonModal,
 } from '@ionic/react';
 
-import { create, close, add, ellipsisVerticalSharp, trash } from 'ionicons/icons';
+import { create, close, add, ellipsisVerticalSharp, trash, pencil } from 'ionicons/icons';
 import './TabLists.css';
 
 import { get, set } from '../data/Storage';
@@ -49,6 +49,7 @@ interface PropsList {
 
 interface PropsEdit {
   list: ListObject;
+  onEdit: (newText: ListObject) => void;
   onDismiss: (data?: string | null | undefined | number, role?: string) => void;
 }
 
@@ -69,6 +70,7 @@ const EditModal = (props: PropsEdit) => {
   const [presentAlert] = useIonAlert();
 
   const [presentAlertDelete] = useIonAlert();
+  const [presentAlertEdit] = useIonAlert();
 
   const Items = props.list.elements.map((value, index) => {
     return (
@@ -78,26 +80,65 @@ const EditModal = (props: PropsEdit) => {
           <h2>{value.name}</h2>
           <p>count: {value.count}</p>
         </IonLabel>
-        <IonButton slot="end" fill="clear" onClick={() => presentAlertDelete({
-          header: "Delete item?",
-          buttons: [
-            {
-              text: 'Cancel',
-              role: 'cancel',
-              cssClass: 'alert-button',
-            },
-            {
-              text: 'OK',
-              role: 'confirm',
-              cssClass: 'alert-button',
-              handler: () => {
-
+        <IonButtons>
+          <IonButton
+            slot="end"
+            fill="clear"
+            onClick={() => presentAlertEdit({
+              header: 'Editing element',
+              inputs: [
+                {
+                  value: value.name,
+                },
+                {
+                  type: 'number',
+                  value: value.count,
+                  min: 1,
+                  max: 10000
+                },
+              ],
+              buttons: [
+                {
+                  text: 'Cancel',
+                  role: 'cancel',
+                },
+                {
+                  text: 'OK',
+                  role: 'confirm',
+                },
+              ],
+              onDidDismiss: (e: CustomEvent) => {
+                if (e.detail.role === 'confirm' && e.detail.data.values[0]) {
+                  props.list.elements[index].name = e.detail.data.values[0];
+                  props.list.elements[index].count = e.detail.data.values[1];
+                  props.onEdit(props.list);
+                }
               }
-            }
-          ],
-        })}>
-          <IonIcon color="dark" slot="icon-only" icon={close} />
-        </IonButton>
+            })}>
+            <IonIcon size="small" color="dark" slot="icon-only" icon={pencil}></IonIcon>
+          </IonButton>
+          <IonButton slot="end" fill="clear" onClick={() => presentAlertDelete({
+            header: "Delete item?",
+            buttons: [
+              {
+                text: 'Cancel',
+                role: 'cancel',
+                cssClass: 'alert-button',
+              },
+              {
+                text: 'OK',
+                role: 'confirm',
+                cssClass: 'alert-button',
+                handler: () => {
+                  props.list.elements.splice(index, 1);
+                  props.onEdit(props.list);
+                }
+              }
+            ],
+          })}>
+            <IonIcon size="small" color="dark" slot="icon-only" icon={close} />
+          </IonButton>
+        </IonButtons>
       </IonItem>
     );
   });
@@ -148,7 +189,8 @@ const EditModal = (props: PropsEdit) => {
               ],
               onDidDismiss: (e: CustomEvent) => {
                 if (e.detail.role === 'confirm' && e.detail.data.values[0]) {
-
+                  props.list.elements.push({ name: e.detail.data.values[0], isDone: false, count: e.detail.data.values[1] });
+                  props.onEdit(props.list);
                 }
               }
 
@@ -209,14 +251,19 @@ const ListSettings = (props: PropListSettings) => {
   })
 
   const [presentEdit, dismiss] = useIonModal(EditModal, {
-    onDismiss: (data: string, role: string) => dismiss(data, role), list: props.list,
+    onDismiss: (data: string, role: string) => dismiss(data, role),
+    list: props.list,
+    onEdit: (newObject: ListObject) => {
+      props.onEdit(newObject);
+    }
   });
 
   function editModal() {
     presentEdit({
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === 'confirm') {
-
+          props.list.title = ev.detail.data;
+          props.onEdit(props.list);
         }
       },
     });
@@ -334,6 +381,7 @@ const AddingModal = (props: PropsList) => {
   );
 
   const [presentAlertDelete] = useIonAlert();
+  const [presentAlertEdit] = useIonAlert();
 
   const Elements = newList.elements.map((value, index) => {
     return (
@@ -343,27 +391,68 @@ const AddingModal = (props: PropsList) => {
           <h2>{value.name}</h2>
           <p>count: {value.count}</p>
         </IonLabel>
-        <IonButton slot="end" fill="clear" onClick={() => presentAlertDelete({
-          header: "Delete item?",
-          buttons: [
-            {
-              text: 'Cancel',
-              role: 'cancel',
-              cssClass: 'alert-button',
-            },
-            {
-              text: 'OK',
-              role: 'confirm',
-              cssClass: 'alert-button',
-              handler: () => {
-                newList.elements.splice(index, 1);
-                setNewList(Object.assign(Object.create(newList), newList));
+        <IonButtons>
+          <IonButton
+            slot="end"
+            fill="clear"
+            onClick={() => presentAlertEdit({
+              header: 'Editing element',
+              inputs: [
+                {
+                  value: value.name,
+                },
+                {
+                  type: 'number',
+                  value: value.count,
+                  min: 1,
+                  max: 10000
+                },
+              ],
+              buttons: [
+                {
+                  text: 'Cancel',
+                  role: 'cancel',
+                },
+                {
+                  text: 'OK',
+                  role: 'confirm',
+                },
+              ],
+              onDidDismiss: (e: CustomEvent) => {
+                if (e.detail.role === 'confirm') {
+                  newList.elements[index].name = e.detail.data.values[0];
+                  newList.elements[index].count = e.detail.data.values[1];
+                  setNewList(Object.assign(Object.create(newList), newList));
+                }
               }
-            }
-          ],
-        })}>
-          <IonIcon color="dark" slot="icon-only" icon={close} />
-        </IonButton>
+            })}>
+            <IonIcon size="small" color="dark" slot="icon-only" icon={pencil}></IonIcon>
+          </IonButton>
+          <IonButton
+            slot="end"
+            fill="clear"
+            onClick={() => presentAlertDelete({
+              header: "Delete item?",
+              buttons: [
+                {
+                  text: 'Cancel',
+                  role: 'cancel',
+                  cssClass: 'alert-button',
+                },
+                {
+                  text: 'OK',
+                  role: 'confirm',
+                  cssClass: 'alert-button',
+                  handler: () => {
+                    newList.elements.splice(index, 1);
+                    setNewList(Object.assign(Object.create(newList), newList));
+                  }
+                }
+              ],
+            })}>
+            <IonIcon size="small" color="dark" slot="icon-only" icon={close} />
+          </IonButton>
+        </IonButtons>
       </IonItem>
     );
   });
