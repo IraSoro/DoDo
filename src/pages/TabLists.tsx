@@ -19,6 +19,7 @@ import {
   IonTextarea,
   IonFab,
   IonFabButton,
+  useIonModal,
 } from '@ionic/react';
 
 import { create, close, add, ellipsisVerticalSharp, trash } from 'ionicons/icons';
@@ -27,6 +28,8 @@ import './TabLists.css';
 import { get, set } from '../data/Storage';
 
 import Settings from './SettingsPage';
+
+import { OverlayEventDetail } from '@ionic/core/components';
 
 interface ElementObject {
   name: string;
@@ -44,94 +47,187 @@ interface PropsList {
   setList: (newListToDo: ListObject[]) => void;
 }
 
-const ListElements = (props: PropsList) => {
-  const [present] = useIonActionSheet();
-  const [presentAlertDelete] = useIonAlert();
+interface PropsEdit {
+  list: ListObject;
+  onDismiss: (data?: string | null | undefined | number, role?: string) => void;
+}
 
+interface PropListSettings {
+  list: ListObject;
+  onEdit: (newText: ListObject) => void;
+  onDelete: () => void;
+}
+
+interface PropItemSettings {
+  item: ElementObject;
+  onEdit: (newItem: ElementObject) => void;
+  onDelete: () => void;
+}
+
+const EditModal = (props: PropsEdit) => {
+  const inputRef = useRef<HTMLIonTextareaElement>(null);
+
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButton color="my-dark" slot="start" fill="clear" onClick={() => props.onDismiss(null, 'cancel')}>
+            Cancel
+          </IonButton>
+          <IonButton color="my-dark" slot="end" fill="clear" onClick={() => props.onDismiss(inputRef.current?.value, 'confirm')}>
+            Confirm
+          </IonButton>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent color="light" className="ion-padding">
+        <IonTitle>{props.list.title}</IonTitle>
+      </IonContent>
+    </IonPage>
+  );
+};
+
+const ItemListSetting = (props: PropItemSettings) => {
   const textDecorationLines = new Map<boolean, string>([
     [false, "none"],
     [true, "line-through"]
   ]);
 
-  const listElem = props.listElem.map((value, i) => {
-    const Elem = value.elements.map((valueEl, j) => {
-      const lineTrough = textDecorationLines.get(valueEl.isDone);
+  const lineTrough = textDecorationLines.get(props.item.isDone);
 
-      return (
-        <IonItem color="my-light" key={j + i} >
-          <IonLabel>
-            <h2 style={{ textDecorationLine: lineTrough }}>{valueEl.name}</h2>
-            <p>count: {valueEl.count}</p>
-          </IonLabel>
-          <IonCheckbox
-            color="my-dark"
-            slot="start"
-            checked={valueEl.isDone}
-            onIonChange={(e: CustomEvent) => {
-              props.listElem[i].elements[j].isDone = e.detail.checked;
-              props.setList([...props.listElem]);
-              set('list', props.listElem);
-            }} />
-        </IonItem>
-      )
-    })
+  return (
+    <IonItem color="my-light">
+      <IonLabel>
+        <h2 style={{ textDecorationLine: lineTrough }}>{props.item.name}</h2>
+        <p>count: {props.item.count}</p>
+      </IonLabel>
+      <IonCheckbox
+        color="my-dark"
+        slot="start"
+        checked={props.item.isDone}
+        onIonChange={(e: CustomEvent) => {
+          props.item.isDone = e.detail.checked;
+          props.onEdit(props.item);
+        }}
+      />
+    </IonItem>)
+}
 
+const ListSettings = (props: PropListSettings) => {
+  const [present] = useIonActionSheet();
+  const [presentAlertDelete] = useIonAlert();
+
+  const Elem = props.list.elements.map((value, i) => {
     return (
-      <IonCard key={i}>
-        <IonToolbar color="my-dark">
-          <IonTitle color="dark">{value.title}</IonTitle>
-          <IonButtons slot="secondary">
-            <IonButton
-              fill="clear"
-              disabled={false}
-              expand="block"
-              onClick={() =>
-                present({
-                  buttons: [
-                    {
-                      text: 'Delete',
-                      icon: trash,
-                      handler: () => presentAlertDelete({
-                        header: "Delete list?",
-                        buttons: [
-                          {
-                            text: 'Cancel',
-                          },
-                          {
-                            text: 'OK',
-                            handler: () => {
-                              props.listElem.splice(i, 1);
-                              props.setList([...props.listElem])
-                              set('list', props.listElem);
-                            }
-                          }
-                        ],
-                      })
-                    },
-                    {
-                      text: 'Edit',
-                      icon: create,
-                    },
-                    {
-                      text: 'Cancel',
-                      icon: close,
-                    }
-                  ],
-                })
-              }
-            >
-              <IonIcon
-                slot="icon-only"
-                icon={ellipsisVerticalSharp}
-                color="dark"
-              />
-            </IonButton>
-          </IonButtons>
-        </IonToolbar>
-        {Elem}
-      </IonCard>
-    );
+      <>
+        <ItemListSetting
+          item={value}
+          onEdit={(newItem) => {
+            props.list.elements[i] = newItem;
+            props.onEdit(props.list);
+          }}
+          onDelete={() => {
+            props.list.elements.splice(i, 1);
+            props.onEdit(props.list);
+          }}
+        />
+      </>
+    )
   })
+
+  const [presentEdit, dismiss] = useIonModal(EditModal, {
+    onDismiss: (data: string, role: string) => dismiss(data, role), list: props.list,
+  });
+
+  function editModal() {
+    presentEdit({
+      onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
+        if (ev.detail.role === 'confirm') {
+
+        }
+      },
+    });
+  }
+
+  return (
+    <IonCard>
+      <IonToolbar color="my-dark">
+        <IonTitle color="dark">{props.list.title}</IonTitle>
+        <IonButtons slot="secondary">
+          <IonButton
+            fill="clear"
+            disabled={false}
+            expand="block"
+            onClick={() =>
+              present({
+                buttons: [
+                  {
+                    text: 'Delete',
+                    icon: trash,
+                    handler: () => presentAlertDelete({
+                      header: "Delete list?",
+                      buttons: [
+                        {
+                          text: 'Cancel',
+                        },
+                        {
+                          text: 'OK',
+                          handler: () => {
+                            props.onDelete();
+                          }
+                        }
+                      ],
+                    })
+                  },
+                  {
+                    text: 'Edit',
+                    icon: create,
+                    handler: () => {
+                      editModal();
+                    }
+                  },
+                  {
+                    text: 'Cancel',
+                    icon: close,
+                  }
+                ],
+              })
+            }
+          >
+            <IonIcon
+              slot="icon-only"
+              icon={ellipsisVerticalSharp}
+              color="dark"
+            />
+          </IonButton>
+        </IonButtons>
+      </IonToolbar>
+      {Elem}
+    </IonCard>
+  );
+
+}
+
+const ListElements = (props: PropsList) => {
+  const listElem = props.listElem.map((value, i) => {
+    console.log("res[" + i + "] = " + value.title);
+    return (
+      <ListSettings
+        key={i}
+        list={value}
+        onEdit={(newObject) => {
+          props.listElem[i] = newObject;
+          props.setList([...props.listElem]);
+          set('list', props.listElem);
+        }}
+        onDelete={() => {
+          props.listElem.splice(i, 1);
+          props.setList([...props.listElem]);
+          set('list', props.listElem);
+        }}
+      />
+    )
+  })
+
 
   return (
     <>{listElem}</>
