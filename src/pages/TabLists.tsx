@@ -47,8 +47,6 @@ interface PropsList {
 const ListElements = (props: PropsList) => {
   const [present] = useIonActionSheet();
   const [presentAlertDelete] = useIonAlert();
-  const [presentAlertEdit] = useIonAlert();
-  const [presentAlertAddItem] = useIonAlert();
 
   const textDecorationLines = new Map<boolean, string>([
     [false, "none"],
@@ -111,63 +109,8 @@ const ListElements = (props: PropsList) => {
                       })
                     },
                     {
-                      text: 'Edit title',
+                      text: 'Edit',
                       icon: create,
-                      handler: () => presentAlertEdit({
-                        header: 'Title change',
-                        buttons: ['OK'],
-                        inputs: [
-                          {
-                            type: 'textarea',
-                            value: value.title,
-                          }
-                        ],
-                        onDidDismiss: (e: CustomEvent) => {
-                          props.listElem[i].title = e.detail.data.values[0];
-                          props.setList([...props.listElem]);
-                          set('list', props.listElem);
-                        }
-                      })
-                    },
-                    {
-                      text: 'Add list item',
-                      icon: add,
-                      handler: () => presentAlertAddItem({
-                        header: 'Title change',
-                        inputs: [
-                          {
-                            placeholder: 'Name'
-                          },
-                          {
-                            type: 'number',
-                            placeholder: 'Count',
-                            min: 1,
-                            max: 10000
-                          },
-                        ],
-                        buttons: [
-                          {
-                            text: 'Cancel',
-                            role: 'cancel'
-                          },
-                          {
-                            text: 'OK',
-                            role: 'confirm',
-                          },
-                        ],
-                        onDidDismiss: (e: CustomEvent) => {
-                          if (e.detail.role === 'confirm') {
-                            props.listElem[i].elements.unshift(
-                              {
-                                name: e.detail.data.values[0],
-                                isDone: false,
-                                count: e.detail.data.values[1]
-                              });
-                            props.setList([...props.listElem]);
-                            set('list', props.listElem);
-                          }
-                        }
-                      })
                     },
                     {
                       text: 'Cancel',
@@ -220,6 +163,8 @@ const AddingModal = (props: PropsList) => {
     }
   );
 
+  const [presentAlertDelete] = useIonAlert();
+
   const Elements = newList.elements.map((value, index) => {
     return (
       <IonItem color="my-light" key={index}>
@@ -228,6 +173,27 @@ const AddingModal = (props: PropsList) => {
           <h2>{value.name}</h2>
           <p>count: {value.count}</p>
         </IonLabel>
+        <IonButton slot="end" fill="clear" onClick={() => presentAlertDelete({
+          header: "Delete item?",
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'alert-button',
+            },
+            {
+              text: 'OK',
+              role: 'confirm',
+              cssClass: 'alert-button',
+              handler: () => {
+                newList.elements.splice(index, 1);
+                setNewList(Object.assign(Object.create(newList), newList));
+              }
+            }
+          ],
+        })}>
+          <IonIcon color="dark" slot="icon-only" icon={close} />
+        </IonButton>
       </IonItem>
     );
   });
@@ -237,7 +203,16 @@ const AddingModal = (props: PropsList) => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton color='my-dark' onClick={() => dismiss()}>Close</IonButton>
+            <IonButton
+              color='my-dark'
+              onClick={() => {
+                setNewList({
+                  title: "",
+                  elements: []
+                });
+                dismiss()
+              }
+              }>Close</IonButton>
           </IonButtons>
           <IonButtons slot="end">
             <IonButton color='my-dark' onClick={() => {
@@ -245,7 +220,6 @@ const AddingModal = (props: PropsList) => {
               props.listElem.unshift(newList);
               props.setList([...props.listElem]);
               set('list', props.listElem);
-              //TODO:do a normal cleanup of the object
               setNewList({
                 title: "",
                 elements: []
@@ -292,8 +266,8 @@ const AddingModal = (props: PropsList) => {
                 },
               ],
               onDidDismiss: (e: CustomEvent) => {
-                if (e.detail.role === 'confirm') {
-                  newList.elements.unshift({ name: e.detail.data.values[0], isDone: false, count: e.detail.data.values[1] });
+                if (e.detail.role === 'confirm' && e.detail.data.values[0]) {
+                  newList.elements.push({ name: e.detail.data.values[0], isDone: false, count: e.detail.data.values[1] });
                   //TODO:change clone object
                   setNewList(Object.assign(Object.create(newList), newList));
                 }
