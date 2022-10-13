@@ -123,10 +123,10 @@ const Card = (props: Props) => {
     <IonCard color="my-light">
       <IonToolbar color="my-light">
         <IonButtons slot="secondary">
-          <IonButton onClick={() => editModal()}>
+          <IonButton slot="end" fill="clear" onClick={() => editModal()}>
             <IonIcon slot="icon-only" color="dark" icon={create} />
           </IonButton>
-          <IonButton onClick={() => presentAlertDelete({
+          <IonButton slot="end" fill="clear" onClick={() => presentAlertDelete({
             header: "Delete note?",
             buttons: [
               {
