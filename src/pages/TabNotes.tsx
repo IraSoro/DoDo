@@ -121,7 +121,7 @@ const Card = (props: Props) => {
 
   return (
     <IonCard color="my-light">
-      <IonToolbar color="my-light">
+      <IonToolbar color="my-dark">
         <IonButtons slot="secondary">
           <IonButton slot="end" fill="clear" onClick={() => editModal()}>
             <IonIcon slot="icon-only" color="dark" icon={create} />
