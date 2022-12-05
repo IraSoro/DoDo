@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/scheduler/static/css/main.6a0c3443.css",
-    "main.js": "/scheduler/static/js/main.a6835f9c.js",
+    "main.js": "/scheduler/static/js/main.e70cd399.js",
     "static/js/630.3bac1e3b.chunk.js": "/scheduler/static/js/630.3bac1e3b.chunk.js",
     "static/js/858.662919b9.chunk.js": "/scheduler/static/js/858.662919b9.chunk.js",
     "static/js/372.b61e92a9.chunk.js": "/scheduler/static/js/372.b61e92a9.chunk.js",
@@ -16,7 +16,7 @@
     "service-worker.js": "/scheduler/service-worker.js",
     "index.html": "/scheduler/index.html",
     "main.6a0c3443.css.map": "/scheduler/static/css/main.6a0c3443.css.map",
-    "main.a6835f9c.js.map": "/scheduler/static/js/main.a6835f9c.js.map",
+    "main.e70cd399.js.map": "/scheduler/static/js/main.e70cd399.js.map",
     "630.3bac1e3b.chunk.js.map": "/scheduler/static/js/630.3bac1e3b.chunk.js.map",
     "858.662919b9.chunk.js.map": "/scheduler/static/js/858.662919b9.chunk.js.map",
     "372.b61e92a9.chunk.js.map": "/scheduler/static/js/372.b61e92a9.chunk.js.map",
@@ -30,6 +30,6 @@
   },
   "entrypoints": [
     "static/css/main.6a0c3443.css",
-    "static/js/main.a6835f9c.js"
+    "static/js/main.e70cd399.js"
   ]
 }
