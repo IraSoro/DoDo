@@ -68,7 +68,8 @@
   },
   "devDependencies": {
     "@capacitor/cli": "3.6.0",
-    "@ionic/lab": "3.2.13"
+    "@ionic/lab": "3.2.13",
+    "gh-pages": "^4.0.0"
   },
   "description": "An Ionic project"
 }
