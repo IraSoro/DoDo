@@ -79,6 +79,10 @@ const App: React.FC = () => {
               <Redirect to="/tabToDo" />
             </Route>
 
+            <Route exact path="/scheduler/">
+              <Redirect to="/tabToDo" />
+            </Route>
+
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
             <IonTabButton tab="tabToDo" href="/tabToDo">
