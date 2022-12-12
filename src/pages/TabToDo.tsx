@@ -254,7 +254,6 @@ function TabToDo() {
     get("ToDo").then(result => {
       if (result) {
         setListToDo(result);
-        set('ToDo', result);
       }
     });
   }, []);
