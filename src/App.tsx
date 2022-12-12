@@ -35,7 +35,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
 import { useEffect } from 'react';
-import { createStore, get, set } from './data/Storage';
+import { createStore, get } from './data/Storage';
 
 setupIonicReact();
 
@@ -50,10 +50,8 @@ const App: React.FC = () => {
     get("theme").then(result => {
       if (result) {
         document.body.classList.toggle(result, true);
-        set("theme", result);
       } else {
         document.body.classList.toggle("green", true);
-        set("theme", "green");
       }
     });
   }, []);

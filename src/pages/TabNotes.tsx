@@ -164,17 +164,13 @@ const ListCards = (props: PropsListCards) => {
           props.listCards[index] = newText;
           props.setListCards([...props.listCards]);
 
-          get("notes").then(() => {
-            set('notes', props.listCards);
-          });
+          set('notes', props.listCards);
         }}
         onDelete={() => {
           props.listCards.splice(index, 1);
           props.setListCards([...props.listCards]);
 
-          get("notes").then(() => {
-            set('notes', props.listCards);
-          });
+          set('notes', props.listCards);
         }}
       />
     );
@@ -193,7 +189,6 @@ function TabNodes() {
     get("notes").then(result => {
       if (result) {
         setTextValues(result);
-        set('notes', result);
       }
     });
   }, []);
@@ -207,11 +202,9 @@ function TabNodes() {
     present({
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === 'confirm') {
-          get('notes').then(() => {
-            textValues.unshift(ev.detail.data);
-            setTextValues([...textValues]);
-            set('notes', textValues);
-          });
+          textValues.unshift(ev.detail.data);
+          setTextValues([...textValues]);
+          set('notes', textValues);
         }
       },
     });

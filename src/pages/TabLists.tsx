@@ -548,7 +548,6 @@ function TabLists() {
     get("list").then(result => {
       if (result) {
         setList(result);
-        set('list', result);
       }
     });
   }, []);
