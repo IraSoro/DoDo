@@ -1,12 +1,15 @@
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
+  IonHeader,
   IonIcon,
   IonLabel,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonTitle,
+  IonToolbar,
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -14,6 +17,8 @@ import { list, book, bagCheck } from 'ionicons/icons';
 import TabLists from './pages/TabLists';
 import TabToDo from './pages/TabToDo';
 import TabNotes from './pages/TabNotes';
+
+import Settings from './pages/SettingsPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -34,12 +39,17 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-import { useEffect } from 'react';
+import React from 'react'
+import { useEffect, useState } from 'react';
 import { createStore, get } from './data/Storage';
 
 setupIonicReact();
 
 const App: React.FC = () => {
+
+  const value: string = "blue";
+  const [tabTitle, setTabTitle] = useState("ToDo");
+
   useEffect(() => {
 
     const setupStore = () => {
@@ -59,6 +69,14 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
+
+        <IonHeader>
+          <IonToolbar color="my-dark">
+            <IonTitle color="dark">{tabTitle}</IonTitle>
+            <Settings />
+          </IonToolbar>
+        </IonHeader>
+
         <IonTabs>
           <IonRouterOutlet>
             <Route exact path="/tabLists">
@@ -83,17 +101,17 @@ const App: React.FC = () => {
 
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
-            <IonTabButton tab="tabToDo" href="/tabToDo">
-              <IonIcon color="my-dark" icon={list} />
-              <IonLabel color="my-dark">ToDo</IonLabel>
+            <IonTabButton tab="tabToDo" href="/tabToDo" onClick={() => {setTabTitle("ToDo")}}>
+              <IonIcon color={"dark-" + value} icon={list} />
+              <IonLabel color={"dark-" + value}>ToDo</IonLabel>
             </IonTabButton>
-            <IonTabButton tab="tabNotes" href="/tabNotes">
-              <IonIcon color="my-dark" icon={book} />
-              <IonLabel color="my-dark">Notes</IonLabel>
+            <IonTabButton tab="tabNotes" href="/tabNotes" onClick={() => {setTabTitle("Notes")}}>
+              <IonIcon color={"dark-" + value} icon={book} />
+              <IonLabel color={"dark-" + value}>Notes</IonLabel>
             </IonTabButton>
-            <IonTabButton tab="tabLists" href="/tabLists">
-              <IonIcon color="my-dark" icon={bagCheck} />
-              <IonLabel color="my-dark">Lists</IonLabel>
+            <IonTabButton tab="tabLists" href="/tabLists" onClick={() => {setTabTitle("Lists")}}>
+              <IonIcon color={"dark-" + value} icon={bagCheck} />
+              <IonLabel color={"dark-" + value}>Lists</IonLabel>
             </IonTabButton>
           </IonTabBar>
         </IonTabs>

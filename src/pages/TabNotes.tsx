@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
+import React from 'react'
 import {
   IonButtons,
   IonButton,
   IonHeader,
   IonContent,
   IonToolbar,
-  IonTitle,
   IonPage,
   IonItem,
   IonList,
@@ -25,8 +25,6 @@ import { OverlayEventDetail } from '@ionic/core/components';
 import './TabNotes.css';
 
 import { get, set } from '../data/Storage';
-
-import Settings from './SettingsPage';
 
 const InputModal = ({
   onDismiss,
@@ -211,23 +209,18 @@ function TabNodes() {
   }
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar color="my-dark">
-          <IonTitle color="dark">Notes</IonTitle>
-          <Settings />
-        </IonToolbar>
-      </IonHeader>
-      <IonContent color="light" className="fullscreen">
-        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton color="my-dark" onClick={() => openModal()}>
-            <IonIcon icon={add} />
-          </IonFabButton>
-        </IonFab>
-        <ListCards listCards={textValues} setListCards={setTextValues} />
-      </IonContent>
-    </IonPage>
-  );
+      <IonPage>
+        <IonToolbar></IonToolbar>
+        <IonContent color="light" className="fullscreen">
+          <IonFab vertical="bottom" horizontal="end" slot="fixed">
+            <IonFabButton color="my-dark" onClick={() => openModal()}>
+              <IonIcon icon={add} />
+            </IonFabButton>
+          </IonFab>
+          <ListCards listCards={textValues} setListCards={setTextValues} />
+        </IonContent>
+      </IonPage>
+      );
 }
 
 export default TabNodes;

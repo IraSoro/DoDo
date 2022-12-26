@@ -27,8 +27,6 @@ import './TabLists.css';
 
 import { get, set } from '../data/Storage';
 
-import Settings from './SettingsPage';
-
 import { OverlayEventDetail } from '@ionic/core/components';
 
 interface ElementObject {
@@ -554,18 +552,13 @@ function TabLists() {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="my-dark">
-          <Settings />
-          <IonTitle color="dark">Lists</IonTitle>
-          <AddingModal
-            listElem={lists}
-            setList={setList}
-          />
-
-        </IonToolbar>
-      </IonHeader>
-      <IonContent color="light">
+      {/* TODO: remove IonToolBar*/ }
+      <IonToolbar></IonToolbar>
+      <IonContent color="light" fullscreen>
+        <AddingModal
+          listElem={lists}
+          setList={setList}
+        />
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton id="add-modal" color="my-dark">
             <IonIcon icon={add} />

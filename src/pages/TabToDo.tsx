@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
   IonButton,
-  IonHeader,
   IonContent,
-  IonToolbar,
-  IonTitle,
   IonPage,
   IonItem,
   IonList,
@@ -16,14 +13,13 @@ import {
   IonCheckbox,
   IonFab,
   IonFabButton,
+  IonToolbar,
 } from '@ionic/react';
 import { create, close, add, trash, ellipsisHorizontalSharp } from 'ionicons/icons';
 
 import './TabToDo.css';
 
 import { get, set } from '../data/Storage';
-
-import Settings from './SettingsPage';
 
 interface ToDoObject {
   name: string,
@@ -260,12 +256,7 @@ function TabToDo() {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="my-dark">
-          <IonTitle color="dark">ToDo</IonTitle>
-          <Settings />
-        </IonToolbar>
-      </IonHeader>
+      <IonToolbar></IonToolbar>
       <IonContent color="light" fullscreen>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <AddButton
