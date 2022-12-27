@@ -37,7 +37,7 @@ const InputModal = ({
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader class="ion-no-border">
         <IonToolbar>
           <IonButton color={"dark-" + theme} slot="start" fill="clear" onClick={() => onDismiss(null, 'cancel')}>
             Cancel
@@ -80,7 +80,7 @@ const ModalEdit = (props: PropsEdit) => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader class="ion-no-border">
         <IonToolbar>
           <IonButtons slot="start">
             <IonButton color={"dark-" + theme} onClick={() => props.onDismiss(null, 'cancel')}>

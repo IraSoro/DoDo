@@ -73,7 +73,7 @@ const App: React.FC = () => {
       <IonApp>
         <IonReactRouter>
 
-          <IonHeader>
+          <IonHeader class="ion-no-border">
             <IonToolbar color={"dark-" + theme}>
               <IonTitle color="dark">{tabTitle}</IonTitle>
               <Settings />

@@ -148,7 +148,7 @@ const EditModal = (props: PropsEdit) => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader class="ion-no-border">
         <IonToolbar>
           <IonButton color={"dark-" + theme} slot="start" fill="clear" onClick={() => props.onDismiss(null, 'cancel')}>
             Cancel
@@ -472,7 +472,7 @@ const AddingModal = (props: PropsList) => {
 
   return (
     <IonModal ref={modal} trigger="add-modal" presentingElement={presentingElement!}>
-      <IonHeader>
+      <IonHeader class="ion-no-border">
         <IonToolbar>
           <IonButtons slot="start">
             <IonButton

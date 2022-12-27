@@ -27,7 +27,7 @@ const Settings = () => {
                 <IonIcon color="dark" icon={settings} />
             </IonButton>
             <IonModal isOpen={isOpen}>
-                <IonHeader>
+                <IonHeader class="ion-no-border">
                     <IonToolbar color={"dark-" + theme}>
                         <IonButtons slot="end">
                             <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>

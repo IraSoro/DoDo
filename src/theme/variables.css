@@ -260,3 +260,7 @@ button.alert-button.alert-button-green {
 button.alert-button.alert-button-pink {
   color: var(--ion-color-dark-pink);
 }
+
+ion-card {
+  box-shadow: none !important;
+}
