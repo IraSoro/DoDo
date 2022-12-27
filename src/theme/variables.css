@@ -244,3 +244,19 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-shade: var(--ion-color-light-blue-shade);
   --ion-color-tint: var(--ion-color-light-blue-tint);
 }
+
+button.alert-button.alert-button-orange {
+  color: var(--ion-color-dark-orange);
+}
+
+button.alert-button.alert-button-blue {
+  color: var(--ion-color-dark-blue);
+}
+
+button.alert-button.alert-button-green {
+  color: var(--ion-color-dark-green);
+}
+
+button.alert-button.alert-button-pink {
+  color: var(--ion-color-dark-pink);
+}

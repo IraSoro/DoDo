@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {
   IonButton,
   IonContent,
@@ -20,6 +20,7 @@ import { create, close, add, trash, ellipsisHorizontalSharp } from 'ionicons/ico
 import './TabToDo.css';
 
 import { get, set } from '../data/Storage';
+import { ThemeContext } from './theme-context';
 
 interface ToDoObject {
   name: string,
@@ -35,20 +36,23 @@ interface PropsListToDo {
 
 const AddButton = (props: PropsListToDo) => {
   const [presentAlert] = useIonAlert();
+  const theme = useContext(ThemeContext).theme;
 
   return (
     <IonFabButton
-      color="my-dark"
+      color={"dark-" + theme}
       onClick={() => presentAlert({
         header: 'Task enter',
         buttons: [
           {
             text: 'Cancel',
-            role: 'cancel'
+            role: 'cancel',
+            cssClass: "alert-button-" + theme,
           },
           {
             text: 'OK',
-            role: 'confirm'
+            role: 'confirm',
+            cssClass: "alert-button-" + theme,
           }
         ],
         inputs: [
@@ -100,6 +104,8 @@ const AddButton = (props: PropsListToDo) => {
 }
 
 const ToDoList = (props: PropsListToDo) => {
+  const theme = useContext(ThemeContext).theme;
+
   const [present] = useIonActionSheet();
   const [presentAlertDelete] = useIonAlert();
   const [presentAlertEdit] = useIonAlert();
@@ -118,14 +124,14 @@ const ToDoList = (props: PropsListToDo) => {
     }
 
     return (
-      <IonItem color="my-light" key={index} >
+      <IonItem color={"light-" + theme} key={index} >
         <IonReorder slot="start" />
         <IonLabel>
           <h2 style={{ textDecorationLine: lineTrough }}>{value.name}</h2>
           <p>{dateTime()}</p>
         </IonLabel>
         <IonCheckbox
-          color="my-dark"
+          color={"dark-" + theme}
           slot="start"
           checked={value.isDone}
           onIonChange={(e: CustomEvent) => {
@@ -148,9 +154,11 @@ const ToDoList = (props: PropsListToDo) => {
                     buttons: [
                       {
                         text: 'Cancel',
+                        cssClass: "alert-button-" + theme,
                       },
                       {
                         text: 'OK',
+                        cssClass: "alert-button-" + theme,
                         handler: () => {
                           props.listToDo.splice(index, 1);
                           props.setListToDo([...props.listToDo]);
@@ -168,11 +176,13 @@ const ToDoList = (props: PropsListToDo) => {
                     buttons: [
                       {
                         text: 'Cancel',
-                        role: 'cancel'
+                        role: 'cancel',
+                        cssClass: "alert-button-" + theme,
                       },
                       {
                         text: 'OK',
-                        role: 'confirm'
+                        role: 'confirm',
+                        cssClass: "alert-button-" + theme,
                       }
                     ],
                     inputs: [
@@ -221,6 +231,7 @@ const ToDoList = (props: PropsListToDo) => {
                 {
                   text: 'Cancel',
                   icon: close,
+                  cssClass: "alert-button-" + theme,
                 }
               ],
             })
