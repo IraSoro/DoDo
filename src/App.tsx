@@ -75,7 +75,7 @@ const App: React.FC = () => {
 
           <IonHeader class="ion-no-border">
             <IonToolbar color={"dark-" + theme}>
-              <IonTitle color="dark">{tabTitle}</IonTitle>
+              <IonTitle color={"light-" + theme}>{tabTitle}</IonTitle>
               <Settings />
             </IonToolbar>
           </IonHeader>
