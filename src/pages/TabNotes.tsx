@@ -17,6 +17,7 @@ import {
   IonTextarea,
   IonFab,
   IonFabButton,
+  IonTitle,
 } from '@ionic/react';
 
 import { create, close, add } from 'ionicons/icons';
@@ -27,7 +28,7 @@ import './TabNotes.css';
 import { get, set } from '../data/Storage';
 import { ThemeContext } from './theme-context';
 
-const InputModal = ({
+const AddModal = ({
   onDismiss,
 }: {
   onDismiss: (data?: string | null | undefined | number, role?: string) => void;
@@ -38,21 +39,36 @@ const InputModal = ({
   return (
     <IonPage>
       <IonHeader class="ion-no-border">
-        <IonToolbar>
-          <IonButton color={"dark-" + theme} slot="start" fill="clear" onClick={() => onDismiss(null, 'cancel')}>
-            Cancel
-          </IonButton>
-          <IonButton color={"dark-" + theme} slot="end" fill="clear" onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>
-            Confirm
+        <IonToolbar color={"dark-" + theme}>
+          <IonButton color={"light-" + theme} slot="start" fill="clear" onClick={() => onDismiss(null, 'cancel')}>
+            <IonIcon color={"light-" + theme} icon={close}></IonIcon>
           </IonButton>
         </IonToolbar>
       </IonHeader>
-      <IonContent color="light" className="ion-padding">
-        <IonCard>
-          <IonItem color={"light-" + theme}>
-            <IonTextarea ref={inputRef} cols={20} rows={25} placeholder="Your note" ></IonTextarea>
-          </IonItem>
-        </IonCard>
+      <IonContent fullscreen color={"dark-" + theme}>
+        <div id="rectangle-top">
+          <IonTitle color="my-light"><h2>Add Note</h2></IonTitle>
+        </div>
+        <div id="add-note-rectangle-top">
+        </div>
+        <div id="add-note-rectangle">
+          <IonList>
+            <IonCard>
+              <IonItem lines="none" color={"light-" + theme}>
+                <IonTextarea ref={inputRef} cols={100} rows={19} placeholder="Your note" ></IonTextarea>
+              </IonItem>
+            </IonCard>
+            <IonItem lines="none" >
+              <IonButton
+                class="save-button"
+                slot="end"
+                color={"dark-" + theme}
+                size="large"
+                onClick={() => onDismiss(inputRef.current?.value, 'confirm')}
+              >Save</IonButton>
+            </IonItem>
+          </IonList>
+        </div>
       </IonContent>
     </IonPage>
   );
@@ -126,7 +142,7 @@ const Card = (props: Props) => {
       <IonToolbar color={"dark-" + theme}>
         <IonButtons slot="secondary">
           <IonButton slot="end" fill="clear" onClick={() => editModal()}>
-            <IonIcon slot="icon-only" color="dark" icon={create} />
+            <IonIcon slot="icon-only" color={"light-" + theme} icon={create} />
           </IonButton>
           <IonButton slot="end" fill="clear" onClick={() => presentAlertDelete({
             header: "Delete note?",
@@ -148,7 +164,7 @@ const Card = (props: Props) => {
               }
             }
           })}>
-            <IonIcon color="dark" slot="icon-only" icon={close} />
+            <IonIcon color={"light-" + theme} slot="icon-only" icon={close} />
           </IonButton>
         </IonButtons>
       </IonToolbar>
@@ -196,12 +212,12 @@ function TabNodes() {
     });
   }, []);
 
-  const [present, dismiss] = useIonModal(InputModal, {
+  const [present, dismiss] = useIonModal(AddModal, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
   });
 
 
-  function openModal() {
+  function addModal() {
     present({
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === 'confirm') {
@@ -216,10 +232,10 @@ function TabNodes() {
   return (
     <IonPage>
       <IonToolbar></IonToolbar>
-      <IonContent color="light" className="fullscreen">
-        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton color={"dark-" + theme} onClick={() => openModal()}>
-            <IonIcon icon={add} />
+      <IonContent color="my-light" className="fullscreen">
+        <IonFab vertical="bottom" horizontal="center" slot="fixed">
+          <IonFabButton color={"dark-" + theme} onClick={() => addModal()}>
+            <IonIcon color="my-light" icon={add} />
           </IonFabButton>
         </IonFab>
         <ListCards listCards={textValues} setListCards={setTextValues} />
