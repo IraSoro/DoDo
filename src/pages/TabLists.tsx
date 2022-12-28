@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import {
   IonButtons,
   IonButton,
@@ -26,8 +26,7 @@ import { create, close, add, ellipsisVerticalSharp, trash, pencil } from 'ionico
 import './TabLists.css';
 
 import { get, set } from '../data/Storage';
-
-import Settings from './SettingsPage';
+import { ThemeContext } from './theme-context';
 
 import { OverlayEventDetail } from '@ionic/core/components';
 
@@ -72,9 +71,11 @@ const EditModal = (props: PropsEdit) => {
   const [presentAlertDelete] = useIonAlert();
   const [presentAlertEdit] = useIonAlert();
 
+  const theme = useContext(ThemeContext).theme;
+
   const Items = props.list.elements.map((value, index) => {
     return (
-      <IonItem color="my-light" key={index}>
+      <IonItem color={"light-" + theme} key={index}>
         <IonReorder slot="start" />
         <IonLabel>
           <h2>{value.name}</h2>
@@ -101,10 +102,12 @@ const EditModal = (props: PropsEdit) => {
                 {
                   text: 'Cancel',
                   role: 'cancel',
+                  cssClass: "alert-button-" + theme,
                 },
                 {
                   text: 'OK',
                   role: 'confirm',
+                  cssClass: "alert-button-" + theme,
                 },
               ],
               onDidDismiss: (e: CustomEvent) => {
@@ -123,12 +126,12 @@ const EditModal = (props: PropsEdit) => {
               {
                 text: 'Cancel',
                 role: 'cancel',
-                cssClass: 'alert-button',
+                cssClass: "alert-button-" + theme,
               },
               {
                 text: 'OK',
                 role: 'confirm',
-                cssClass: 'alert-button',
+                cssClass: "alert-button-" + theme,
                 handler: () => {
                   props.list.elements.splice(index, 1);
                   props.onEdit(props.list);
@@ -145,12 +148,12 @@ const EditModal = (props: PropsEdit) => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader class="ion-no-border">
         <IonToolbar>
-          <IonButton color="my-dark" slot="start" fill="clear" onClick={() => props.onDismiss(null, 'cancel')}>
+          <IonButton color={"dark-" + theme} slot="start" fill="clear" onClick={() => props.onDismiss(null, 'cancel')}>
             Cancel
           </IonButton>
-          <IonButton color="my-dark" slot="end" fill="clear" onClick={() => props.onDismiss(inputRef.current?.value, 'confirm')}>
+          <IonButton color={"dark-" + theme} slot="end" fill="clear" onClick={() => props.onDismiss(inputRef.current?.value, 'confirm')}>
             Confirm
           </IonButton>
         </IonToolbar>
@@ -161,7 +164,7 @@ const EditModal = (props: PropsEdit) => {
         </IonItem>
         <IonCard>
           <IonButton
-            color="my-dark"
+            color={"dark-" + theme}
             expand="block"
             fill="outline"
             onClick={() => presentAlert({
@@ -181,10 +184,12 @@ const EditModal = (props: PropsEdit) => {
                 {
                   text: 'Cancel',
                   role: 'cancel',
+                  cssClass: "alert-button-" + theme,
                 },
                 {
                   text: 'OK',
                   role: 'confirm',
+                  cssClass: "alert-button-" + theme,
                 },
               ],
               onDidDismiss: (e: CustomEvent) => {
@@ -209,15 +214,16 @@ const ItemListSetting = (props: PropItemSettings) => {
   ]);
 
   const lineTrough = textDecorationLines.get(props.item.isDone);
+  const theme = useContext(ThemeContext).theme;
 
   return (
-    <IonItem color="my-light">
+    <IonItem color={"light-" + theme}>
       <IonLabel>
         <h2 style={{ textDecorationLine: lineTrough }}>{props.item.name}</h2>
         <p>count: {props.item.count}</p>
       </IonLabel>
       <IonCheckbox
-        color="my-dark"
+        color={"dark-" + theme}
         slot="start"
         checked={props.item.isDone}
         onIonChange={(e: CustomEvent) => {
@@ -231,6 +237,7 @@ const ItemListSetting = (props: PropItemSettings) => {
 const ListSettings = (props: PropListSettings) => {
   const [present] = useIonActionSheet();
   const [presentAlertDelete] = useIonAlert();
+  const theme = useContext(ThemeContext).theme;
 
   const Elem = props.list.elements.map((value, i) => {
     return (
@@ -271,7 +278,7 @@ const ListSettings = (props: PropListSettings) => {
 
   return (
     <IonCard>
-      <IonToolbar color="my-dark">
+      <IonToolbar color={"dark-" + theme}>
         <IonTitle color="dark">{props.list.title}</IonTitle>
         <IonButtons slot="secondary">
           <IonButton
@@ -289,9 +296,11 @@ const ListSettings = (props: PropListSettings) => {
                       buttons: [
                         {
                           text: 'Cancel',
+                          cssClass: "alert-button-" + theme,
                         },
                         {
                           text: 'OK',
+                          cssClass: "alert-button-" + theme,
                           handler: () => {
                             props.onDelete();
                           }
@@ -363,6 +372,8 @@ const AddingModal = (props: PropsList) => {
   const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
   const inputRef = useRef<HTMLIonTextareaElement>(null);
 
+  const theme = useContext(ThemeContext).theme;
+
   useEffect(() => {
     setPresentingElement(page.current);
   }, []);
@@ -385,7 +396,7 @@ const AddingModal = (props: PropsList) => {
 
   const Elements = newList.elements.map((value, index) => {
     return (
-      <IonItem color="my-light" key={index}>
+      <IonItem color={"light-" + theme} key={index}>
         <IonReorder slot="start" />
         <IonLabel>
           <h2>{value.name}</h2>
@@ -412,10 +423,12 @@ const AddingModal = (props: PropsList) => {
                 {
                   text: 'Cancel',
                   role: 'cancel',
+                  cssClass: "alert-button-" + theme,
                 },
                 {
                   text: 'OK',
                   role: 'confirm',
+                  cssClass: "alert-button-" + theme,
                 },
               ],
               onDidDismiss: (e: CustomEvent) => {
@@ -437,12 +450,12 @@ const AddingModal = (props: PropsList) => {
                 {
                   text: 'Cancel',
                   role: 'cancel',
-                  cssClass: 'alert-button',
+                  cssClass: "alert-button-" + theme,
                 },
                 {
                   text: 'OK',
                   role: 'confirm',
-                  cssClass: 'alert-button',
+                  cssClass: "alert-button-" + theme,
                   handler: () => {
                     newList.elements.splice(index, 1);
                     setNewList(Object.assign(Object.create(newList), newList));
@@ -459,11 +472,11 @@ const AddingModal = (props: PropsList) => {
 
   return (
     <IonModal ref={modal} trigger="add-modal" presentingElement={presentingElement!}>
-      <IonHeader>
+      <IonHeader class="ion-no-border">
         <IonToolbar>
           <IonButtons slot="start">
             <IonButton
-              color='my-dark'
+              color={"dark-" + theme}
               onClick={() => {
                 setNewList({
                   title: "",
@@ -474,7 +487,7 @@ const AddingModal = (props: PropsList) => {
               }>Close</IonButton>
           </IonButtons>
           <IonButtons slot="end">
-            <IonButton color='my-dark' onClick={() => {
+            <IonButton color={"dark-" + theme} onClick={() => {
               newList.title = String(inputRef.current?.value);
               props.listElem.unshift(newList);
               props.setList([...props.listElem]);
@@ -498,7 +511,7 @@ const AddingModal = (props: PropsList) => {
 
         <IonCard>
           <IonButton
-            color="my-dark"
+            color={"dark-" + theme}
             expand="block"
             fill="outline"
             onClick={() => presentAlert({
@@ -518,10 +531,12 @@ const AddingModal = (props: PropsList) => {
                 {
                   text: 'Cancel',
                   role: 'cancel',
+                  cssClass: "alert-button-" + theme,
                 },
                 {
                   text: 'OK',
                   role: 'confirm',
+                  cssClass: "alert-button-" + theme,
                 },
               ],
               onDidDismiss: (e: CustomEvent) => {
@@ -543,6 +558,7 @@ const AddingModal = (props: PropsList) => {
 
 function TabLists() {
   const [lists, setList] = useState<ListObject[]>([]);
+  const theme = useContext(ThemeContext).theme;
 
   useEffect(() => {
     get("list").then(result => {
@@ -554,20 +570,15 @@ function TabLists() {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="my-dark">
-          <Settings />
-          <IonTitle color="dark">Lists</IonTitle>
-          <AddingModal
-            listElem={lists}
-            setList={setList}
-          />
-
-        </IonToolbar>
-      </IonHeader>
-      <IonContent color="light">
+      {/* TODO: remove IonToolBar*/}
+      <IonToolbar></IonToolbar>
+      <IonContent color="light" fullscreen>
+        <AddingModal
+          listElem={lists}
+          setList={setList}
+        />
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton id="add-modal" color="my-dark">
+          <IonFabButton id="add-modal" color={"dark-" + theme}>
             <IonIcon icon={add} />
           </IonFabButton>
         </IonFab>

@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
+import React from 'react'
 import {
   IonButtons,
   IonButton,
   IonHeader,
   IonContent,
   IonToolbar,
-  IonTitle,
   IonPage,
   IonItem,
   IonList,
@@ -25,8 +25,7 @@ import { OverlayEventDetail } from '@ionic/core/components';
 import './TabNotes.css';
 
 import { get, set } from '../data/Storage';
-
-import Settings from './SettingsPage';
+import { ThemeContext } from './theme-context';
 
 const InputModal = ({
   onDismiss,
@@ -34,22 +33,23 @@ const InputModal = ({
   onDismiss: (data?: string | null | undefined | number, role?: string) => void;
 }) => {
   const inputRef = useRef<HTMLIonTextareaElement>(null);
+  const theme = useContext(ThemeContext).theme;
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader class="ion-no-border">
         <IonToolbar>
-          <IonButton color="my-dark" slot="start" fill="clear" onClick={() => onDismiss(null, 'cancel')}>
+          <IonButton color={"dark-" + theme} slot="start" fill="clear" onClick={() => onDismiss(null, 'cancel')}>
             Cancel
           </IonButton>
-          <IonButton color="my-dark" slot="end" fill="clear" onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>
+          <IonButton color={"dark-" + theme} slot="end" fill="clear" onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>
             Confirm
           </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent color="light" className="ion-padding">
         <IonCard>
-          <IonItem color="my-light">
+          <IonItem color={"light-" + theme}>
             <IonTextarea ref={inputRef} cols={20} rows={25} placeholder="Your note" ></IonTextarea>
           </IonItem>
         </IonCard>
@@ -76,24 +76,25 @@ interface PropsEdit {
 
 const ModalEdit = (props: PropsEdit) => {
   const inputRef = useRef<HTMLIonTextareaElement>(null);
+  const theme = useContext(ThemeContext).theme;
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader class="ion-no-border">
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton color="my-dark" onClick={() => props.onDismiss(null, 'cancel')}>
+            <IonButton color={"dark-" + theme} onClick={() => props.onDismiss(null, 'cancel')}>
               Cancel
             </IonButton>
           </IonButtons>
           <IonButtons slot="end">
-            <IonButton color="my-dark" onClick={() => props.onDismiss(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
+            <IonButton color={"dark-" + theme} onClick={() => props.onDismiss(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent color="light" className="ion-padding">
         <IonCard>
-          <IonItem color="my-light">
+          <IonItem color={"light-" + theme}>
             <IonTextarea ref={inputRef} cols={20} rows={25} value={props.text} ></IonTextarea>
           </IonItem>
         </IonCard>
@@ -104,6 +105,7 @@ const ModalEdit = (props: PropsEdit) => {
 
 const Card = (props: Props) => {
   const [presentAlertDelete] = useIonAlert();
+  const theme = useContext(ThemeContext).theme;
 
   const [present, dismiss] = useIonModal(ModalEdit, {
     onDismiss: (data: string, role: string) => dismiss(data, role), text: props.text,
@@ -120,8 +122,8 @@ const Card = (props: Props) => {
   }
 
   return (
-    <IonCard color="my-light">
-      <IonToolbar color="my-dark">
+    <IonCard color={"light-" + theme}>
+      <IonToolbar color={"dark-" + theme}>
         <IonButtons slot="secondary">
           <IonButton slot="end" fill="clear" onClick={() => editModal()}>
             <IonIcon slot="icon-only" color="dark" icon={create} />
@@ -132,12 +134,12 @@ const Card = (props: Props) => {
               {
                 text: 'Cancel',
                 role: 'cancel',
-                cssClass: 'alert-button',
+                cssClass: "alert-button-" + theme,
               },
               {
                 text: 'OK',
                 role: 'confirm',
-                cssClass: 'alert-button',
+                cssClass: "alert-button-" + theme,
               }
             ],
             onDidDismiss: (e: CustomEvent) => {
@@ -184,6 +186,7 @@ const ListCards = (props: PropsListCards) => {
 
 function TabNodes() {
   const [textValues, setTextValues] = useState<string[]>([]);
+  const theme = useContext(ThemeContext).theme;
 
   useEffect(() => {
     get("notes").then(result => {
@@ -212,15 +215,10 @@ function TabNodes() {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="my-dark">
-          <IonTitle color="dark">Notes</IonTitle>
-          <Settings />
-        </IonToolbar>
-      </IonHeader>
+      <IonToolbar></IonToolbar>
       <IonContent color="light" className="fullscreen">
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton color="my-dark" onClick={() => openModal()}>
+          <IonFabButton color={"dark-" + theme} onClick={() => openModal()}>
             <IonIcon icon={add} />
           </IonFabButton>
         </IonFab>

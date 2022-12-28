@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     IonButton,
     IonHeader,
@@ -14,45 +14,12 @@ import {
     IonRadioGroup,
 } from '@ionic/react';
 import { settings } from 'ionicons/icons';
-
-import { set } from '../data/Storage';
+import { ThemeContext } from './theme-context';
 
 const Settings = () => {
 
-    const toggleGreenMode = () => {
-        document.body.classList.toggle("orange", false);
-        document.body.classList.toggle("blue", false);
-        document.body.classList.toggle("pink", false);
-        document.body.classList.toggle("green", true);
-        set("theme", "green");
-    };
-    const toggleBlueMode = () => {
-        document.body.classList.toggle("orange", false);
-        document.body.classList.toggle("green", false);
-        document.body.classList.toggle("pink", false);
-        document.body.classList.toggle("blue", true);
-        set("theme", "blue");
-    };
-    const toggleOrangeMode = () => {
-        document.body.classList.toggle("green", false);
-        document.body.classList.toggle("blue", false);
-        document.body.classList.toggle("pink", false);
-        document.body.classList.toggle("orange", true);
-        set("theme", "orange");
-    };
-    const togglePinkMode = () => {
-        document.body.classList.toggle("green", false);
-        document.body.classList.toggle("blue", false);
-        document.body.classList.toggle("orange", false);
-        document.body.classList.toggle("pink", true);
-        set("theme", "pink");
-    };
-
     const [isOpen, setIsOpen] = useState(false);
-
-    function getTheme() {
-        return document.body.classList[1];
-    }
+    const { theme, toggleTheme } = useContext(ThemeContext);
 
     return (
         <>
@@ -60,37 +27,37 @@ const Settings = () => {
                 <IonIcon color="dark" icon={settings} />
             </IonButton>
             <IonModal isOpen={isOpen}>
-                <IonHeader>
-                    <IonToolbar color="my-dark">
+                <IonHeader class="ion-no-border">
+                    <IonToolbar color={"dark-" + theme}>
                         <IonButtons slot="end">
                             <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
                         </IonButtons>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent className="ion-padding">
-                    <IonLabel color="my-dark">
+                    <IonLabel color={"dark-" + theme}>
                         <h1>Theme</h1>
                     </IonLabel>
                     <IonList>
-                        <IonRadioGroup color="my-dark" allowEmptySelection={true} value={getTheme()}>
+                        <IonRadioGroup allowEmptySelection={true} value={theme}>
                             <IonItem>
                                 <IonLabel>Green</IonLabel>
-                                <IonRadio slot="end" value="green" onClick={toggleGreenMode}></IonRadio>
+                                <IonRadio color="dark-green" slot="end" value="green" onClick={() => { toggleTheme("green") }}></IonRadio>
                             </IonItem>
 
                             <IonItem>
                                 <IonLabel>Blue</IonLabel>
-                                <IonRadio slot="end" value="blue" onClick={toggleBlueMode}></IonRadio>
+                                <IonRadio color="dark-blue" slot="end" value="blue" onClick={() => { toggleTheme("blue") }}></IonRadio>
                             </IonItem>
 
                             <IonItem>
                                 <IonLabel>Orange</IonLabel>
-                                <IonRadio slot="end" value="orange" onClick={toggleOrangeMode}></IonRadio>
+                                <IonRadio color="dark-orange" slot="end" value="orange" onClick={() => { toggleTheme("orange") }}></IonRadio>
                             </IonItem>
 
                             <IonItem>
                                 <IonLabel>Pink</IonLabel>
-                                <IonRadio slot="end" value="pink" onClick={togglePinkMode}></IonRadio>
+                                <IonRadio color="dark-pink" slot="end" value="pink" onClick={() => { toggleTheme("pink") }}></IonRadio>
                             </IonItem>
                         </IonRadioGroup>
                     </IonList>
