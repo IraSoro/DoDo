@@ -16,7 +16,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { list, book, bagCheck } from 'ionicons/icons';
+import { list, book } from 'ionicons/icons';
 
 import TabLists from './pages/TabLists';
 import TabToDo from './pages/TabToDo';
@@ -46,7 +46,7 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [tabTitle, setTabTitle] = useState("ToDo");
+  const [tabTitle, setTabTitle] = useState("Notes");
   const [theme, updateTheme] = useState("green");
 
   function toggleTheme(newTheme: string) {
@@ -95,7 +95,7 @@ const App: React.FC = () => {
               </Route>
 
               <Route exact path="/">
-                <Redirect to="/tabToDo" />
+                <Redirect to="/tabNotes" />
               </Route>
 
               <Route exact path="/scheduler/">
@@ -103,7 +103,7 @@ const App: React.FC = () => {
               </Route>
 
             </IonRouterOutlet>
-            <IonTabBar slot="bottom">
+            <IonTabBar class={theme} slot="bottom">
               <IonTabButton tab="tabToDo" href="/tabToDo" onClick={() => { setTabTitle("ToDo") }}>
                 <IonIcon color={"dark-" + theme} icon={list} />
                 <IonLabel color={"dark-" + theme}>ToDo</IonLabel>
@@ -111,10 +111,6 @@ const App: React.FC = () => {
               <IonTabButton tab="tabNotes" href="/tabNotes" onClick={() => { setTabTitle("Notes") }}>
                 <IonIcon color={"dark-" + theme} icon={book} />
                 <IonLabel color={"dark-" + theme}>Notes</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="tabLists" href="/tabLists" onClick={() => { setTabTitle("Lists") }}>
-                <IonIcon color={"dark-" + theme} icon={bagCheck} />
-                <IonLabel color={"dark-" + theme}>Lists</IonLabel>
               </IonTabButton>
             </IonTabBar>
           </IonTabs>

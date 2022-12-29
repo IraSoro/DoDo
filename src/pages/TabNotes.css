@@ -35,3 +35,21 @@
     --box-shadow: none !important;
     --color: #ffffff;
 }
+
+.note-card-orange {
+    border: 2px rgb(var(--ion-color-dark-orange-rgb)) solid;
+}
+
+.note-card-blue {
+    border: 2px rgb(var(--ion-color-dark-blue-rgb)) solid;
+}
+
+.note-card-green {
+    border: 2px rgb(var(--ion-color-dark-green-rgb)) solid;
+}
+
+.note-card-pink {
+    border: 2px rgb(var(--ion-color-dark-pink-rgb)) solid;
+}
+
+

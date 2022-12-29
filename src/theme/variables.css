@@ -275,8 +275,20 @@ ion-list {
   --ion-item-background: transparent;
 }
 
-ion-tab-bar {
-  border: 0;
+ion-tab-bar.orange {
+  border-top: 2px rgb(var(--ion-color-dark-orange-rgb)) solid;
+}
+
+ion-tab-bar.blue {
+  border-top: 2px rgb(var(--ion-color-dark-blue-rgb)) solid;
+}
+
+ion-tab-bar.green {
+  border-top: 2px rgb(var(--ion-color-dark-green-rgb)) solid;
+}
+
+ion-tab-bar.pink {
+  border-top: 2px rgb(var(--ion-color-dark-pink-rgb)) solid;
 }
 
 ion-button {

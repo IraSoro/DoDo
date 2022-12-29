@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useContext } from 'react';
 import React from 'react'
 import {
-  IonButtons,
   IonButton,
   IonHeader,
   IonContent,
@@ -18,9 +17,10 @@ import {
   IonFab,
   IonFabButton,
   IonTitle,
+  useIonActionSheet,
 } from '@ionic/react';
 
-import { create, close, add } from 'ionicons/icons';
+import { create, close, add, trash } from 'ionicons/icons';
 import { OverlayEventDetail } from '@ionic/core/components';
 
 import './TabNotes.css';
@@ -53,7 +53,7 @@ const AddModal = ({
         </div>
         <div id="add-note-rectangle">
           <IonList>
-            <IonCard>
+            <IonCard class={"note-card-" + theme}>
               <IonItem lines="none" color={"light-" + theme}>
                 <IonTextarea ref={inputRef} cols={100} rows={19} placeholder="Your note" ></IonTextarea>
               </IonItem>
@@ -111,7 +111,7 @@ const EditModal = (props: PropsEdit) => {
         </div>
         <div id="add-note-rectangle">
           <IonList>
-            <IonCard>
+            <IonCard class={"note-card-" + theme}>
               <IonItem lines="none" color={"light-" + theme}>
                 <IonTextarea ref={inputRef} cols={100} rows={19} value={props.text} ></IonTextarea>
               </IonItem>
@@ -135,6 +135,7 @@ const EditModal = (props: PropsEdit) => {
 const Card = (props: Props) => {
   const [presentAlertDelete] = useIonAlert();
   const theme = useContext(ThemeContext).theme;
+  const [presentSetting] = useIonActionSheet();
 
   const [present, dismiss] = useIonModal(EditModal, {
     onDismiss: (data: string, role: string) => dismiss(data, role), text: props.text,
@@ -151,36 +152,46 @@ const Card = (props: Props) => {
   }
 
   return (
-    <IonCard color={"light-" + theme}>
-      <IonToolbar color={"dark-" + theme}>
-        <IonButtons slot="secondary">
-          <IonButton slot="end" fill="clear" onClick={() => editModal()}>
-            <IonIcon slot="icon-only" color={"light-" + theme} icon={create} />
-          </IonButton>
-          <IonButton slot="end" fill="clear" onClick={() => presentAlertDelete({
-            header: "Delete note?",
-            buttons: [
-              {
-                text: 'Cancel',
-                role: 'cancel',
-                cssClass: "alert-button-" + theme,
-              },
-              {
-                text: 'OK',
-                role: 'confirm',
-                cssClass: "alert-button-" + theme,
+    <IonCard class={"note-card-" + theme} color={"light-" + theme} onClick={() => {
+      presentSetting({
+        buttons: [
+          {
+            text: 'Delete',
+            icon: trash,
+            handler: () => presentAlertDelete({
+              header: "Delete note?",
+              buttons: [
+                {
+                  text: 'Cancel',
+                  role: 'cancel',
+                  cssClass: "alert-button-" + theme,
+                },
+                {
+                  text: 'OK',
+                  role: 'confirm',
+                  cssClass: "alert-button-" + theme,
+                }
+              ],
+              onDidDismiss: (e: CustomEvent) => {
+                if (e.detail.role === 'confirm') {
+                  props.onDelete();
+                }
               }
-            ],
-            onDidDismiss: (e: CustomEvent) => {
-              if (e.detail.role === 'confirm') {
-                props.onDelete();
-              }
-            }
-          })}>
-            <IonIcon color={"light-" + theme} slot="icon-only" icon={close} />
-          </IonButton>
-        </IonButtons>
-      </IonToolbar>
+            })
+          },
+          {
+            text: 'Edit',
+            icon: create,
+            handler: () => editModal(),
+          },
+          {
+            text: 'Cancel',
+            icon: close,
+            cssClass: "alert-button-" + theme,
+          },
+        ],
+      })
+    }}>
       <IonCardContent>{props.text}</IonCardContent>
     </IonCard>
   );
