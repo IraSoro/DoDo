@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import {
   IonButton,
   IonContent,
@@ -14,8 +14,15 @@ import {
   IonFab,
   IonFabButton,
   IonToolbar,
+  IonCard,
+  IonModal,
+  IonButtons,
+  IonHeader,
+  IonTitle,
+  IonInput,
+  IonDatetime,
 } from '@ionic/react';
-import { create, close, add, trash, ellipsisHorizontalSharp } from 'ionicons/icons';
+import { create, close, add, trash, ellipsisHorizontalSharp, calendarClear, timeSharp } from 'ionicons/icons';
 
 import './TabToDo.css';
 
@@ -32,75 +39,6 @@ interface ToDoObject {
 interface PropsListToDo {
   listToDo: ToDoObject[];
   setListToDo: (newListToDo: ToDoObject[]) => void;
-}
-
-const AddButton = (props: PropsListToDo) => {
-  const [presentAlert] = useIonAlert();
-  const theme = useContext(ThemeContext).theme;
-
-  return (
-    <IonFabButton
-      color={"dark-" + theme}
-      onClick={() => presentAlert({
-        header: 'Task enter',
-        buttons: [
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            cssClass: "alert-button-" + theme,
-          },
-          {
-            text: 'OK',
-            role: 'confirm',
-            cssClass: "alert-button-" + theme,
-          }
-        ],
-        inputs: [
-          {
-            type: 'textarea',
-            placeholder: 'Task',
-          },
-          {
-            type: 'date',
-          },
-          {
-            type: 'time',
-          }
-        ],
-        onDidDismiss: (e: CustomEvent) => {
-          if (e.detail.role === 'confirm' && e.detail.data.values[0]) {
-            props.listToDo.unshift({
-              name: e.detail.data.values[0],
-              isDone: false,
-              date: e.detail.data.values[1],
-              time: e.detail.data.values[2]
-            });
-            props.listToDo.sort(function (a, b) {
-              if (a.time > b.time) {
-                return 1;
-              }
-              if (a.time < b.time) {
-                return -1;
-              }
-              return 0;
-            });
-            props.listToDo.sort(function (a, b) {
-              if (a.date > b.date) {
-                return 1;
-              }
-              if (a.date < b.date) {
-                return -1;
-              }
-              return 0;
-            });
-            props.setListToDo([...props.listToDo]);
-            set('ToDo', props.listToDo);
-          }
-        }
-      })}>
-      <IonIcon icon={add} />
-    </IonFabButton>
-  )
 }
 
 const ToDoList = (props: PropsListToDo) => {
@@ -254,8 +192,178 @@ const ToDoList = (props: PropsListToDo) => {
   );
 }
 
+const AddingModal = (props: PropsListToDo) => {
+  const addingModal = useRef<HTMLIonModalElement>(null);
+  const theme = useContext(ThemeContext).theme;
+
+  const [setting, setSetting] = useState<ToDoObject>(
+    {
+      name: "",
+      isDone: false,
+      date: "",
+      time: ""
+    });
+
+  // for date-modal
+  const dateModal = useRef<HTMLIonModalElement>(null);
+  const [date, setDate] = useState("");
+  const datetime = useRef<null | HTMLIonDatetimeElement>(null);
+  const inputDate = useRef<HTMLIonInputElement>(null);
+  const confirmDate = () => {
+    datetime.current?.confirm();
+    dateModal.current?.dismiss(inputDate.current?.value, 'confirm');
+  }
+
+  //for time modal
+  const timeModal = useRef<HTMLIonModalElement>(null);
+  const [time, setTime] = useState("");
+  const onlyTime = useRef<null | HTMLIonDatetimeElement>(null);
+  const inputTime = useRef<HTMLIonInputElement>(null);
+  const confirmTime = () => {
+    onlyTime.current?.confirm();
+    timeModal.current?.dismiss(inputTime.current?.value, 'confirm');
+  }
+
+  return (
+    <IonModal ref={addingModal} trigger="add-modal">
+      <IonHeader class="ion-no-border">
+        <IonToolbar color={"dark-" + theme}>
+          <IonButton color={"light-" + theme} slot="start" fill="clear" onClick={() => addingModal.current?.dismiss()}>
+            <IonIcon color={"light-" + theme} icon={close}></IonIcon>
+          </IonButton>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent fullscreen color={"dark-" + theme}>
+        <div id="add-rectangle-title">
+          <IonTitle color="my-light"><h2>Add ToDo</h2></IonTitle>
+        </div>
+        <div id="add-rectangle-top">
+        </div>
+        <div id="add-rectangle">
+          <IonList>
+            <IonCard class={"add-card-" + theme}>
+              {/* todo name */}
+              <IonItem>
+                <IonInput
+                  placeholder="to do"
+                  onIonChange={e => {
+                    if (e.detail.value) {
+                      setting.name = e.detail.value.toString();
+                    }
+                  }}
+                ></IonInput>
+              </IonItem>
+
+              {/* todo date */}
+              <IonItem id="choose-date">
+                <IonLabel color={"dark-" + theme}>The date</IonLabel>
+                <IonIcon slot="end" color={"dark-" + theme} size="small" icon={calendarClear}></IonIcon>
+                <p>{date}</p>
+                <IonModal
+                  id="choose-date-modal"
+                  ref={dateModal}
+                  trigger="choose-date"
+                >
+                  <IonDatetime
+                    ref={datetime}
+                    color={"dark-" + theme}
+                    presentation="date"
+                    id="datetime"
+                    locale="en-GB"
+                    value={setting.date}
+                    onIonChange={(e) => {
+                      if (e.detail.value) {
+                        setDate(e.detail.value.toString().slice(0, 10));
+                        setting.date = e.detail.value.toString().slice(0, 10);
+                        setSetting(setting);
+                      }
+                    }}
+                  >
+                    <IonButtons slot="buttons">
+                      <IonButton color={"dark-" + theme} onClick={confirmDate}>Confirm</IonButton>
+                    </IonButtons>
+                  </IonDatetime>
+                </IonModal>
+              </IonItem>
+
+              {/* todo time */}
+              <IonItem id="choose-time">
+                <IonLabel color={"dark-" + theme}>The time</IonLabel>
+                <IonIcon slot="end" color={"dark-" + theme} size="small" icon={timeSharp}></IonIcon>
+                <p>{time}</p>
+                <IonModal
+                  id="choose-date-modal"
+                  ref={timeModal}
+                  trigger="choose-time"
+                >
+                  <IonDatetime
+                    ref={onlyTime}
+                    color={"dark-" + theme}
+                    presentation="time"
+                    id="time"
+                    locale="en-GB"
+                    onIonChange={(e) => {
+                      if (e.detail.value) {
+                        setTime(e.detail.value.toString().slice(11, 16));
+                        setting.time = e.detail.value.toString().slice(11, 16);
+                        setSetting(setting);
+                      }
+                    }}
+                  >
+                    <IonButtons slot="buttons">
+                      <IonButton color={"dark-" + theme} onClick={confirmTime}>Confirm</IonButton>
+                    </IonButtons>
+                  </IonDatetime>
+                </IonModal>
+              </IonItem>
+
+            </IonCard>
+            <IonItem lines="none" >
+              <IonButton
+                class="save-button"
+                slot="end"
+                color={"dark-" + theme}
+                size="large"
+                onClick={() => {
+                  if (setting.name) {
+                    props.listToDo.unshift(setting);
+                    props.listToDo.sort(function (a, b) {
+                      if (a.time > b.time) {
+                        return 1;
+                      }
+                      if (a.time < b.time) {
+                        return -1;
+                      }
+                      return 0;
+                    });
+                    props.listToDo.sort(function (a, b) {
+                      if (a.date > b.date) {
+                        return 1;
+                      }
+                      if (a.date < b.date) {
+                        return -1;
+                      }
+                      return 0;
+                    });
+                    props.setListToDo([...props.listToDo]);
+                    set('ToDo', props.listToDo);
+                  }
+                  setDate("");
+                  setTime("");
+                  addingModal.current?.dismiss();
+                }}
+              >Save</IonButton>
+            </IonItem>
+          </IonList>
+        </div>
+      </IonContent>
+    </IonModal>
+  )
+}
+
 function TabToDo() {
   const [listToDo, setListToDo] = useState<ToDoObject[]>([]);
+  const theme = useContext(ThemeContext).theme;
 
   useEffect(() => {
     get("ToDo").then(result => {
@@ -265,20 +373,26 @@ function TabToDo() {
     });
   }, []);
 
+
   return (
     <IonPage>
       <IonToolbar></IonToolbar>
-      <IonContent color="light" fullscreen>
-        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <AddButton
+      <IonContent color="my-light" fullscreen>
+        <IonCard class={"todo-card-" + theme}>
+          <ToDoList
             listToDo={listToDo}
             setListToDo={setListToDo}
           />
-        </IonFab>
-        <ToDoList
+        </IonCard>
+        <AddingModal
           listToDo={listToDo}
           setListToDo={setListToDo}
         />
+        <IonFab vertical="bottom" horizontal="center" slot="fixed">
+          <IonFabButton id="add-modal" color={"dark-" + theme}>
+            <IonIcon color="my-light" icon={add} />
+          </IonFabButton>
+        </IonFab>
       </IonContent>
     </IonPage>
   );

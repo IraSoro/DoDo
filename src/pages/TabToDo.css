@@ -1,0 +1,29 @@
+.todo-card-orange {
+    height: 96%;
+    border: 2px rgb(var(--ion-color-dark-orange-rgb)) solid;
+}
+
+.todo-card-blue {
+    height: 96%;
+    border: 2px rgb(var(--ion-color-dark-blue-rgb)) solid;
+}
+
+.todo-card-green {
+    height: 96%;
+    border: 2px rgb(var(--ion-color-dark-green-rgb)) solid;
+}
+
+.todo-card-pink {
+    height: 96%;
+    border: 2px rgb(var(--ion-color-dark-pink-rgb)) solid;
+}
+
+ion-modal#choose-date-modal {
+    --width: fit-content;
+    --min-width: 250px;
+    --height: fit-content;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+}
+
+
