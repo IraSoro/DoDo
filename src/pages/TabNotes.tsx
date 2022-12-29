@@ -46,14 +46,14 @@ const AddModal = ({
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen color={"dark-" + theme}>
-        <div id="rectangle-top">
+        <div id="add-rectangle-title">
           <IonTitle color="my-light"><h2>Add Note</h2></IonTitle>
         </div>
-        <div id="add-note-rectangle-top">
+        <div id="add-rectangle-top">
         </div>
-        <div id="add-note-rectangle">
+        <div id="add-rectangle">
           <IonList>
-            <IonCard class={"note-card-" + theme}>
+            <IonCard class={"add-card-" + theme}>
               <IonItem lines="none" color={"light-" + theme}>
                 <IonTextarea ref={inputRef} cols={100} rows={19} placeholder="Your note" ></IonTextarea>
               </IonItem>
@@ -104,14 +104,14 @@ const EditModal = (props: PropsEdit) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen color={"dark-" + theme}>
-        <div id="rectangle-top">
+        <div id="add-rectangle-title">
           <IonTitle color="my-light"><h2>Edit Note</h2></IonTitle>
         </div>
-        <div id="add-note-rectangle-top">
+        <div id="add-rectangle-top">
         </div>
-        <div id="add-note-rectangle">
+        <div id="add-rectangle">
           <IonList>
-            <IonCard class={"note-card-" + theme}>
+            <IonCard class={"add-card-" + theme}>
               <IonItem lines="none" color={"light-" + theme}>
                 <IonTextarea ref={inputRef} cols={100} rows={19} value={props.text} ></IonTextarea>
               </IonItem>
@@ -152,7 +152,7 @@ const Card = (props: Props) => {
   }
 
   return (
-    <IonCard class={"note-card-" + theme} color={"light-" + theme} onClick={() => {
+    <IonCard class={"add-card-" + theme} color={"light-" + theme} onClick={() => {
       presentSetting({
         buttons: [
           {

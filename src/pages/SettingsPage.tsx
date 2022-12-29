@@ -34,7 +34,7 @@ const Settings = () => {
                 <IonHeader class="ion-no-border">
                     <IonToolbar color={"dark-" + theme}>
                         <IonButtons slot="end">
-                            <IonButton color="my-light" onClick={() => setIsOpen(false)}>Close</IonButton>
+                            <IonButton color="my-light" onClick={() => setIsOpen(false)}>CLOSE</IonButton>
                         </IonButtons>
                     </IonToolbar>
                 </IonHeader>
@@ -61,7 +61,7 @@ const Settings = () => {
                                         <IonRadio color="dark-orange" slot="end" value="orange" onClick={() => { toggleTheme("orange") }}></IonRadio>
                                     </IonItem>
 
-                                    <IonItem>
+                                    <IonItem lines="none">
                                         <IonLabel>Pink</IonLabel>
                                         <IonRadio color="dark-pink" slot="end" value="pink" onClick={() => { toggleTheme("pink") }}></IonRadio>
                                     </IonItem>
