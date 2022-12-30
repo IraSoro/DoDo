@@ -309,7 +309,7 @@ const Item = (props: PropsItem) => {
         }
       >
         <IonIcon
-          color="dark"
+          color={"dark-" + theme}
           slot="icon-only"
           icon={ellipsisHorizontalSharp}
         />

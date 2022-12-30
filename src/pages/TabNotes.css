@@ -1,3 +1,10 @@
 
 
 
+ion-card-header{
+    height: 5px;
+}
+
+.setting-note-button{
+    transform: translate(-45%, -50%);
+}

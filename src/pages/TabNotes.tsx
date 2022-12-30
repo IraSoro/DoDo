@@ -18,9 +18,10 @@ import {
   IonFabButton,
   IonTitle,
   useIonActionSheet,
+  IonCardHeader,
 } from '@ionic/react';
 
-import { create, close, add, trash } from 'ionicons/icons';
+import { create, close, add, trash, ellipsisHorizontal } from 'ionicons/icons';
 import { OverlayEventDetail } from '@ionic/core/components';
 
 import './TabNotes.css';
@@ -152,48 +153,62 @@ const Card = (props: Props) => {
   }
 
   return (
-    <IonCard class={"add-card-" + theme} color={"light-" + theme} onClick={() => {
-      presentSetting({
-        buttons: [
-          {
-            text: 'Delete',
-            icon: trash,
-            handler: () => presentAlertDelete({
-              header: "Delete note?",
-              buttons: [
-                {
-                  text: 'Cancel',
-                  role: 'cancel',
-                  cssClass: "alert-button-" + theme,
-                },
-                {
-                  text: 'OK',
-                  role: 'confirm',
-                  cssClass: "alert-button-" + theme,
-                }
-              ],
-              onDidDismiss: (e: CustomEvent) => {
-                if (e.detail.role === 'confirm') {
-                  props.onDelete();
-                }
-              }
-            })
-          },
-          {
-            text: 'Edit',
-            icon: create,
-            handler: () => editModal(),
-          },
-          {
-            text: 'Cancel',
-            icon: close,
-            cssClass: "alert-button-" + theme,
-          },
-        ],
-      })
-    }}>
-      <IonCardContent>{props.text}</IonCardContent>
-    </IonCard>
+    <>
+      <IonCard class={"add-card-" + theme} color={"light-" + theme}>
+        <IonCardHeader>
+          <IonButton
+            fill="clear"
+            class="setting-note-button"
+            onClick={() => {
+              presentSetting({
+                buttons: [
+                  {
+                    text: 'Delete',
+                    icon: trash,
+                    handler: () => presentAlertDelete({
+                      header: "Delete note?",
+                      buttons: [
+                        {
+                          text: 'Cancel',
+                          role: 'cancel',
+                          cssClass: "alert-button-" + theme,
+                        },
+                        {
+                          text: 'OK',
+                          role: 'confirm',
+                          cssClass: "alert-button-" + theme,
+                        }
+                      ],
+                      onDidDismiss: (e: CustomEvent) => {
+                        if (e.detail.role === 'confirm') {
+                          props.onDelete();
+                        }
+                      }
+                    })
+                  },
+                  {
+                    text: 'Edit',
+                    icon: create,
+                    handler: () => editModal(),
+                  },
+                  {
+                    text: 'Cancel',
+                    icon: close,
+                    cssClass: "alert-button-" + theme,
+                  },
+                ],
+              })
+            }}
+          >
+            <IonIcon
+              color={"dark-" + theme}
+              icon={ellipsisHorizontal}
+            ></IonIcon>
+          </IonButton>
+        </IonCardHeader>
+        <IonCardContent>{props.text}</IonCardContent>
+      </IonCard>
+    </>
   );
 }
 
