@@ -26,4 +26,18 @@ ion-modal#choose-date-modal {
     --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
 }
 
+ion-item.green-underline {
+    --ion-color-primary: rgb(var(--ion-color-dark-green-rgb));
+}
 
+ion-item.blue-underline {
+    --ion-color-primary: rgb(var(--ion-color-dark-blue-rgb));
+}
+
+ion-item.orange-underline {
+    --ion-color-primary: rgb(var(--ion-color-dark-orange-rgb));
+}
+
+ion-item.pink-underline {
+    --ion-color-primary: rgb(var(--ion-color-dark-pink-rgb));
+}

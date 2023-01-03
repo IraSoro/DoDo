@@ -17,12 +17,12 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-my-dark-shade: #82a89b;
   --ion-color-my-dark-tint: #9fc5b8;
 
-  --ion-color-my-light: #FFFFFB;
+  --ion-color-my-light: #ffffff;
   --ion-color-my-light-rgb: 255, 255, 251;
   --ion-color-my-light-contrast: #000000;
   --ion-color-my-light-contrast-rgb: 0, 0, 0;
-  --ion-color-my-light-shade: #e0e0dd;
-  --ion-color-my-light-tint: #fffffb;
+  --ion-color-my-light-shade: #e0e0e0;
+  --ion-color-my-light-tint: #ffffff;
 
   /** primary **/
   --ion-color-primary: #94BFB0;

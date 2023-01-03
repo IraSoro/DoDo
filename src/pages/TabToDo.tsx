@@ -105,7 +105,7 @@ const EditModal = (props: PropsEdit) => {
           <IonList>
             <IonCard class={"add-card-" + theme}>
               {/* todo name */}
-              <IonItem>
+              <IonItem class={theme + "-underline"}>
                 <IonInput
                   value={setting.name}
                   onIonChange={e => {
@@ -387,7 +387,7 @@ const AddingModal = (props: PropsListToDo) => {
           <IonList>
             <IonCard class={"add-card-" + theme}>
               {/* todo name */}
-              <IonItem>
+              <IonItem class={theme + "-underline"}>
                 <IonInput
                   placeholder="to do"
                   onIonChange={e => {

@@ -46,7 +46,7 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [tabTitle, setTabTitle] = useState("Notes");
+  const [tabTitle, setTabTitle] = useState("ToDo");
   const [theme, updateTheme] = useState("green");
 
   function toggleTheme(newTheme: string) {
@@ -95,7 +95,7 @@ const App: React.FC = () => {
               </Route>
 
               <Route exact path="/">
-                <Redirect to="/tabNotes" />
+                <Redirect to="/tabToDo" />
               </Route>
 
               <Route exact path="/scheduler/">
