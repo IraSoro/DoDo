@@ -18,7 +18,6 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { list, book } from 'ionicons/icons';
 
-import TabLists from './pages/TabLists';
 import TabToDo from './pages/TabToDo';
 import TabNotes from './pages/TabNotes';
 import Settings from './pages/SettingsPage';
@@ -82,10 +81,6 @@ const App: React.FC = () => {
 
           <IonTabs>
             <IonRouterOutlet>
-              <Route exact path="/tabLists">
-                <TabLists />
-              </Route>
-
               <Route exact path="/tabToDo">
                 <TabToDo />
               </Route>
