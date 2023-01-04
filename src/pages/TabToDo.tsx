@@ -21,6 +21,7 @@ import {
   IonTitle,
   IonInput,
   IonDatetime,
+  IonCardContent,
 } from '@ionic/react';
 import { create, close, add, trash, ellipsisHorizontalSharp, calendarClear, timeSharp } from 'ionicons/icons';
 
@@ -48,7 +49,6 @@ interface PropsEdit {
 
   listToDo: ToDoObject[];
   index: number;
-  setListToDo: (newListToDo: ToDoObject[]) => void;
 }
 
 interface PropsItem {
@@ -188,34 +188,14 @@ const EditModal = (props: PropsEdit) => {
                 color={"dark-" + theme}
                 size="large"
                 onClick={() => {
-                  props.listToDo[props.index].name = name;
-                  props.listToDo[props.index].date = date;
-                  props.listToDo[props.index].time = time;
-                  props.setIsOpen(false);
-
-                  // sort
-                  // if (name) {
-                  //   props.listToDo.sort(function (a, b) {
-                  //     if (a.time > b.time) {
-                  //       return 1;
-                  //     }
-                  //     if (a.time < b.time) {
-                  //       return -1;
-                  //     }
-                  //     return 0;
-                  //   });
-                  //   props.listToDo.sort(function (a, b) {
-                  //     if (a.date > b.date) {
-                  //       return 1;
-                  //     }
-                  //     if (a.date < b.date) {
-                  //       return -1;
-                  //     }
-                  //     return 0;
-                  //   });
-                  // }
-                  // props.setListToDo([...props.listToDo]);
-                  set('ToDo', props.listToDo);
+                  if (name) {
+                    props.listToDo[props.index].name = name;
+                    props.listToDo[props.index].date = date;
+                    props.listToDo[props.index].time = time;
+                    props.setIsOpen(false);
+                    set('ToDo', props.listToDo);
+                    set("sort", true);
+                  }
                 }}
               >Save</IonButton>
             </IonItem>
@@ -270,7 +250,6 @@ const Item = (props: PropsItem) => {
         setIsOpen={setIsOpenEdit}
         listToDo={props.listToDo}
         index={index}
-        setListToDo={props.setListToDo}
       />
       <IonButton
         fill="clear"
@@ -482,29 +461,10 @@ const AddingModal = (props: PropsListToDo) => {
                 onClick={() => {
                   if (setting.name) {
                     setting.id = (new Date()).toISOString();
-
                     props.listToDo.push(setting);
-
-                    // sort
-                    props.listToDo.sort(function (a, b) {
-                      if (a.time > b.time) {
-                        return 1;
-                      }
-                      if (a.time < b.time) {
-                        return -1;
-                      }
-                      return 0;
-                    });
-                    props.listToDo.sort(function (a, b) {
-                      if (a.date > b.date) {
-                        return 1;
-                      }
-                      if (a.date < b.date) {
-                        return -1;
-                      }
-                      return 0;
-                    });
                     props.setListToDo([...props.listToDo]);
+
+                    set("sort", true);
                     set('ToDo', props.listToDo);
                   }
 
@@ -539,18 +499,56 @@ function TabToDo() {
         setListToDo(result);
       }
     });
+
   }, []);
 
+  useEffect(() => {
+    setInterval(() => {
+      get("sort").then(result => {
+        if (result) {
+
+          get("ToDo").then(result => {
+            if (result) {
+              let copy: ToDoObject[] = Object.assign([], result);
+              copy.sort(function (a, b) {
+                if (a.time > b.time) {
+                  return 1;
+                }
+                if (a.time < b.time) {
+                  return -1;
+                }
+                return 0;
+              });
+              copy.sort(function (a, b) {
+                if (a.date > b.date) {
+                  return 1;
+                }
+                if (a.date < b.date) {
+                  return -1;
+                }
+                return 0;
+              });
+              setListToDo(copy);
+              set("sort", false);
+            }
+          });
+
+        }
+      });
+    }, 1000);
+  }, []);
 
   return (
     <IonPage>
       <IonToolbar></IonToolbar>
       <IonContent color="my-light" fullscreen>
         <IonCard class={"todo-card-" + theme}>
-          <ToDoList
-            listToDo={listToDo}
-            setListToDo={setListToDo}
-          />
+          <IonCardContent>
+            <ToDoList
+              listToDo={listToDo}
+              setListToDo={setListToDo}
+            />
+          </IonCardContent>
         </IonCard>
         <AddingModal
           listToDo={listToDo}

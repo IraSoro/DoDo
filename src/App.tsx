@@ -65,6 +65,12 @@ const App: React.FC = () => {
         updateTheme(result);
       }
     });
+
+    get("sort").then(result => {
+      if (!result) {
+        set("sort", false);
+      }
+    });
   }, []);
 
   return (
