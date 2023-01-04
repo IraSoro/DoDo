@@ -21,7 +21,6 @@ import {
   IonTitle,
   IonInput,
   IonDatetime,
-  IonCardContent,
 } from '@ionic/react';
 import { create, close, add, trash, ellipsisHorizontalSharp, calendarClear, timeSharp } from 'ionicons/icons';
 
@@ -73,6 +72,10 @@ const EditModal = (props: PropsEdit) => {
     datetime.current?.confirm();
     dateModal.current?.dismiss(inputDate.current?.value, 'confirm');
   }
+  const cancelDate = () => {
+    datetime.current?.cancel();
+    dateModal.current?.dismiss(inputDate.current?.value, 'cancel');
+  }
 
   //for time modal
   const timeModal = useRef<HTMLIonModalElement>(null);
@@ -82,6 +85,10 @@ const EditModal = (props: PropsEdit) => {
   const confirmTime = () => {
     onlyTime.current?.confirm();
     timeModal.current?.dismiss(inputTime.current?.value, 'confirm');
+  }
+  const cancelTime = () => {
+    onlyTime.current?.cancel();
+    timeModal.current?.dismiss(inputTime.current?.value, 'cancel');
   }
 
   return (
@@ -145,6 +152,7 @@ const EditModal = (props: PropsEdit) => {
                     }}
                   >
                     <IonButtons slot="buttons">
+                      <IonButton color={"dark-" + theme} onClick={cancelDate}>Cancel</IonButton>
                       <IonButton color={"dark-" + theme} onClick={confirmDate}>Confirm</IonButton>
                     </IonButtons>
                   </IonDatetime>
@@ -174,6 +182,7 @@ const EditModal = (props: PropsEdit) => {
                     }}
                   >
                     <IonButtons slot="buttons">
+                      <IonButton color={"dark-" + theme} onClick={cancelTime}>Cancel</IonButton>
                       <IonButton color={"dark-" + theme} onClick={confirmTime}>Confirm</IonButton>
                     </IonButtons>
                   </IonDatetime>
@@ -347,6 +356,10 @@ const AddingModal = (props: PropsListToDo) => {
     datetime.current?.confirm();
     dateModal.current?.dismiss(inputDate.current?.value, 'confirm');
   }
+  const cancelDate = () => {
+    datetime.current?.cancel();
+    dateModal.current?.dismiss(inputDate.current?.value, 'cancel');
+  }
 
   //for time modal
   const timeModal = useRef<HTMLIonModalElement>(null);
@@ -356,6 +369,10 @@ const AddingModal = (props: PropsListToDo) => {
   const confirmTime = () => {
     onlyTime.current?.confirm();
     timeModal.current?.dismiss(inputTime.current?.value, 'confirm');
+  }
+  const cancelTime = () => {
+    onlyTime.current?.cancel();
+    timeModal.current?.dismiss(inputTime.current?.value, 'cancel');
   }
 
   return (
@@ -414,6 +431,7 @@ const AddingModal = (props: PropsListToDo) => {
                     }}
                   >
                     <IonButtons slot="buttons">
+                      <IonButton color={"dark-" + theme} onClick={cancelDate}>Cancel</IonButton>
                       <IonButton color={"dark-" + theme} onClick={confirmDate}>Confirm</IonButton>
                     </IonButtons>
                   </IonDatetime>
@@ -445,6 +463,7 @@ const AddingModal = (props: PropsListToDo) => {
                     }}
                   >
                     <IonButtons slot="buttons">
+                      <IonButton color={"dark-" + theme} onClick={cancelTime}>Cancel</IonButton>
                       <IonButton color={"dark-" + theme} onClick={confirmTime}>Confirm</IonButton>
                     </IonButtons>
                   </IonDatetime>
@@ -543,12 +562,10 @@ function TabToDo() {
       <IonToolbar></IonToolbar>
       <IonContent color="my-light" fullscreen>
         <IonCard class={"todo-card-" + theme}>
-          <IonCardContent>
-            <ToDoList
-              listToDo={listToDo}
-              setListToDo={setListToDo}
-            />
-          </IonCardContent>
+          <ToDoList
+            listToDo={listToDo}
+            setListToDo={setListToDo}
+          />
         </IonCard>
         <AddingModal
           listToDo={listToDo}
