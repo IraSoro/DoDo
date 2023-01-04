@@ -33,7 +33,8 @@ interface ToDoObject {
   name: string,
   isDone: boolean,
   date: string,
-  time: string
+  time: string,
+  id: string,
 };
 
 interface PropsListToDo {
@@ -59,11 +60,13 @@ interface PropsItem {
 const EditModal = (props: PropsEdit) => {
   const theme = useContext(ThemeContext).theme;
 
-  const [setting, setSetting] = useState<ToDoObject>(props.listToDo[props.index]);
-  console.log("idx = ", props.index);
+  const item: ToDoObject = props.listToDo[props.index];
+  // todo title
+  const [name, setName] = useState(item.name);
+
   // for date-modal
   const dateModal = useRef<HTMLIonModalElement>(null);
-  const [date, setDate] = useState(setting.date);
+  const [date, setDate] = useState(item.date);
   const datetime = useRef<null | HTMLIonDatetimeElement>(null);
   const inputDate = useRef<HTMLIonInputElement>(null);
   const confirmDate = () => {
@@ -73,7 +76,7 @@ const EditModal = (props: PropsEdit) => {
 
   //for time modal
   const timeModal = useRef<HTMLIonModalElement>(null);
-  const [time, setTime] = useState(setting.time);
+  const [time, setTime] = useState(item.time);
   const onlyTime = useRef<null | HTMLIonDatetimeElement>(null);
   const inputTime = useRef<HTMLIonInputElement>(null);
   const confirmTime = () => {
@@ -89,7 +92,9 @@ const EditModal = (props: PropsEdit) => {
             color={"light-" + theme}
             slot="start"
             fill="clear"
-            onClick={() => props.setIsOpen(false)}
+            onClick={() => {
+              props.setIsOpen(false);
+            }}
           >
             <IonIcon color={"light-" + theme} icon={close}></IonIcon>
           </IonButton>
@@ -107,10 +112,10 @@ const EditModal = (props: PropsEdit) => {
               {/* todo name */}
               <IonItem class={theme + "-underline"}>
                 <IonInput
-                  value={setting.name}
+                  value={name}
                   onIonChange={e => {
                     if (e.detail.value) {
-                      setting.name = e.detail.value.toString();
+                      setName(e.detail.value.toString());
                     }
                   }}
                 ></IonInput>
@@ -132,12 +137,10 @@ const EditModal = (props: PropsEdit) => {
                     presentation="date"
                     id="datetime"
                     locale="en-GB"
-                    value={setting.date}
+                    value={date}
                     onIonChange={(e) => {
                       if (e.detail.value) {
                         setDate(e.detail.value.toString().slice(0, 10));
-                        setting.date = e.detail.value.toString().slice(0, 10);
-                        setSetting(setting);
                       }
                     }}
                   >
@@ -167,8 +170,6 @@ const EditModal = (props: PropsEdit) => {
                     onIonChange={(e) => {
                       if (e.detail.value) {
                         setTime(e.detail.value.toString().slice(11, 16));
-                        setting.time = e.detail.value.toString().slice(11, 16);
-                        setSetting(setting);
                       }
                     }}
                   >
@@ -187,29 +188,34 @@ const EditModal = (props: PropsEdit) => {
                 color={"dark-" + theme}
                 size="large"
                 onClick={() => {
-                  props.listToDo[props.index] = setting;
+                  props.listToDo[props.index].name = name;
+                  props.listToDo[props.index].date = date;
+                  props.listToDo[props.index].time = time;
+                  props.setIsOpen(false);
 
                   // sort
-                  props.listToDo.sort(function (a, b) {
-                    if (a.time > b.time) {
-                      return 1;
-                    }
-                    if (a.time < b.time) {
-                      return -1;
-                    }
-                    return 0;
-                  });
-                  props.listToDo.sort(function (a, b) {
-                    if (a.date > b.date) {
-                      return 1;
-                    }
-                    if (a.date < b.date) {
-                      return -1;
-                    }
-                    return 0;
-                  });
-                  props.setListToDo([...props.listToDo]);
-                  props.setIsOpen(false);
+                  // if (name) {
+                  //   props.listToDo.sort(function (a, b) {
+                  //     if (a.time > b.time) {
+                  //       return 1;
+                  //     }
+                  //     if (a.time < b.time) {
+                  //       return -1;
+                  //     }
+                  //     return 0;
+                  //   });
+                  //   props.listToDo.sort(function (a, b) {
+                  //     if (a.date > b.date) {
+                  //       return 1;
+                  //     }
+                  //     if (a.date < b.date) {
+                  //       return -1;
+                  //     }
+                  //     return 0;
+                  //   });
+                  // }
+                  // props.setListToDo([...props.listToDo]);
+                  set('ToDo', props.listToDo);
                 }}
               >Save</IonButton>
             </IonItem>
@@ -234,6 +240,7 @@ const Item = (props: PropsItem) => {
 
   const index = props.index;
   const value = props.listToDo[index];
+
   const lineTrough = textDecorationLines.get(value.isDone);
   const dateTime = () => {
     if (!value.date || !value.time)
@@ -243,7 +250,7 @@ const Item = (props: PropsItem) => {
 
 
   return (
-    <IonItem color={"light-" + theme} key={index} >
+    <IonItem color={"light-" + theme} key={value.id}>
       <IonReorder slot="start" />
       <IonLabel>
         <h2 style={{ textDecorationLine: lineTrough }}>{value.name}</h2>
@@ -288,6 +295,7 @@ const Item = (props: PropsItem) => {
                       handler: () => {
                         props.listToDo.splice(index, 1);
                         props.setListToDo([...props.listToDo]);
+
                         set('ToDo', props.listToDo);
                       }
                     }
@@ -297,7 +305,9 @@ const Item = (props: PropsItem) => {
               {
                 text: 'Edit',
                 icon: create,
-                handler: () => { setIsOpenEdit(true); }
+                handler: () => {
+                  setIsOpenEdit(true);
+                }
               },
               {
                 text: 'Cancel',
@@ -320,9 +330,9 @@ const Item = (props: PropsItem) => {
 
 const ToDoList = (props: PropsListToDo) => {
 
-
   const toDoList = props.listToDo.map((value, index) => {
     return <Item
+      key={value.id}
       listToDo={props.listToDo}
       setListToDo={props.setListToDo}
       index={index}
@@ -345,7 +355,8 @@ const AddingModal = (props: PropsListToDo) => {
       name: "",
       isDone: false,
       date: "",
-      time: ""
+      time: "",
+      id: "",
     });
 
   // for date-modal
@@ -470,7 +481,9 @@ const AddingModal = (props: PropsListToDo) => {
                 size="large"
                 onClick={() => {
                   if (setting.name) {
-                    props.listToDo.unshift(setting);
+                    setting.id = (new Date()).toISOString();
+
+                    props.listToDo.push(setting);
 
                     // sort
                     props.listToDo.sort(function (a, b) {
@@ -494,6 +507,15 @@ const AddingModal = (props: PropsListToDo) => {
                     props.setListToDo([...props.listToDo]);
                     set('ToDo', props.listToDo);
                   }
+
+                  setSetting(
+                    {
+                      name: "",
+                      isDone: false,
+                      date: "",
+                      time: "",
+                      id: ""
+                    });
                   setDate("");
                   setTime("");
                   addingModal.current?.dismiss();
