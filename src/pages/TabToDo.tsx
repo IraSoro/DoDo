@@ -207,6 +207,17 @@ const EditModal = (props: PropsEdit) => {
                   }
                 }}
               >Save</IonButton>
+              <IonButton
+                slot="start"
+                color={"dark-" + theme}
+                size="large"
+                fill="clear"
+                onClick={() => {
+                  setDate("");
+                  setTime("");
+                  setName("");
+                }}
+              >Clear</IonButton>
             </IonItem>
           </IonList>
         </div>
@@ -338,6 +349,8 @@ const AddingModal = (props: PropsListToDo) => {
   const addingModal = useRef<HTMLIonModalElement>(null);
   const theme = useContext(ThemeContext).theme;
 
+  const [name, setName] = useState("");
+
   const [setting, setSetting] = useState<ToDoObject>(
     {
       name: "",
@@ -397,9 +410,11 @@ const AddingModal = (props: PropsListToDo) => {
               <IonItem class={theme + "-underline"}>
                 <IonInput
                   placeholder="to do"
+                  value={name}
                   onIonChange={e => {
                     if (e.detail.value) {
                       setting.name = e.detail.value.toString();
+                      setName(e.detail.value.toString());
                     }
                   }}
                 ></IonInput>
@@ -497,9 +512,29 @@ const AddingModal = (props: PropsListToDo) => {
                     });
                   setDate("");
                   setTime("");
+                  setName("");
                   addingModal.current?.dismiss();
                 }}
               >Save</IonButton>
+              <IonButton
+                slot="start"
+                color={"dark-" + theme}
+                size="large"
+                fill="clear"
+                onClick={() => {
+                  setDate("");
+                  setTime("");
+                  setName("");
+                  setSetting(
+                    {
+                      name: "",
+                      isDone: false,
+                      date: "",
+                      time: "",
+                      id: ""
+                    });
+                }}
+              >Clear</IonButton>
             </IonItem>
           </IonList>
         </div>
@@ -548,6 +583,7 @@ function TabToDo() {
                 return 0;
               });
               setListToDo(copy);
+              set("ToDo", copy);
               set("sort", false);
             }
           });
