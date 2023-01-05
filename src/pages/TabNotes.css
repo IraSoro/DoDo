@@ -1,3 +1,14 @@
-button.alert-button.alert-button {
-    color: var(--ion-color-my-dark);
+
+
+
+ion-card-header{
+    height: 5px;
+}
+
+.setting-note-button{
+    transform: translate(-45%, -50%);
+}
+
+ion-datetime {
+    color: var(--ion-color-dark) !important;
 }

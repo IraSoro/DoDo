@@ -17,12 +17,12 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-my-dark-shade: #82a89b;
   --ion-color-my-dark-tint: #9fc5b8;
 
-  --ion-color-my-light: #FFFFFB;
+  --ion-color-my-light: #ffffff;
   --ion-color-my-light-rgb: 255, 255, 251;
   --ion-color-my-light-contrast: #000000;
   --ion-color-my-light-contrast-rgb: 0, 0, 0;
-  --ion-color-my-light-shade: #e0e0dd;
-  --ion-color-my-light-tint: #fffffb;
+  --ion-color-my-light-shade: #e0e0e0;
+  --ion-color-my-light-tint: #ffffff;
 
   /** primary **/
   --ion-color-primary: #94BFB0;
@@ -98,7 +98,7 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-color-dark-orange: #e3a27a;
   --ion-color-dark-orange-rgb: 227, 162, 122;
-  --ion-color-dark-orange-contrast: #000000;
+  --ion-color-dark-orange-contrast: #ffffff;
   --ion-color-dark-orange-contrast-rgb: 0, 0, 0;
   --ion-color-dark-orange-shade: #c88f6b;
   --ion-color-dark-orange-tint: #e6ab87;
@@ -112,7 +112,7 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-color-dark-green: #70AF85;
   --ion-color-dark-green-rgb: 112, 175, 133;
-  --ion-color-dark-green-contrast: #000000;
+  --ion-color-dark-green-contrast: #ffffff;
   --ion-color-dark-green-contrast-rgb: 0, 0, 0;
   --ion-color-dark-green-shade: #639a75;
   --ion-color-dark-green-tint: #7eb791;
@@ -126,7 +126,7 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-color-dark-pink: #c587cd;
   --ion-color-dark-pink-rgb: 197, 135, 205;
-  --ion-color-dark-pink-contrast: #000000;
+  --ion-color-dark-pink-contrast: #ffffff;
   --ion-color-dark-pink-contrast-rgb: 0, 0, 0;
   --ion-color-dark-pink-shade: #ad77b4;
   --ion-color-dark-pink-tint: #cb93d2;
@@ -140,7 +140,7 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-color-dark-blue: #878ECD;
   --ion-color-dark-blue-rgb: 135, 142, 205;
-  --ion-color-dark-blue-contrast: #000000;
+  --ion-color-dark-blue-contrast: #ffffff;
   --ion-color-dark-blue-contrast-rgb: 0, 0, 0;
   --ion-color-dark-blue-shade: #777db4;
   --ion-color-dark-blue-tint: #9399d2;
@@ -262,5 +262,90 @@ button.alert-button.alert-button-pink {
 }
 
 ion-card {
+  border-radius: 20px;
   box-shadow: none !important;
+}
+
+ion-fab-button {
+  --border-radius: 20px;
+  --box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 1.0);
+}
+
+ion-list {
+  --ion-item-background: transparent;
+}
+
+ion-tab-bar.orange {
+  border-top: 2px rgb(var(--ion-color-dark-orange-rgb)) solid;
+}
+
+ion-tab-bar.blue {
+  border-top: 2px rgb(var(--ion-color-dark-blue-rgb)) solid;
+}
+
+ion-tab-bar.green {
+  border-top: 2px rgb(var(--ion-color-dark-green-rgb)) solid;
+}
+
+ion-tab-bar.pink {
+  border-top: 2px rgb(var(--ion-color-dark-pink-rgb)) solid;
+}
+
+ion-button {
+  text-transform: none;
+}
+
+
+#add-rectangle {
+  width: 100%;
+  height: 88%;
+  background: #ffffff;
+
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+}
+
+#add-rectangle-title {
+  width: 100%;
+  height: 2%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#add-rectangle-top {
+  width: 100%;
+  height: 10%;
+  background: #ffffff;
+  border-radius: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(50%);
+}
+
+.save-button {
+  --border-radius: 10px;
+  --box-shadow: none !important;
+  --color: #ffffff;
+}
+
+.add-card-orange {
+  border: 2px rgb(var(--ion-color-dark-orange-rgb)) solid;
+}
+
+.add-card-blue {
+  border: 2px rgb(var(--ion-color-dark-blue-rgb)) solid;
+}
+
+.add-card-green {
+  border: 2px rgb(var(--ion-color-dark-green-rgb)) solid;
+}
+
+.add-card-pink {
+  border: 2px rgb(var(--ion-color-dark-pink-rgb)) solid;
 }

@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useContext } from 'react';
 import React from 'react'
 import {
-  IonButtons,
   IonButton,
   IonHeader,
   IonContent,
@@ -17,9 +16,12 @@ import {
   IonTextarea,
   IonFab,
   IonFabButton,
+  IonTitle,
+  useIonActionSheet,
+  IonCardHeader,
 } from '@ionic/react';
 
-import { create, close, add } from 'ionicons/icons';
+import { create, close, add, trash, ellipsisHorizontal } from 'ionicons/icons';
 import { OverlayEventDetail } from '@ionic/core/components';
 
 import './TabNotes.css';
@@ -27,7 +29,7 @@ import './TabNotes.css';
 import { get, set } from '../data/Storage';
 import { ThemeContext } from './theme-context';
 
-const InputModal = ({
+const AddModal = ({
   onDismiss,
 }: {
   onDismiss: (data?: string | null | undefined | number, role?: string) => void;
@@ -38,21 +40,36 @@ const InputModal = ({
   return (
     <IonPage>
       <IonHeader class="ion-no-border">
-        <IonToolbar>
-          <IonButton color={"dark-" + theme} slot="start" fill="clear" onClick={() => onDismiss(null, 'cancel')}>
-            Cancel
-          </IonButton>
-          <IonButton color={"dark-" + theme} slot="end" fill="clear" onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>
-            Confirm
+        <IonToolbar color={"dark-" + theme}>
+          <IonButton color={"light-" + theme} slot="start" fill="clear" onClick={() => onDismiss(null, 'cancel')}>
+            <IonIcon color={"light-" + theme} icon={close}></IonIcon>
           </IonButton>
         </IonToolbar>
       </IonHeader>
-      <IonContent color="light" className="ion-padding">
-        <IonCard>
-          <IonItem color={"light-" + theme}>
-            <IonTextarea ref={inputRef} cols={20} rows={25} placeholder="Your note" ></IonTextarea>
-          </IonItem>
-        </IonCard>
+      <IonContent fullscreen color={"dark-" + theme}>
+        <div id="add-rectangle-title">
+          <IonTitle color="my-light"><h2>Add Note</h2></IonTitle>
+        </div>
+        <div id="add-rectangle-top">
+        </div>
+        <div id="add-rectangle">
+          <IonList>
+            <IonCard class={"add-card-" + theme}>
+              <IonItem lines="none" color={"light-" + theme}>
+                <IonTextarea ref={inputRef} cols={100} rows={19} placeholder="Your note" ></IonTextarea>
+              </IonItem>
+            </IonCard>
+            <IonItem lines="none" >
+              <IonButton
+                class="save-button"
+                slot="end"
+                color={"dark-" + theme}
+                size="large"
+                onClick={() => onDismiss(inputRef.current?.value, 'confirm')}
+              >Save</IonButton>
+            </IonItem>
+          </IonList>
+        </div>
       </IonContent>
     </IonPage>
   );
@@ -74,30 +91,43 @@ interface PropsEdit {
   onDismiss: (data?: string | null | undefined | number, role?: string) => void;
 }
 
-const ModalEdit = (props: PropsEdit) => {
+const EditModal = (props: PropsEdit) => {
   const inputRef = useRef<HTMLIonTextareaElement>(null);
   const theme = useContext(ThemeContext).theme;
 
   return (
     <IonPage>
       <IonHeader class="ion-no-border">
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton color={"dark-" + theme} onClick={() => props.onDismiss(null, 'cancel')}>
-              Cancel
-            </IonButton>
-          </IonButtons>
-          <IonButtons slot="end">
-            <IonButton color={"dark-" + theme} onClick={() => props.onDismiss(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
-          </IonButtons>
+        <IonToolbar color={"dark-" + theme}>
+          <IonButton color={"light-" + theme} slot="start" fill="clear" onClick={() => props.onDismiss(null, 'cancel')}>
+            <IonIcon color={"light-" + theme} icon={close}></IonIcon>
+          </IonButton>
         </IonToolbar>
       </IonHeader>
-      <IonContent color="light" className="ion-padding">
-        <IonCard>
-          <IonItem color={"light-" + theme}>
-            <IonTextarea ref={inputRef} cols={20} rows={25} value={props.text} ></IonTextarea>
-          </IonItem>
-        </IonCard>
+      <IonContent fullscreen color={"dark-" + theme}>
+        <div id="add-rectangle-title">
+          <IonTitle color="my-light"><h2>Edit Note</h2></IonTitle>
+        </div>
+        <div id="add-rectangle-top">
+        </div>
+        <div id="add-rectangle">
+          <IonList>
+            <IonCard class={"add-card-" + theme}>
+              <IonItem lines="none" color={"light-" + theme}>
+                <IonTextarea ref={inputRef} cols={100} rows={19} value={props.text} ></IonTextarea>
+              </IonItem>
+            </IonCard>
+            <IonItem lines="none" >
+              <IonButton
+                class="save-button"
+                slot="end"
+                color={"dark-" + theme}
+                size="large"
+                onClick={() => props.onDismiss(inputRef.current?.value, 'confirm')}
+              >Save</IonButton>
+            </IonItem>
+          </IonList>
+        </div>
       </IonContent>
     </IonPage>
   );
@@ -106,8 +136,9 @@ const ModalEdit = (props: PropsEdit) => {
 const Card = (props: Props) => {
   const [presentAlertDelete] = useIonAlert();
   const theme = useContext(ThemeContext).theme;
+  const [presentSetting] = useIonActionSheet();
 
-  const [present, dismiss] = useIonModal(ModalEdit, {
+  const [present, dismiss] = useIonModal(EditModal, {
     onDismiss: (data: string, role: string) => dismiss(data, role), text: props.text,
   });
 
@@ -122,38 +153,62 @@ const Card = (props: Props) => {
   }
 
   return (
-    <IonCard color={"light-" + theme}>
-      <IonToolbar color={"dark-" + theme}>
-        <IonButtons slot="secondary">
-          <IonButton slot="end" fill="clear" onClick={() => editModal()}>
-            <IonIcon slot="icon-only" color="dark" icon={create} />
+    <>
+      <IonCard class={"add-card-" + theme} color={"light-" + theme}>
+        <IonCardHeader>
+          <IonButton
+            fill="clear"
+            class="setting-note-button"
+            onClick={() => {
+              presentSetting({
+                buttons: [
+                  {
+                    text: 'Delete',
+                    icon: trash,
+                    handler: () => presentAlertDelete({
+                      header: "Delete note?",
+                      buttons: [
+                        {
+                          text: 'Cancel',
+                          role: 'cancel',
+                          cssClass: "alert-button-" + theme,
+                        },
+                        {
+                          text: 'OK',
+                          role: 'confirm',
+                          cssClass: "alert-button-" + theme,
+                        }
+                      ],
+                      onDidDismiss: (e: CustomEvent) => {
+                        if (e.detail.role === 'confirm') {
+                          props.onDelete();
+                        }
+                      }
+                    })
+                  },
+                  {
+                    text: 'Edit',
+                    icon: create,
+                    handler: () => editModal(),
+                  },
+                  {
+                    text: 'Cancel',
+                    icon: close,
+                    cssClass: "alert-button-" + theme,
+                  },
+                ],
+              })
+            }}
+          >
+            <IonIcon
+              color={"dark-" + theme}
+              icon={ellipsisHorizontal}
+            ></IonIcon>
           </IonButton>
-          <IonButton slot="end" fill="clear" onClick={() => presentAlertDelete({
-            header: "Delete note?",
-            buttons: [
-              {
-                text: 'Cancel',
-                role: 'cancel',
-                cssClass: "alert-button-" + theme,
-              },
-              {
-                text: 'OK',
-                role: 'confirm',
-                cssClass: "alert-button-" + theme,
-              }
-            ],
-            onDidDismiss: (e: CustomEvent) => {
-              if (e.detail.role === 'confirm') {
-                props.onDelete();
-              }
-            }
-          })}>
-            <IonIcon color="dark" slot="icon-only" icon={close} />
-          </IonButton>
-        </IonButtons>
-      </IonToolbar>
-      <IonCardContent>{props.text}</IonCardContent>
-    </IonCard>
+        </IonCardHeader>
+        <IonCardContent>{props.text}</IonCardContent>
+      </IonCard>
+    </>
   );
 }
 
@@ -196,12 +251,12 @@ function TabNodes() {
     });
   }, []);
 
-  const [present, dismiss] = useIonModal(InputModal, {
+  const [present, dismiss] = useIonModal(AddModal, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
   });
 
 
-  function openModal() {
+  function addModal() {
     present({
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === 'confirm') {
@@ -216,10 +271,10 @@ function TabNodes() {
   return (
     <IonPage>
       <IonToolbar></IonToolbar>
-      <IonContent color="light" className="fullscreen">
-        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton color={"dark-" + theme} onClick={() => openModal()}>
-            <IonIcon icon={add} />
+      <IonContent color="my-light" className="fullscreen">
+        <IonFab vertical="bottom" horizontal="center" slot="fixed">
+          <IonFabButton color={"dark-" + theme} onClick={() => addModal()}>
+            <IonIcon color="my-light" icon={add} />
           </IonFabButton>
         </IonFab>
         <ListCards listCards={textValues} setListCards={setTextValues} />
