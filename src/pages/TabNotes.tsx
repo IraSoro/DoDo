@@ -206,7 +206,7 @@ const Card = (props: Props) => {
             ></IonIcon>
           </IonButton>
         </IonCardHeader>
-        <IonCardContent>{props.text}</IonCardContent>
+        <IonCardContent onClick={() => editModal()}>{props.text}</IonCardContent>
       </IonCard>
     </>
   );

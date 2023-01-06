@@ -1,12 +1,9 @@
-
-
-
-ion-card-header{
+ion-card-header {
     height: 5px;
 }
 
-.setting-note-button{
-    transform: translate(-45%, -50%);
+.setting-note-button {
+    transform: translate(450%, -50%);
 }
 
 ion-datetime {

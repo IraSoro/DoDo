@@ -46,7 +46,7 @@ setupIonicReact();
 
 const App: React.FC = () => {
   const [tabTitle, setTabTitle] = useState("ToDo");
-  const [theme, updateTheme] = useState("green");
+  const [theme, updateTheme] = useState("orange");
 
   function toggleTheme(newTheme: string) {
     updateTheme(newTheme);

@@ -1,6 +1,6 @@
 {
-	"appId": "io.ionic.starter",
-	"appName": "hello-ionic",
+	"appId": "i.plan",
+	"appName": "DoDo",
 	"webDir": "build",
 	"bundledWebRuntime": false
 }
