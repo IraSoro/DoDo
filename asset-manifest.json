@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/IraSoro/scheduler/static/css/main.de4ae2aa.css",
-    "main.js": "/IraSoro/scheduler/static/js/main.f402b012.js",
+    "main.js": "/IraSoro/scheduler/static/js/main.b303054f.js",
     "static/js/630.3bac1e3b.chunk.js": "/IraSoro/scheduler/static/js/630.3bac1e3b.chunk.js",
     "static/js/858.662919b9.chunk.js": "/IraSoro/scheduler/static/js/858.662919b9.chunk.js",
     "static/js/372.b61e92a9.chunk.js": "/IraSoro/scheduler/static/js/372.b61e92a9.chunk.js",
@@ -16,7 +16,7 @@
     "service-worker.js": "/IraSoro/scheduler/service-worker.js",
     "index.html": "/IraSoro/scheduler/index.html",
     "main.de4ae2aa.css.map": "/IraSoro/scheduler/static/css/main.de4ae2aa.css.map",
-    "main.f402b012.js.map": "/IraSoro/scheduler/static/js/main.f402b012.js.map",
+    "main.b303054f.js.map": "/IraSoro/scheduler/static/js/main.b303054f.js.map",
     "630.3bac1e3b.chunk.js.map": "/IraSoro/scheduler/static/js/630.3bac1e3b.chunk.js.map",
     "858.662919b9.chunk.js.map": "/IraSoro/scheduler/static/js/858.662919b9.chunk.js.map",
     "372.b61e92a9.chunk.js.map": "/IraSoro/scheduler/static/js/372.b61e92a9.chunk.js.map",
@@ -30,6 +30,6 @@
   },
   "entrypoints": [
     "static/css/main.de4ae2aa.css",
-    "static/js/main.f402b012.js"
+    "static/js/main.b303054f.js"
   ]
 }
