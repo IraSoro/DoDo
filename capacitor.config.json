@@ -1,6 +1,6 @@
 {
 	"appId": "i.plan",
-	"appName": "dodo",
+	"appName": "DoDo",
 	"webDir": "build",
 	"bundledWebRuntime": false
 }
