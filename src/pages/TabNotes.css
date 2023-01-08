@@ -3,7 +3,7 @@ ion-card-header {
 }
 
 .setting-note-button {
-    transform: translate(450%, -50%);
+    transform: translate(-45%, -50%);
 }
 
 ion-datetime {
