@@ -99,7 +99,7 @@ const App: React.FC = () => {
                 <Redirect to="/tabToDo" />
               </Route>
 
-              <Route exact path="/scheduler/">
+              <Route exact path="/DoDo/">
                 <Redirect to="/tabToDo" />
               </Route>
 
