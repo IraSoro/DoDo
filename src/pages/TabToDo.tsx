@@ -16,19 +16,18 @@ import {
   IonToolbar,
   IonCard,
   IonModal,
-  IonButtons,
   IonHeader,
   IonTitle,
   IonInput,
-  IonDatetime,
 } from '@ionic/react';
-import { create, close, add, trash, ellipsisHorizontalSharp, timeSharp } from 'ionicons/icons';
+import { create, close, add, trash, ellipsisHorizontalSharp } from 'ionicons/icons';
 
 import './TabToDo.css';
 
 import { get, set } from '../data/Storage';
 import { ThemeContext } from './theme-context';
 import InputDate from "./InputDate"
+import InputTime from "./InputTime"
 
 interface ToDoObject {
   name: string,
@@ -68,18 +67,7 @@ const EditModal = (props: PropsEdit) => {
   const [date, setDate] = useState(item.date);
 
   //for time modal
-  const timeModal = useRef<HTMLIonModalElement>(null);
   const [time, setTime] = useState(item.time);
-  const onlyTime = useRef<null | HTMLIonDatetimeElement>(null);
-  const inputTime = useRef<HTMLIonInputElement>(null);
-  const confirmTime = () => {
-    onlyTime.current?.confirm();
-    timeModal.current?.dismiss(inputTime.current?.value, 'confirm');
-  }
-  const cancelTime = () => {
-    onlyTime.current?.cancel();
-    timeModal.current?.dismiss(inputTime.current?.value, 'cancel');
-  }
 
   return (
     <IonModal isOpen={props.isOpen}>
@@ -122,34 +110,7 @@ const EditModal = (props: PropsEdit) => {
               <InputDate value={date} setValue={setDate} color={theme} />
 
               {/* todo time */}
-              <IonItem id="choose-time">
-                <IonLabel color={"dark-" + theme}>The time</IonLabel>
-                <IonIcon slot="end" color={"dark-" + theme} size="small" icon={timeSharp}></IonIcon>
-                <p>{time}</p>
-                <IonModal
-                  id="choose-date-modal"
-                  ref={timeModal}
-                  trigger="choose-time"
-                >
-                  <IonDatetime
-                    ref={onlyTime}
-                    color={"dark-" + theme}
-                    presentation="time"
-                    id="time"
-                    locale="en-GB"
-                    onIonChange={(e) => {
-                      if (e.detail.value) {
-                        setTime(e.detail.value.toString().slice(11, 16));
-                      }
-                    }}
-                  >
-                    <IonButtons slot="buttons">
-                      <IonButton color={"dark-" + theme} onClick={cancelTime}>Cancel</IonButton>
-                      <IonButton color={"dark-" + theme} onClick={confirmTime}>Confirm</IonButton>
-                    </IonButtons>
-                  </IonDatetime>
-                </IonModal>
-              </IonItem>
+              <InputTime value={time} setValue={setTime} color={theme} />
 
             </IonCard>
             <IonItem lines="none" >
@@ -313,6 +274,7 @@ const AddingModal = (props: PropsListToDo) => {
 
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
 
   const [setting, setSetting] = useState<ToDoObject>(
     {
@@ -322,20 +284,6 @@ const AddingModal = (props: PropsListToDo) => {
       time: "",
       id: "",
     });
-
-  //for time modal
-  const timeModal = useRef<HTMLIonModalElement>(null);
-  const [time, setTime] = useState("");
-  const onlyTime = useRef<null | HTMLIonDatetimeElement>(null);
-  const inputTime = useRef<HTMLIonInputElement>(null);
-  const confirmTime = () => {
-    onlyTime.current?.confirm();
-    timeModal.current?.dismiss(inputTime.current?.value, 'confirm');
-  }
-  const cancelTime = () => {
-    onlyTime.current?.cancel();
-    timeModal.current?.dismiss(inputTime.current?.value, 'cancel');
-  }
 
   return (
     <IonModal ref={addingModal} trigger="add-modal">
@@ -373,36 +321,7 @@ const AddingModal = (props: PropsListToDo) => {
               <InputDate value={date} setValue={setDate} color={theme} />
 
               {/* todo time */}
-              <IonItem id="choose-time">
-                <IonLabel color={"dark-" + theme}>The time</IonLabel>
-                <IonIcon slot="end" color={"dark-" + theme} size="small" icon={timeSharp}></IonIcon>
-                <p>{time}</p>
-                <IonModal
-                  id="choose-date-modal"
-                  ref={timeModal}
-                  trigger="choose-time"
-                >
-                  <IonDatetime
-                    ref={onlyTime}
-                    color={"dark-" + theme}
-                    presentation="time"
-                    id="time"
-                    locale="en-GB"
-                    onIonChange={(e) => {
-                      if (e.detail.value) {
-                        setTime(e.detail.value.toString().slice(11, 16));
-                        setting.time = e.detail.value.toString().slice(11, 16);
-                        setSetting(setting);
-                      }
-                    }}
-                  >
-                    <IonButtons slot="buttons">
-                      <IonButton color={"dark-" + theme} onClick={cancelTime}>Cancel</IonButton>
-                      <IonButton color={"dark-" + theme} onClick={confirmTime}>Confirm</IonButton>
-                    </IonButtons>
-                  </IonDatetime>
-                </IonModal>
-              </IonItem>
+              <InputTime value={time} setValue={setTime} color={theme} />
 
             </IonCard>
             <IonItem lines="none" >
@@ -415,6 +334,7 @@ const AddingModal = (props: PropsListToDo) => {
                   if (setting.name) {
                     setting.id = (new Date()).toISOString();
                     setting.date = date;
+                    setting.time = time;
                     props.listToDo.push(setting);
                     props.setListToDo([...props.listToDo]);
 
