@@ -10,6 +10,8 @@ import {
 } from '@ionic/react';
 import { timeSharp } from 'ionicons/icons';
 
+import './InputValue.css';
+
 
 interface PropsInput {
     value: string;
@@ -34,19 +36,18 @@ const InputTime = (props: PropsInput) => {
 
     return (
         <IonItem id="choose-time">
-            <IonLabel color={"dark-" + props.color}>The time</IonLabel>
-            <IonIcon slot="end" color={"dark-" + props.color} size="small" icon={timeSharp}></IonIcon>
+            <IonLabel color={props.color}>The time</IonLabel>
+            <IonIcon slot="end" color={props.color} size="small" icon={timeSharp}></IonIcon>
             <p>{time}</p>
             <IonModal
-                id="choose-date-modal"
+                id="choose-datetime-modal"
                 ref={timeModal}
                 trigger="choose-time"
             >
                 <IonDatetime
                     ref={onlyTime}
-                    color={"dark-" + props.color}
+                    color={props.color}
                     presentation="time"
-                    id="time"
                     locale="en-GB"
                     onIonChange={(e) => {
                         if (e.detail.value) {
@@ -56,8 +57,8 @@ const InputTime = (props: PropsInput) => {
                     }}
                 >
                     <IonButtons slot="buttons">
-                        <IonButton color={"dark-" + props.color} onClick={cancelTime}>Cancel</IonButton>
-                        <IonButton color={"dark-" + props.color} onClick={confirmTime}>Confirm</IonButton>
+                        <IonButton color={props.color} onClick={cancelTime}>Cancel</IonButton>
+                        <IonButton color={props.color} onClick={confirmTime}>Confirm</IonButton>
                     </IonButtons>
                 </IonDatetime>
             </IonModal>

@@ -107,10 +107,10 @@ const EditModal = (props: PropsEdit) => {
               </IonItem>
 
               {/* todo date */}
-              <InputDate value={date} setValue={setDate} color={theme} />
+              <InputDate value={date} setValue={setDate} color={"dark-" + theme} />
 
               {/* todo time */}
-              <InputTime value={time} setValue={setTime} color={theme} />
+              <InputTime value={time} setValue={setTime} color={"dark-" + theme} />
 
             </IonCard>
             <IonItem lines="none" >
@@ -318,10 +318,10 @@ const AddingModal = (props: PropsListToDo) => {
               </IonItem>
 
               {/* todo date */}
-              <InputDate value={date} setValue={setDate} color={theme} />
+              <InputDate value={date} setValue={setDate} color={"dark-" + theme} />
 
               {/* todo time */}
-              <InputTime value={time} setValue={setTime} color={theme} />
+              <InputTime value={time} setValue={setTime} color={"dark-" + theme} />
 
             </IonCard>
             <IonItem lines="none" >
