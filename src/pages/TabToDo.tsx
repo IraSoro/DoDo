@@ -276,20 +276,17 @@ const AddingModal = (props: PropsListToDo) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
-  const [setting, setSetting] = useState<ToDoObject>(
-    {
-      name: "",
-      isDone: false,
-      date: "",
-      time: "",
-      id: "",
-    });
+  function clear() {
+    setDate("");
+    setTime("");
+    setName("");
+  }
 
   return (
     <IonModal ref={addingModal} trigger="add-modal">
       <IonHeader class="ion-no-border">
         <IonToolbar color={"dark-" + theme}>
-          <IonButton color={"light-" + theme} slot="start" fill="clear" onClick={() => addingModal.current?.dismiss()}>
+          <IonButton color={"light-" + theme} slot="start" fill="clear" onClick={() => { clear(); addingModal.current?.dismiss(); }}>
             <IonIcon color={"light-" + theme} icon={close}></IonIcon>
           </IonButton>
         </IonToolbar>
@@ -310,17 +307,13 @@ const AddingModal = (props: PropsListToDo) => {
                   value={name}
                   onIonChange={e => {
                     if (e.detail.value) {
-                      setting.name = e.detail.value.toString();
                       setName(e.detail.value.toString());
                     }
                   }}
                 ></IonInput>
               </IonItem>
-
-              {/* todo date */}
+              {/* todo date and todo time */}
               <InputDate value={date} setValue={setDate} color={"dark-" + theme} />
-
-              {/* todo time */}
               <InputTime value={time} setValue={setTime} color={"dark-" + theme} />
 
             </IonCard>
@@ -331,28 +324,20 @@ const AddingModal = (props: PropsListToDo) => {
                 color={"dark-" + theme}
                 size="large"
                 onClick={() => {
-                  if (setting.name) {
-                    setting.id = (new Date()).toISOString();
-                    setting.date = date;
-                    setting.time = time;
-                    props.listToDo.push(setting);
+                  if (name) {
+                    props.listToDo.push({
+                      name: name,
+                      isDone: false,
+                      date: date,
+                      time: time,
+                      id: (new Date()).toISOString()
+                    });
                     props.setListToDo([...props.listToDo]);
 
                     set("sort", true);
                     set('ToDo', props.listToDo);
                   }
-
-                  setSetting(
-                    {
-                      name: "",
-                      isDone: false,
-                      date: "",
-                      time: "",
-                      id: ""
-                    });
-                  setDate("");
-                  setTime("");
-                  setName("");
+                  clear();
                   addingModal.current?.dismiss();
                 }}
               >Save</IonButton>
@@ -361,19 +346,7 @@ const AddingModal = (props: PropsListToDo) => {
                 color={"dark-" + theme}
                 size="large"
                 fill="clear"
-                onClick={() => {
-                  setDate("");
-                  setTime("");
-                  setName("");
-                  setSetting(
-                    {
-                      name: "",
-                      isDone: false,
-                      date: "",
-                      time: "",
-                      id: ""
-                    });
-                }}
+                onClick={() => clear()}
               >Clear</IonButton>
             </IonItem>
           </IonList>
