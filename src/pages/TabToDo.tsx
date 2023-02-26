@@ -58,15 +58,10 @@ interface PropsItem {
 
 const EditModal = (props: PropsEdit) => {
   const theme = useContext(ThemeContext).theme;
-
   const item: ToDoObject = props.listToDo[props.index];
-  // todo title
+
   const [name, setName] = useState(item.name);
-
-  // for date-modal
   const [date, setDate] = useState(item.date);
-
-  //for time modal
   const [time, setTime] = useState(item.time);
 
   return (
@@ -106,10 +101,8 @@ const EditModal = (props: PropsEdit) => {
                 ></IonInput>
               </IonItem>
 
-              {/* todo date */}
+              {/* todo date and todo time */}
               <InputDate value={date} setValue={setDate} color={"dark-" + theme} />
-
-              {/* todo time */}
               <InputTime value={time} setValue={setTime} color={"dark-" + theme} />
 
             </IonCard>
