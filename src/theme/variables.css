@@ -10,13 +10,6 @@ http://ionicframework.com/docs/theming/ */
 
 :root {
   /** my **/
-  --ion-color-my-dark: #94BFB0;
-  --ion-color-my-dark-rgb: 148, 191, 176;
-  --ion-color-my-dark-contrast: #000000;
-  --ion-color-my-dark-contrast-rgb: 0, 0, 0;
-  --ion-color-my-dark-shade: #82a89b;
-  --ion-color-my-dark-tint: #9fc5b8;
-
   --ion-color-my-light: #ffffff;
   --ion-color-my-light-rgb: 255, 255, 251;
   --ion-color-my-light-contrast: #000000;
@@ -152,16 +145,39 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-blue-shade: #d7d7dc;
   --ion-color-light-blue-tint: #f5f5fb;
 
+  --ion-color-light-neutral: #d0d0d0;
+  --ion-color-light-neutral-rgb: 208, 208, 208;
+  --ion-color-light-neutral-contrast: #000000;
+  --ion-color-light-neutral-contrast-rgb: 0, 0, 0;
+  --ion-color-light-neutral-shade: #b7b7b7;
+  --ion-color-light-neutral-tint: #d5d5d5;
+
+  --ion-color-dark-neutral: #9c9c9c;
+  --ion-color-dark-neutral-rgb: 156, 156, 156;
+  --ion-color-dark-neutral-contrast: #000000;
+  --ion-color-dark-neutral-contrast-rgb: 0, 0, 0;
+  --ion-color-dark-neutral-shade: #898989;
+  --ion-color-dark-neutral-tint: #a6a6a6;
+
   --ion-font-family: 'OpenSans-Light';
 }
 
-.ion-color-my-dark {
-  --ion-color-base: var(--ion-color-my-dark);
-  --ion-color-base-rgb: var(--ion-color-my-dark-rgb);
-  --ion-color-contrast: var(--ion-color-my-dark-contrast);
-  --ion-color-contrast-rgb: var(--ion-color-my-dark-contrast-rgb);
-  --ion-color-shade: var(--ion-color-my-dark-shade);
-  --ion-color-tint: var(--ion-color-my-dark-tint);
+.ion-color-dark-neutral {
+  --ion-color-base: var(--ion-color-dark-neutral);
+  --ion-color-base-rgb: var(--ion-color-dark-neutral-rgb);
+  --ion-color-contrast: var(--ion-color-dark-neutral-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-dark-neutral-contrast-rgb);
+  --ion-color-shade: var(--ion-color-dark-neutral-shade);
+  --ion-color-tint: var(--ion-color-dark-neutral-tint);
+}
+
+.ion-color-light-neutral {
+  --ion-color-base: var(--ion-color-light-neutral);
+  --ion-color-base-rgb: var(--ion-color-light-neutral-rgb);
+  --ion-color-contrast: var(--ion-color-light-neutral-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-light-neutral-contrast-rgb);
+  --ion-color-shade: var(--ion-color-light-neutral-shade);
+  --ion-color-tint: var(--ion-color-light-neutral-tint);
 }
 
 .ion-color-my-light {
