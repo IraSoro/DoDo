@@ -42,9 +42,11 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+import { App } from '@capacitor/app';
+
 setupIonicReact();
 
-const App: React.FC = () => {
+const DoDoApp: React.FC = () => {
   const [tabTitle, setTabTitle] = useState("ToDo");
   const [theme, updateTheme] = useState("neutral");
 
@@ -74,6 +76,10 @@ const App: React.FC = () => {
       }
     });
   }, []);
+
+  document.addEventListener('ionBackButton', () => {
+        App.exitApp();
+  });
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
@@ -123,4 +129,4 @@ const App: React.FC = () => {
   );
 }
 
-export default App;
+export default DoDoApp;
