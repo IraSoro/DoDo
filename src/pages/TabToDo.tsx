@@ -318,13 +318,23 @@ const AddingModal = (props: PropsListToDo) => {
                 size="large"
                 onClick={() => {
                   if (name) {
-                    props.listToDo.push({
-                      name: name,
-                      isDone: false,
-                      date: date,
-                      time: time,
-                      id: (new Date()).toISOString()
-                    });
+                    if (time === "" && date === "") {
+                      props.listToDo.unshift({
+                        name: name,
+                        isDone: false,
+                        date: date,
+                        time: time,
+                        id: (new Date()).toISOString()
+                      });
+                    } else {
+                      props.listToDo.push({
+                        name: name,
+                        isDone: false,
+                        date: date,
+                        time: time,
+                        id: (new Date()).toISOString()
+                      });
+                    }
                     props.setListToDo([...props.listToDo]);
 
                     set("sort", true);
