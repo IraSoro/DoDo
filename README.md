@@ -10,7 +10,7 @@
     Task Manager
   </p>
   <p align="center">
-    <a href="https://irasoro.github.io/scheduler/">View Demo</a>
+    <a href="https://irasoro.github.io/DoDo/">View Demo</a>
   </p>  
 </p>
 
