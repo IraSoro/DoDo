@@ -103,8 +103,8 @@ const EditModal = (props: PropsEdit) => {
               </IonItem>
 
               {/* todo date and todo time */}
-              <InputDate value={date} setValue={setDate} isConvert={true} />
-              <InputTime value={time} setValue={setTime} color={"dark-" + theme} />
+              <InputDate value={date} setValue={setDate} isConvert={true} color={"dark-" + theme} />
+              <InputTime value={time} setValue={setTime} isConvert={true} color={"dark-" + theme} />
 
             </IonCard>
             <IonItem lines="none" >
