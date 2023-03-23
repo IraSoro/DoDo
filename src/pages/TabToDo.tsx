@@ -28,6 +28,7 @@ import { get, set } from '../data/Storage';
 import { ThemeContext } from './theme-context';
 import InputDate from "./InputDate"
 import InputTime from "./InputTime"
+// import  {InputDate, InputTime} from 'my-ionic-package';
 
 interface ToDoObject {
   name: string,
@@ -102,7 +103,7 @@ const EditModal = (props: PropsEdit) => {
               </IonItem>
 
               {/* todo date and todo time */}
-              <InputDate value={date} setValue={setDate} color={"dark-" + theme} />
+              <InputDate value={date} setValue={setDate} isConvert={true} />
               <InputTime value={time} setValue={setTime} color={"dark-" + theme} />
 
             </IonCard>

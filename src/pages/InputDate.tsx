@@ -16,7 +16,10 @@ import './InputValue.css';
 interface PropsInput {
     value: string;
     setValue: (newValue: string) => void;
-    color: string
+    color?: string;
+    locale?: string;
+    isConvert?: boolean;
+    title?: string;
 }
 
 const InputDate = (props: PropsInput) => {
@@ -34,10 +37,31 @@ const InputDate = (props: PropsInput) => {
         dateModal.current?.dismiss(inputDate.current?.value, 'cancel');
     }
 
+    function getColor() {
+        if (props.color) {
+            return props.color;
+        }
+        return "primary";
+    }
+
+    function getLocale() {
+        if (props.locale) {
+            return props.locale;
+        }
+        return "en-GB";
+    }
+
+    function getTitle() {
+        if (props.title) {
+            return props.title;
+        }
+        return "The date";
+    }
+
     return (
         <IonItem id="choose-date">
-            <IonLabel color={props.color}>The date</IonLabel>
-            <IonIcon slot="end" color={props.color} size="small" icon={calendarClear}></IonIcon>
+            <IonLabel color={getColor()}>{getTitle()}</IonLabel>
+            <IonIcon slot="end" color={getColor()} size="small" icon={calendarClear}></IonIcon>
             <p>{date}</p>
             <IonModal
                 id="choose-datetime-modal"
@@ -46,20 +70,27 @@ const InputDate = (props: PropsInput) => {
             >
                 <IonDatetime
                     ref={datetime}
-                    color={props.color}
+                    color={getColor()}
                     presentation="date"
-                    locale="en-GB"
+                    locale={getLocale()}
                     value={props.value}
                     onIonChange={(e) => {
                         if (e.detail.value) {
-                            setDate(e.detail.value.toString().slice(0, 10));
-                            props.setValue(e.detail.value.toString().slice(0, 10));
+                            if (props.isConvert) {
+                                console.log("true");
+                                setDate(e.detail.value.toString().slice(0, 10));
+                                props.setValue(e.detail.value.toString().slice(0, 10));
+                            } else {
+                                console.log("false");
+                                setDate(e.detail.value.toString());
+                                props.setValue(e.detail.value.toString());
+                            }
                         }
                     }}
                 >
                     <IonButtons slot="buttons">
-                        <IonButton color={props.color} onClick={cancelDate}>Cancel</IonButton>
-                        <IonButton color={props.color} onClick={confirmDate}>Confirm</IonButton>
+                        <IonButton color={getColor()} onClick={cancelDate}>Cancel</IonButton>
+                        <IonButton color={getColor()} onClick={confirmDate}>Confirm</IonButton>
                     </IonButtons>
                 </IonDatetime>
             </IonModal>
