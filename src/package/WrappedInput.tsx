@@ -9,6 +9,7 @@ import {
     IonDatetime,
 } from '@ionic/react';
 import { DatetimePresentation } from "@ionic/core/components";
+import { format, parseISO } from 'date-fns';
 
 import './WrappedInput.css';
 
@@ -22,6 +23,7 @@ interface WrappedProps {
     title: string;
     icon: string;
     sizeIcon: string;
+    format: string;
 }
 
 const WrappedInput = (props: WrappedProps) => {
@@ -48,11 +50,7 @@ const WrappedInput = (props: WrappedProps) => {
                         if (!e.detail.value) {
                             return;
                         }
-                        if (props.type === "date") {
-                            props.setValue(e.detail.value.toString().slice(0, 10));
-                        } else {
-                            props.setValue(e.detail.value.toString().slice(11, 16));
-                        }
+                        props.setValue(format(parseISO(e.detail.value.toString()), props.format));
                     }}
                 >
                     <IonButtons slot="buttons">

@@ -13,6 +13,7 @@ interface InputDateProps {
     title?: string;
     icon?: string;
     sizeIcon?: string;
+    format?: string;
 }
 
 const InputDate = (props: InputDateProps) => {
@@ -29,6 +30,7 @@ const InputDate = (props: InputDateProps) => {
             title={props.title ?? "The date"}
             icon={props.icon ?? calendarClear}
             sizeIcon={props.sizeIcon ?? "small"}
+            format={props.format ?? "yyyy-MM-dd"}
         />
     );
 }

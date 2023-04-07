@@ -13,6 +13,7 @@ interface InputTimeProps {
     title?: string;
     icon?: string;
     sizeIcon?: string;
+    format?: string;
 }
 
 const InputTime = (props: InputTimeProps) => {
@@ -29,6 +30,7 @@ const InputTime = (props: InputTimeProps) => {
             title={props.title ?? "The time"}
             icon={props.icon ?? timeSharp}
             sizeIcon={props.sizeIcon ?? "small"}
+            format={props.format ?? "HH:mm"}
         />
     );
 }
