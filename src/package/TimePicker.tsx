@@ -1,13 +1,10 @@
-import { useState } from 'react';
 import { timeSharp } from 'ionicons/icons';
 
-import WrappedInput from './WrappedInput';
+import WrappedPicker from './WrappedPicker';
 
-let id = 0;
-
-interface InputTimeProps {
+interface TimeProps {
     time: string;
-    setTime: (newValue: string) => void;
+    onChange: (newValue: string) => void;
     color?: string;
     locale?: string;
     title?: string;
@@ -16,14 +13,11 @@ interface InputTimeProps {
     format?: string;
 }
 
-const InputTime = (props: InputTimeProps) => {
-    const [ident] = useState((id++).toString());
-
+const TimePicker = (props: TimeProps) => {
     return (
-        <WrappedInput
+        <WrappedPicker
             value={props.time}
-            setValue={props.setTime}
-            ID={`InputTime-${ident}`}
+            onChange={props.onChange}
             type={"time"}
             color={props.color ?? "primary"}
             locale={props.locale ?? "en-GB"}
@@ -35,5 +29,5 @@ const InputTime = (props: InputTimeProps) => {
     );
 }
 
-export default InputTime;
+export default TimePicker;
 
