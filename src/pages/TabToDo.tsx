@@ -26,8 +26,7 @@ import './TabToDo.css';
 
 import { get, set } from '../data/Storage';
 import { ThemeContext } from './theme-context';
-import InputDate from "./InputDate"
-import InputTime from "./InputTime"
+import {DatePicker, TimePicker} from "@IraSoro/ionic-datetime-picker"
 
 interface ToDoObject {
   name: string,
@@ -102,8 +101,16 @@ const EditModal = (props: PropsEdit) => {
               </IonItem>
 
               {/* todo date and todo time */}
-              <InputDate value={date} setValue={setDate} color={"dark-" + theme} />
-              <InputTime value={time} setValue={setTime} color={"dark-" + theme} />
+              <DatePicker
+                date={date}
+                onChange={setDate}
+                color={"dark-" + theme}
+              />
+              <TimePicker
+                time={time}
+                onChange={setTime}
+                color={"dark-" + theme}
+              />
 
             </IonCard>
             <IonItem lines="none" >
@@ -306,8 +313,16 @@ const AddingModal = (props: PropsListToDo) => {
                 ></IonInput>
               </IonItem>
               {/* todo date and todo time */}
-              <InputDate value={date} setValue={setDate} color={"dark-" + theme} />
-              <InputTime value={time} setValue={setTime} color={"dark-" + theme} />
+              <DatePicker
+                date={date}
+                onChange={setDate}
+                color={"dark-" + theme}
+              />
+              <TimePicker
+                time={time}
+                onChange={setTime}
+                color={"dark-" + theme}
+              />
 
             </IonCard>
             <IonItem lines="none" >
